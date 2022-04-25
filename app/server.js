@@ -9,7 +9,8 @@ const compression = require('compression')
 const { PORT, API_VERSION, API_MAJOR_VERSION } = require('./env')
 const logger = require('./logger')
 const v1ApiDoc = require('./api-v1/api-doc')
-const v1ApiService = require('./api-v1/services/apiService')
+const v1CatalogueService = require('./api-v1/services/catalogueService')
+const v1AttachmentService = require('./api-v1/services/attachmentService')
 
 async function createHttpServer() {
   const app = express()
@@ -34,7 +35,8 @@ async function createHttpServer() {
     apiDoc: v1ApiDoc,
     securityHandlers: {},
     dependencies: {
-      apiService: v1ApiService,
+      catalogueService: v1CatalogueService,
+      attachmentService: v1AttachmentService,
     },
     paths: [path.resolve(__dirname, `api-${API_MAJOR_VERSION}/routes`)],
   })
@@ -44,7 +46,7 @@ async function createHttpServer() {
       urls: [
         {
           url: `http://localhost:${PORT}/${API_MAJOR_VERSION}/api-docs`,
-          name: 'ApiService',
+          name: 'Inteli API Service',
         },
       ],
     },
@@ -105,7 +107,7 @@ async function startServer() {
     setupGracefulExit({ sigName: 'SIGINT', server, exitCode: 0 })
     setupGracefulExit({ sigName: 'SIGTERM', server, exitCode: 143 })
   } catch (err) {
-    logger.fatal('Fatal error during initialisation: %j', err)
+    logger.fatal('Fatal error during initialisation: %s, %j', err?.message, err)
     process.exit(1)
   }
 }
