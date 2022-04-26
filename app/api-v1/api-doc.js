@@ -63,12 +63,11 @@ const apiDoc = {
           },
           supplier: {
             description:
-              'Name of the supplier who is contracted to build the catalogue-item. This information is not stored on-chain',
+              'Name of the supplier who is contracted to build the catalogue-item. This information is not stored directly on-chain',
             type: 'string',
             maxLength: 255,
           },
         },
-        required: ['externalId', 'name', 'image', 'material', 'alloy', 'price', 'requiredCerts', 'supplier'],
       },
       CatalogueItem: {
         type: 'object',
@@ -76,10 +75,15 @@ const apiDoc = {
         properties: {
           id: {
             description: 'local id of the catalogue-item',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          owner: {
+            description:
+              'Name of the OEM who owns the design of the catalogue-item. This information is not stored directly on-chain',
             type: 'string',
+            maxLength: 255,
           },
         },
-        required: ['id', 'externalId', 'name', 'image', 'material', 'alloy', 'price', 'requiredCerts', 'supplier'],
       },
       CertificationRequirement: {
         type: 'object',
@@ -122,10 +126,160 @@ const apiDoc = {
           },
         },
       },
+      NewBuild: {
+        type: 'object',
+        description: 'A manufacture run that produces parts',
+        properties: {
+          externalId: {
+            description: 'id of the build in an external system',
+            allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
+          },
+          parts: {
+            description: 'Parts created by this build ',
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/NewPart',
+            },
+          },
+          completionEstimate: {
+            description: 'Date and time at which the build is estimated to finish',
+            type: 'string',
+            format: 'date-time',
+          },
+        },
+      },
+      Build: {
+        type: 'object',
+        properties: {
+          id: {
+            description: 'local id of the build',
+            type: 'string',
+          },
+          externalId: {
+            description: 'id of the build in an external system',
+            allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
+          },
+          partIds: {
+            description: 'Parts created by this build ',
+            type: 'array',
+            items: {
+              description: 'id of a part constructed in this build',
+              allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+            },
+          },
+          manufacturer: {
+            description: 'Name of the manufacturer who ran the build. This information is not stored directly on-chain',
+            type: 'string',
+            maxLength: 255,
+          },
+          completionEstimatedAt: {
+            description: 'Date and time at which the build is estimated to finish',
+            type: 'string',
+            format: 'date-time',
+          },
+          startedAt: {
+            description: 'Date and time on which the build started. Null if not started',
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+          },
+          completedAt: {
+            description: 'Date and time at which the build completed. Null if not completed',
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+          },
+        },
+      },
+      NewPart: {
+        type: 'object',
+        description: 'Part to be created',
+        properties: {
+          catalogueItemId: {
+            description: 'id of the catalogue-item that describes the design of this part',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          orderId: {
+            description: 'local id of the order the part is assigned to',
+            type: 'string',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+            nullable: true,
+          },
+        },
+      },
+      Part: {
+        type: 'object',
+        description: 'A part being or having been manufactured',
+        allOf: [{ $ref: '#/components/schemas/NewPart' }],
+        properties: {
+          id: {
+            description: 'local id of the part',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          buildId: {
+            description: 'id of the build that produces/produced this part',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          manufacturer: {
+            description:
+              'Name of the manufacturer who created the part. This information is not stored directly on-chain',
+            type: 'string',
+            maxLength: 255,
+          },
+        },
+      },
+      NewOrder: {
+        type: 'object',
+        description: 'A new purchase-order to be submitted',
+        properties: {
+          manufacturer: {
+            description:
+              'Name of the manufacturer who will supply parts from this purchase-order. This information is not stored directly on-chain',
+            type: 'string',
+            maxLength: 255,
+          },
+          requiredBy: {
+            description: 'Date and time at which the purchase-order must be completed',
+            type: 'string',
+            format: 'date-time',
+          },
+          items: {
+            type: 'array',
+            description: 'List of parts to be supplied',
+            items: {
+              description: 'id of the catalogue-item to be built',
+              allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+            },
+          },
+        },
+      },
+      Order: {
+        description: 'A purchase-order',
+        allOf: [{ $ref: '#/components/schemas/NewOrder' }],
+        properties: {
+          id: {
+            description: 'local id of the purchase-order',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          owner: {
+            description:
+              'Name of the submitter of the purchase-order. This information is not stored directly on-chain',
+            type: 'string',
+            maxLength: 255,
+          },
+        },
+      },
     },
     securitySchemes: {},
   },
   paths: {},
 }
+
+// make all schema properties required
+Object.values(apiDoc.components.schemas).forEach((schemaObj) => {
+  if (schemaObj.type === 'object') {
+    schemaObj.required = Object.keys(schemaObj.properties)
+  }
+})
 
 module.exports = apiDoc

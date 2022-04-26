@@ -11,6 +11,9 @@ const logger = require('./logger')
 const v1ApiDoc = require('./api-v1/api-doc')
 const v1CatalogueService = require('./api-v1/services/catalogueService')
 const v1AttachmentService = require('./api-v1/services/attachmentService')
+const v1BuildService = require('./api-v1/services/buildService')
+const v1OrderService = require('./api-v1/services/orderService')
+const v1PartService = require('./api-v1/services/partService')
 
 async function createHttpServer() {
   const app = express()
@@ -37,6 +40,9 @@ async function createHttpServer() {
     dependencies: {
       catalogueService: v1CatalogueService,
       attachmentService: v1AttachmentService,
+      buildService: v1BuildService,
+      partService: v1PartService,
+      orderService: v1OrderService,
     },
     paths: [path.resolve(__dirname, `api-${API_MAJOR_VERSION}/routes`)],
   })

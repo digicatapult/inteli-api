@@ -11,15 +11,7 @@ module.exports = function (attachmentService) {
 
   doc.GET.apiDoc = {
     summary: 'List attachments',
-    parameters: [
-      {
-        description: 'Filter by attachment name. Returns partial matches',
-        in: 'query',
-        required: false,
-        name: 'name',
-        allowEmptyValue: false,
-      },
-    ],
+    parameters: [],
     responses: {
       200: {
         description: 'Return attachment list',
@@ -67,7 +59,7 @@ module.exports = function (attachmentService) {
     },
     responses: {
       201: {
-        description: 'Create thing',
+        description: 'Attachment Created',
         content: {
           'application/json': {
             schema: {

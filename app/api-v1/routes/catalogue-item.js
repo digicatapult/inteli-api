@@ -11,30 +11,7 @@ module.exports = function (catalogueService) {
 
   doc.GET.apiDoc = {
     summary: 'List Catalogue Items',
-    parameters: [
-      {
-        description:
-          'Filter by owner of the catalogue item. Behaviour defaults to the current organisation. Does not return partial matches',
-        in: 'query',
-        required: false,
-        name: 'owner',
-        allowEmptyValue: false,
-      },
-      {
-        description: "Filter by the item's external ID. Returns partial matches",
-        in: 'query',
-        required: false,
-        name: 'partId',
-        allowEmptyValue: false,
-      },
-      {
-        description: 'Filter by item name. Returns partial matches',
-        in: 'query',
-        required: false,
-        name: 'partId',
-        allowEmptyValue: false,
-      },
-    ],
+    parameters: [],
     responses: {
       200: {
         description: 'Return Catalogue Items',
@@ -76,7 +53,7 @@ module.exports = function (catalogueService) {
     },
     responses: {
       201: {
-        description: 'Create Catalogue Item',
+        description: 'Catalogue Item Created',
         content: {
           'application/json': {
             schema: {
