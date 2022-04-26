@@ -39,7 +39,7 @@ const apiDoc = {
             allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
           },
           image: {
-            description: 'Example image of the item',
+            description: 'Example image of the item uploaded as an attachment',
             allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
           },
           material: {
