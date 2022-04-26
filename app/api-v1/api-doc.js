@@ -38,7 +38,7 @@ const apiDoc = {
             description: 'Name of the catalogue-item',
             allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
           },
-          image: {
+          imageAttachmentId: {
             description: 'Example image of the item uploaded as an attachment',
             allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
           },
@@ -153,7 +153,7 @@ const apiDoc = {
         properties: {
           id: {
             description: 'local id of the build',
-            type: 'string',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
           },
           externalId: {
             description: 'id of the build in an external system',
@@ -226,6 +226,20 @@ const apiDoc = {
             type: 'string',
             maxLength: 255,
           },
+          certifications: {
+            type: 'array',
+            description: 'Certifications this part has been assigned',
+            items: {
+              description: 'Certification for a part',
+              allOf: [{ $ref: '#/components/schemas/CertificationRequirement' }],
+              properties: {
+                certificationAttachmentId: {
+                  description: 'Attachment Id of the certification evidence',
+                  allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+                },
+              },
+            },
+          },
         },
       },
       NewOrder: {
@@ -267,7 +281,100 @@ const apiDoc = {
             type: 'string',
             maxLength: 255,
           },
+          status: {
+            type: 'string',
+            description: 'Status of the purchase-order',
+            enum: ['Created', 'Submitted', 'Rejected', 'Accepted'],
+          },
         },
+      },
+      ChainAction: {
+        description: 'An action recorded on-chain against an object',
+        type: 'object',
+        properties: {
+          id: {
+            description: 'local id of the chain action',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          status: {
+            description: 'Status of the action',
+            type: 'string',
+            enum: ['Submitted', 'InBlock', 'Finalised'],
+          },
+          submittedAt: {
+            description: 'Date and time at which the action was submitted',
+            type: 'string',
+            format: 'date-time',
+          },
+        },
+      },
+      NewOrderSubmission: {
+        description: 'Description of the submission',
+        type: 'object',
+        properties: {},
+      },
+      OrderSubmission: {
+        description: 'Description of the submission',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }],
+      },
+      NewOrderAcceptance: {
+        description: 'Description of the acceptance',
+        type: 'object',
+        properties: {},
+      },
+      OrderAcceptance: {
+        description: 'Description of the acceptance',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }],
+      },
+      NewOrderAmendment: {
+        description: 'Description of the amendment',
+        type: 'object',
+        properties: {
+          requiredBy: {
+            description: 'Date and time at which the purchase-order must be completed',
+            type: 'string',
+            format: 'date-time',
+          },
+          items: {
+            type: 'array',
+            description: 'List of parts to be supplied',
+            items: {
+              description: 'id of the catalogue-item to be built',
+              allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+            },
+          },
+        },
+      },
+      OrderAmendment: {
+        description: 'Description of the amendment',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }],
+      },
+      NewOrderRejection: {
+        description: 'Description of the rejection',
+        type: 'object',
+        properties: {
+          requiredBy: {
+            description: 'Date and time at which the purchase-order must be completed',
+            type: 'string',
+            format: 'date-time',
+          },
+          items: {
+            type: 'array',
+            description: 'List of parts to be supplied',
+            items: {
+              description: 'id of the catalogue-item to be built',
+              allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+            },
+          },
+        },
+      },
+      OrderRejection: {
+        description: 'Description of the rejection',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }],
       },
     },
     securitySchemes: {},
@@ -276,10 +383,12 @@ const apiDoc = {
 }
 
 // make all schema properties required
-Object.values(apiDoc.components.schemas).forEach((schemaObj) => {
-  if (schemaObj.type === 'object') {
+const makeSchemaPropsRequired = (schemaObj) => {
+  if (schemaObj.type === 'object' && schemaObj.properties) {
     schemaObj.required = Object.keys(schemaObj.properties)
+    Object.values(schemaObj.properties).forEach(makeSchemaPropsRequired)
   }
-})
+}
+Object.values(apiDoc.components.schemas).forEach(makeSchemaPropsRequired)
 
 module.exports = apiDoc
