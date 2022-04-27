@@ -57,6 +57,7 @@ const apiDoc = {
           requiredCerts: {
             description: 'Certification requirements ',
             type: 'array',
+            maxItems: 10,
             items: {
               $ref: '#/components/schemas/CertificationRequirement',
             },
@@ -137,6 +138,7 @@ const apiDoc = {
           parts: {
             description: 'Parts created by this build ',
             type: 'array',
+            maxItems: 10,
             items: {
               $ref: '#/components/schemas/NewPart',
             },
@@ -162,6 +164,7 @@ const apiDoc = {
           partIds: {
             description: 'Parts created by this build ',
             type: 'array',
+            maxItems: 10,
             items: {
               description: 'id of a part constructed in this build',
               allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
@@ -229,6 +232,7 @@ const apiDoc = {
           certifications: {
             type: 'array',
             description: 'Certifications this part has been assigned',
+            maxItems: 10,
             items: {
               description: 'Certification for a part',
               allOf: [{ $ref: '#/components/schemas/CertificationRequirement' }],
@@ -260,6 +264,7 @@ const apiDoc = {
           items: {
             type: 'array',
             description: 'List of parts to be supplied',
+            maxItems: 10,
             items: {
               description: 'id of the catalogue-item to be built',
               allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
@@ -309,27 +314,27 @@ const apiDoc = {
         },
       },
       NewOrderSubmission: {
-        description: 'Description of the submission',
+        description: 'A new action on an order that causes it to be submitted',
         type: 'object',
         properties: {},
       },
       OrderSubmission: {
-        description: 'Description of the submission',
+        description: 'An action on an order that causes it to be submitted',
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }],
       },
       NewOrderAcceptance: {
-        description: 'Description of the acceptance',
+        description: 'A new action on an order that causes it to be accepted',
         type: 'object',
         properties: {},
       },
       OrderAcceptance: {
-        description: 'Description of the acceptance',
+        description: 'An action on an order that causes it to be accepted',
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }],
       },
       NewOrderAmendment: {
-        description: 'Description of the amendment',
+        description: 'A new action on an order that causes it to be amended following a rejection',
         type: 'object',
         properties: {
           requiredBy: {
@@ -340,6 +345,7 @@ const apiDoc = {
           items: {
             type: 'array',
             description: 'List of parts to be supplied',
+            maxItems: 10,
             items: {
               description: 'id of the catalogue-item to be built',
               allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
@@ -348,12 +354,12 @@ const apiDoc = {
         },
       },
       OrderAmendment: {
-        description: 'Description of the amendment',
+        description: 'An action on an order that causes it to be amended following a rejection',
         type: 'object',
-        allOf: [{ $ref: '#/components/schemas/ChainAction' }],
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewOrderAmendment' }],
       },
       NewOrderRejection: {
-        description: 'Description of the rejection',
+        description: 'A new action on an order that causes it to be rejected along with amendment suggestions',
         type: 'object',
         properties: {
           requiredBy: {
@@ -364,6 +370,7 @@ const apiDoc = {
           items: {
             type: 'array',
             description: 'List of parts to be supplied',
+            maxItems: 10,
             items: {
               description: 'id of the catalogue-item to be built',
               allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
@@ -372,9 +379,51 @@ const apiDoc = {
         },
       },
       OrderRejection: {
-        description: 'Description of the rejection',
+        description: 'An action on an order that causes it to be rejected along with amendment suggestions',
         type: 'object',
-        allOf: [{ $ref: '#/components/schemas/ChainAction' }],
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewOrderRejection' }],
+      },
+      NewPartOrderAssignment: {
+        description: 'A new action on a part that causes it to be assigned to an order',
+        type: 'object',
+        properties: {
+          orderId: {
+            description: 'id of the order to attach this part to',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          itemIndex: {
+            description: 'Index in the item list of the order to assign this part to',
+            type: 'integer',
+            minimum: 0,
+            maximum: 9,
+          },
+        },
+      },
+      PartOrderAssignment: {
+        description: 'An action on a part that causes it to be assigned to an order',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewPartOrderAssignment' }],
+      },
+      NewPartCertification: {
+        description: 'A new action that registers certification information against a part',
+        type: 'object',
+        properties: {
+          attachmentId: {
+            description: 'id of the attachment containing the certification evidence',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+          },
+          certificationIndex: {
+            description: 'Index in the certification requirement list of the order-part to assign this part to',
+            type: 'integer',
+            minimum: 0,
+            maximum: 9,
+          },
+        },
+      },
+      PartCertification: {
+        description: 'An action that registers certification information against a part',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewPartCertification' }],
       },
     },
     securitySchemes: {},
