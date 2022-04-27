@@ -175,6 +175,11 @@ const apiDoc = {
             type: 'string',
             maxLength: 255,
           },
+          status: {
+            description: 'Status of the build',
+            type: 'string',
+            enum: ['Created', 'Scheduled', 'Started', 'Completed'],
+          },
           completionEstimatedAt: {
             description: 'Date and time at which the build is estimated to finish',
             type: 'string',
@@ -425,9 +430,26 @@ const apiDoc = {
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewPartCertification' }],
       },
-      NewBuildStart: {
+      NewBuildSchedule: {
         description:
-          'A new action on a build that causes it to be registered on-chain as started. Build start actions also result in the creation of the Part entities that are being constructed in the build',
+          'A new action on a build that causes it to be registered on-chain. Build schedule actions also result in the creation of the Part entities that are being constructed in the build',
+        type: 'object',
+        properties: {
+          completionEstimate: {
+            description: 'Updated Date and time at which the build is estimated to finish',
+            type: 'string',
+            format: 'date-time',
+          },
+        },
+      },
+      BuildSchedule: {
+        description:
+          'An action on a build that causes it to be registered on-chain. Build schedule actions also result in the creation of the Part entities that are being constructed in the build',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildSchedule' }],
+      },
+      NewBuildStart: {
+        description: 'A new action on a build that causes it to be registered on-chain as started',
         type: 'object',
         properties: {
           startedAt: {
@@ -443,8 +465,7 @@ const apiDoc = {
         },
       },
       BuildStart: {
-        description:
-          'An action on a build that causes it to be registered on-chain as started. Build start actions also result in the creation of the Part entities that are being constructed in the build',
+        description: 'An action on a build that causes it to be registered on-chain as started',
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildStart' }],
       },

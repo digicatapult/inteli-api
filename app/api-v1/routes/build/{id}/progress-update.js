@@ -62,8 +62,7 @@ module.exports = function (buildService) {
     summary: 'Create Build Progress Update Action',
     parameters: [
       {
-        description:
-          'Id of the build. Must have started (startedAt != null) and not have completed (completedAt == null)',
+        description: 'Id of the build. Must be in Started state',
         in: 'path',
         required: true,
         name: 'id',

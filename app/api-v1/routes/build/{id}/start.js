@@ -62,7 +62,7 @@ module.exports = function (buildService) {
     summary: 'Create Build Start Action',
     parameters: [
       {
-        description: 'Id of the build. Must not have started (startedAt == null)',
+        description: 'Id of the build. Must be in Scheduled state',
         in: 'path',
         required: true,
         name: 'id',

@@ -10,7 +10,7 @@ module.exports = function (buildService) {
   }
 
   doc.GET.apiDoc = {
-    summary: 'List Build Completion Actions',
+    summary: 'List Build Schedule Actions',
     parameters: [
       {
         description: 'Id of the build',
@@ -22,13 +22,13 @@ module.exports = function (buildService) {
     ],
     responses: {
       200: {
-        description: 'Return Build Completion Actions',
+        description: 'Return Build Schedule Actions',
         content: {
           'application/json': {
             schema: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/BuildCompletion',
+                $ref: '#/components/schemas/BuildSchedule',
               },
             },
           },
@@ -59,10 +59,10 @@ module.exports = function (buildService) {
   }
 
   doc.POST.apiDoc = {
-    summary: 'Create Build Completion Action',
+    summary: 'Create Build Schedule Action',
     parameters: [
       {
-        description: 'Id of the build. Must be in Started state',
+        description: 'Id of the build. Must be in Created state',
         in: 'path',
         required: true,
         name: 'id',
@@ -73,18 +73,18 @@ module.exports = function (buildService) {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/NewBuildCompletion',
+            $ref: '#/components/schemas/NewBuildSchedule',
           },
         },
       },
     },
     responses: {
       201: {
-        description: 'Build Completion Action Created',
+        description: 'Build Schedule Action Created',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/BuildCompletion',
+              $ref: '#/components/schemas/BuildSchedule',
             },
           },
         },
