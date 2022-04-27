@@ -29,7 +29,7 @@ module.exports = function (recipeService) {
         },
       },
       404: {
-        description: 'recipe not found',
+        description: 'Recipe not found',
         content: {
           'application/json': {
             schema: {

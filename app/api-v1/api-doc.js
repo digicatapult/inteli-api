@@ -203,7 +203,7 @@ const apiDoc = {
         type: 'object',
         description: 'Part to be created',
         properties: {
-          RecipeId: {
+          recipeId: {
             description: 'id of the recipe that describes the design of this part',
             allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
           },
