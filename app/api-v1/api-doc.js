@@ -470,6 +470,28 @@ const apiDoc = {
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildProgressUpdate' }],
       },
+      NewBuildCompletion: {
+        description: 'A new action on a build that marks it as completed',
+        type: 'object',
+        properties: {
+          attachmentId: {
+            description: 'Id of an attachment containing build data to register',
+            type: 'string',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+            nullable: true,
+          },
+          completedAt: {
+            description: 'Finalised completion date and time',
+            type: 'string',
+            format: 'date-time',
+          },
+        },
+      },
+      BuildCompletion: {
+        description: 'An action on a build that marks it as completed',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildCompletion' }],
+      },
     },
     securitySchemes: {},
   },
