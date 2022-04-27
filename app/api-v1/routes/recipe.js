@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-module.exports = function (catalogueService) {
+module.exports = function (recipeService) {
   const doc = {
     GET: async function (req, res) {
       res.status(500).json({ message: 'Not Implemented' })
@@ -10,17 +10,17 @@ module.exports = function (catalogueService) {
   }
 
   doc.GET.apiDoc = {
-    summary: 'List Catalogue Items',
+    summary: 'List Recipes',
     parameters: [],
     responses: {
       200: {
-        description: 'Return Catalogue Items',
+        description: 'Return Recipes',
         content: {
           'application/json': {
             schema: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/CatalogueItem',
+                $ref: '#/components/schemas/RecipeItem',
               },
             },
           },
@@ -37,27 +37,27 @@ module.exports = function (catalogueService) {
         },
       },
     },
-    tags: ['catalogue-item'],
+    tags: ['recipe'],
   }
 
   doc.POST.apiDoc = {
-    summary: 'Create Catalogue Item',
+    summary: 'Create Recipe',
     requestBody: {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/NewCatalogueItem',
+            $ref: '#/components/schemas/NewRecipeItem',
           },
         },
       },
     },
     responses: {
       201: {
-        description: 'Catalogue Item Created',
+        description: 'Recipe Created',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/CatalogueItem',
+              $ref: '#/components/schemas/RecipeItem',
             },
           },
         },
@@ -83,7 +83,7 @@ module.exports = function (catalogueService) {
         },
       },
     },
-    tags: ['catalogue-item'],
+    tags: ['recipe'],
   }
 
   return doc

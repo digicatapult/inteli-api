@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-module.exports = function (catalogueService) {
+module.exports = function (recipeService) {
   const doc = {
     GET: async function (req, res) {
       res.status(500).json({ message: 'Not Implemented' })
@@ -10,10 +10,10 @@ module.exports = function (catalogueService) {
   }
 
   doc.GET.apiDoc = {
-    summary: 'List Catalogue Item Creation Actions',
+    summary: 'List Recipe Creation Actions',
     parameters: [
       {
-        description: 'Id of the catalogue-item',
+        description: 'Id of the recipe',
         in: 'path',
         required: true,
         name: 'id',
@@ -22,20 +22,20 @@ module.exports = function (catalogueService) {
     ],
     responses: {
       200: {
-        description: 'Return Catalogue Item Creation Actions',
+        description: 'Return Recipe Creation Actions',
         content: {
           'application/json': {
             schema: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/CatalogueItemCreation',
+                $ref: '#/components/schemas/RecipeItemCreation',
               },
             },
           },
         },
       },
       404: {
-        description: 'Catalogue Item not found',
+        description: 'Recipe not found',
         content: {
           'application/json': {
             schema: {
@@ -55,14 +55,14 @@ module.exports = function (catalogueService) {
         },
       },
     },
-    tags: ['catalogue-item'],
+    tags: ['recipe'],
   }
 
   doc.POST.apiDoc = {
-    summary: 'Create Catalogue Item Creation Action',
+    summary: 'Create Recipe Creation Action',
     parameters: [
       {
-        description: 'Id of the catalogue-item',
+        description: 'Id of the recipe',
         in: 'path',
         required: true,
         name: 'id',
@@ -73,18 +73,18 @@ module.exports = function (catalogueService) {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/NewCatalogueItemCreation',
+            $ref: '#/components/schemas/NewRecipeItemCreation',
           },
         },
       },
     },
     responses: {
       201: {
-        description: 'Catalogue Item Creation Created',
+        description: 'Recipe Creation Created',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/CatalogueItemCreation',
+              $ref: '#/components/schemas/RecipeItemCreation',
             },
           },
         },
@@ -110,7 +110,7 @@ module.exports = function (catalogueService) {
         },
       },
     },
-    tags: ['catalogue-item'],
+    tags: ['recipe'],
   }
 
   return doc
