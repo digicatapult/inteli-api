@@ -492,6 +492,19 @@ const apiDoc = {
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildCompletion' }],
       },
+      NewCatalogueItemCreation: {
+        description: 'A new action on a catalogue-item that registers it on-chain',
+        type: 'object',
+        properties: {},
+      },
+      CatalogueItemCreation: {
+        description: 'An action on a catalogue-item that registers it on-chain',
+        type: 'object',
+        allOf: [
+          { $ref: '#/components/schemas/ChainAction' },
+          { $ref: '#/components/schemas/NewCatalogueItemCreation' },
+        ],
+      },
     },
     securitySchemes: {},
   },
