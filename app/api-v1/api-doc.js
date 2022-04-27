@@ -304,7 +304,7 @@ const apiDoc = {
           status: {
             description: 'Status of the action',
             type: 'string',
-            enum: ['Submitted', 'InBlock', 'Finalised'],
+            enum: ['Submitted', 'InBlock', 'Finalised', 'Failed'],
           },
           submittedAt: {
             description: 'Date and time at which the action was submitted',
@@ -424,6 +424,51 @@ const apiDoc = {
         description: 'An action that registers certification information against a part',
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewPartCertification' }],
+      },
+      NewBuildStart: {
+        description:
+          'A new action on a build that causes it to be registered on-chain as started. Build start actions also result in the creation of the Part entities that are being constructed in the build',
+        type: 'object',
+        properties: {
+          startedAt: {
+            description: 'Date and time at which the build actually started',
+            type: 'string',
+            format: 'date-time',
+          },
+          completionEstimate: {
+            description: 'Updated Date and time at which the build is estimated to finish',
+            type: 'string',
+            format: 'date-time',
+          },
+        },
+      },
+      BuildStart: {
+        description:
+          'An action on a build that causes it to be registered on-chain as started. Build start actions also result in the creation of the Part entities that are being constructed in the build',
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildStart' }],
+      },
+      NewBuildProgressUpdate: {
+        description: "A new action on a build that updates it's progress",
+        type: 'object',
+        properties: {
+          attachmentId: {
+            description: 'Id of an attachment containing build data to register',
+            type: 'string',
+            allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+            nullable: true,
+          },
+          completionEstimate: {
+            description: 'Updated Date and time at which the build is estimated to finish',
+            type: 'string',
+            format: 'date-time',
+          },
+        },
+      },
+      BuildProgressUpdate: {
+        description: "An action on a build that updates it's progress",
+        type: 'object',
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildProgressUpdate' }],
       },
     },
     securitySchemes: {},
