@@ -289,7 +289,7 @@ const apiDoc = {
           status: {
             type: 'string',
             description: 'Status of the purchase-order',
-            enum: ['Created', 'Submitted', 'Rejected', 'Accepted'],
+            enum: ['Created', 'Submitted', 'Rejected', 'Amended', 'Accepted'],
           },
         },
       },

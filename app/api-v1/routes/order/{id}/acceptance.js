@@ -62,7 +62,7 @@ module.exports = function (orderService) {
     summary: 'Create Purchase Order Acceptance Action',
     parameters: [
       {
-        description: 'Id of the purchase-order. Must be in "Submitted" state',
+        description: 'Id of the purchase-order. Must be in "Submitted" or "Amended" state',
         in: 'path',
         required: true,
         name: 'id',
