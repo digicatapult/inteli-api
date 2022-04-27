@@ -33,7 +33,7 @@ module.exports = function (recipeService) {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/RecipeItemCreation',
+              $ref: '#/components/schemas/RecipeCreation',
             },
           },
         },

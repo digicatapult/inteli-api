@@ -20,7 +20,7 @@ module.exports = function (recipeService) {
             schema: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/RecipeItem',
+                $ref: '#/components/schemas/Recipe',
               },
             },
           },
@@ -46,7 +46,7 @@ module.exports = function (recipeService) {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/NewRecipeItem',
+            $ref: '#/components/schemas/NewRecipe',
           },
         },
       },
@@ -57,7 +57,7 @@ module.exports = function (recipeService) {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/RecipeItem',
+              $ref: '#/components/schemas/Recipe',
             },
           },
         },

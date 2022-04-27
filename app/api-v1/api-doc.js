@@ -27,7 +27,7 @@ const apiDoc = {
       },
     },
     schemas: {
-      NewRecipeItem: {
+      NewRecipe: {
         type: 'object',
         properties: {
           externalId: {
@@ -70,9 +70,9 @@ const apiDoc = {
           },
         },
       },
-      RecipeItem: {
+      Recipe: {
         type: 'object',
-        allOf: [{ $ref: '#/components/schemas/NewRecipeItem' }],
+        allOf: [{ $ref: '#/components/schemas/NewRecipe' }],
         properties: {
           id: {
             description: 'local id of the recipe',
@@ -203,7 +203,7 @@ const apiDoc = {
         type: 'object',
         description: 'Part to be created',
         properties: {
-          recipeItemId: {
+          RecipeId: {
             description: 'id of the recipe that describes the design of this part',
             allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
           },
@@ -513,15 +513,15 @@ const apiDoc = {
         type: 'object',
         allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewBuildCompletion' }],
       },
-      NewRecipeItemCreation: {
+      NewRecipeCreation: {
         description: 'A new action on a recipe that registers it on-chain',
         type: 'object',
         properties: {},
       },
-      RecipeItemCreation: {
+      RecipeCreation: {
         description: 'An action on a recipe that registers it on-chain',
         type: 'object',
-        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewRecipeItemCreation' }],
+        allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewRecipeCreation' }],
       },
     },
     securitySchemes: {},

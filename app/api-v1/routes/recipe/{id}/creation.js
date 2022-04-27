@@ -28,7 +28,7 @@ module.exports = function (recipeService) {
             schema: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/RecipeItemCreation',
+                $ref: '#/components/schemas/RecipeCreation',
               },
             },
           },
@@ -73,7 +73,7 @@ module.exports = function (recipeService) {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/NewRecipeItemCreation',
+            $ref: '#/components/schemas/NewRecipeCreation',
           },
         },
       },
@@ -84,7 +84,7 @@ module.exports = function (recipeService) {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/RecipeItemCreation',
+              $ref: '#/components/schemas/RecipeCreation',
             },
           },
         },
