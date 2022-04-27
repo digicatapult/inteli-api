@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   inteli-api:
   - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-04-27T11:18:35.352496207Z"
+    description: A Helm chart for inteli-api
+    digest: e4ac355f487df60e8794b203214dc72d52579df1e6618e901953f327cd723270
+    maintainers:
+    - email: opensource@digicatapult.org.uk
+      name: digicatapult
+      url: www.digicatapult.org.uk
+    name: inteli-api
+    type: application
+    urls:
+    - https://digicatapult.github.io/inteli-api/inteli-api-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     appVersion: 0.0.1
     created: "2022-04-25T11:52:44.661693764Z"
     description: A Helm chart for inteli-api
@@ -15,4 +29,4 @@ entries:
     urls:
     - https://digicatapult.github.io/inteli-api/inteli-api-0.0.1.tgz
     version: 0.0.1
-generated: "2022-04-25T11:52:44.660543056Z"
+generated: "2022-04-27T11:18:35.351946568Z"
