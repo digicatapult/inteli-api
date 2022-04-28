@@ -17,6 +17,22 @@ exports.up = async (knex) => {
 
     def.primary(['id'])
   })
+
+  await knex.schema.createTable('recipe', (def) => {
+    def.uuid('id').defaultTo(uuidGenerateV4())
+
+    def.datetime('created_at').notNullable().default(now())
+    def.string('externalId')
+    def.string('name')
+    def.string('imageAttachmentId')
+    def.string('material')
+    def.string('alloy')
+    def.string('price')
+    def.string('requiredCerts')
+    def.string('supplier')
+
+    def.primary(['id'])
+  })
 }
 
 exports.down = async (knex) => {
