@@ -5,7 +5,9 @@ module.exports = function (recipeService) {
       res.status(500).json({ message: 'Not Implemented' })
     },
     POST: async function (req, res) {
-      res.status(500).json({ message: 'Not Implemented' })
+      const recipe = await recipeService.createRecipe(req.body)
+
+      res.status(201).json(recipe)
     },
   }
 

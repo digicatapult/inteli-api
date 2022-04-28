@@ -16,12 +16,13 @@ const client = knex({
   },
 })
 
-module.exports = {
-  client,
+async function addRecipe(recipe) {
+  return client('recipes')
+    .insert(recipe)
+    .returning(['id', 'externalId', 'name', 'imageAttachmentId', 'material', 'alloy', 'price', 'supplier'])
 }
 
-async function addRecipe(reqBody) {
-  return client('recipes')
-    .insert(reqBody)
-    .returning(['id', 'externalId', 'name', 'imageAttachmentId', 'material', 'alloy', 'price'])
+module.exports = {
+  client,
+  addRecipe,
 }
