@@ -5,8 +5,13 @@ module.exports = function (recipeService) {
       res.status(500).json({ message: 'Not Implemented' })
     },
     POST: async function (req, res) {
+      if (!req.body) {
+        return res.status(400).json({ message: 'Invalid request' })
+      }
       const recipe = await recipeService.createRecipe(req.body)
-
+      if (recipe == null) {
+        return res.status(200).json({ message: 'An error occurred' })
+      }
       res.status(201).json(recipe)
     },
   }

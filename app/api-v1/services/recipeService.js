@@ -2,7 +2,7 @@ const { addRecipe } = require('../../db')
 
 async function createRecipe(reqBody) {
   if (!reqBody) {
-    return { statusCode: 400, result: {} }
+    return null
   }
 
   const recipe = await addRecipe(reqBody)
