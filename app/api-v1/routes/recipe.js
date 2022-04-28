@@ -8,7 +8,20 @@ module.exports = function (recipeService) {
       if (!req.body) {
         return res.status(400).json({ message: 'Invalid request' })
       }
-      const recipe = await recipeService.createRecipe(req.body)
+
+      const { id, externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier } = req.body
+
+      const recipe = await recipeService.createRecipe({
+        id,
+        externalId,
+        name,
+        imageAttachmentId,
+        material,
+        alloy,
+        price,
+        requiredCerts,
+        supplier,
+      })
       if (recipe == null) {
         return res.status(200).json({ message: 'An error occurred' })
       }

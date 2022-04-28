@@ -29,7 +29,7 @@ exports.up = async (knex) => {
     def.string('material')
     def.string('alloy')
     def.string('price')
-    // def.string('requiredCerts') #TODO
+    def.jsonb('requiredCerts') // TODO
     def.string('supplier')
 
     def.primary(['id'])
