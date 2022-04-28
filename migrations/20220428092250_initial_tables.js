@@ -22,13 +22,14 @@ exports.up = async (knex) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
 
     def.datetime('created_at').notNullable().default(now())
+    def.datetime('updated_at').notNullable().default(now())
     def.string('externalId')
     def.string('name')
     def.string('imageAttachmentId')
     def.string('material')
     def.string('alloy')
     def.string('price')
-    def.string('requiredCerts')
+    // def.string('requiredCerts') #TODO
     def.string('supplier')
 
     def.primary(['id'])
