@@ -23,6 +23,7 @@ The following tables exist in the `inteli` database.
 | column        | PostgreSQL type           | nullable |       default        | description                            |
 | :------------ | :------------------------ | :------- | :------------------: | :------------------------------------- |
 | `id`          | `UUID`                    | FALSE    | `uuid_generate_v4()` | Unique identifier for the `attachment` |
+| `filename`    | `CHARACTER VARYING (50)`  | FALSE    |          -           | Attachment filename                    |
 | `binary_blob` | `bytea`                   | FALSE    |          -           | Attachment file data as binary         |
 | `created_at`  | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was first created         |
 

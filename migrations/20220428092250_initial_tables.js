@@ -11,6 +11,7 @@ exports.up = async (knex) => {
 
   await knex.schema.createTable('attachments', (def) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
+    def.string('filename', 50).notNullable()
     def.binary('binary_blob').notNullable()
     def.datetime('created_at').notNullable().default(now())
 
