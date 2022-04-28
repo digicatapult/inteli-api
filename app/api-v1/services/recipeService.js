@@ -8,7 +8,8 @@ async function createRecipe(reqBody) {
   const recipe = await addRecipe(reqBody)
 
   return recipe
+}
 
 module.exports = {
-    createRecipe
+  createRecipe,
 }
