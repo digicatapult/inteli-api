@@ -38,5 +38,6 @@ exports.up = async (knex) => {
 
 exports.down = async (knex) => {
   await knex.schema.dropTable('attachments')
+  await knex.schema.dropTable('recipe')
   await knex.raw('DROP EXTENSION "uuid-ossp"')
 }
