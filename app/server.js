@@ -3,10 +3,11 @@ const cors = require('cors')
 const pinoHttp = require('pino-http')
 const { initialize } = require('express-openapi')
 const swaggerUi = require('swagger-ui-express')
+const multer = require('multer')
 const path = require('path')
 const bodyParser = require('body-parser')
 const compression = require('compression')
-const { PORT, API_VERSION, API_MAJOR_VERSION } = require('./env')
+const { PORT, API_VERSION, API_MAJOR_VERSION, FILE_UPLOAD_SIZE_LIMIT_BYTES } = require('./env')
 const logger = require('./logger')
 const v1ApiDoc = require('./api-v1/api-doc')
 const v1RecipeService = require('./api-v1/services/recipeService')
@@ -33,9 +34,22 @@ async function createHttpServer() {
     return
   })
 
+  const multerOptions = {
+    limits: { fileSize: FILE_UPLOAD_SIZE_LIMIT_BYTES },
+    storage: multer.diskStorage({}),
+  }
+
   initialize({
     app,
     apiDoc: v1ApiDoc,
+    consumesMiddleware: {
+      'multipart/form-data': function (req, res, next) {
+        multer(multerOptions).single()(req, res, function (err) {
+          if (err) return next(err)
+          next()
+        })
+      },
+    },
     securityHandlers: {},
     dependencies: {
       recipeService: v1RecipeService,

@@ -5,6 +5,8 @@ module.exports = function (attachmentService) {
       res.status(500).json({ message: 'Not Implemented' })
     },
     POST: async function (req, res) {
+      console.log(req.body)
+      console.log(req.file)
       res.status(500).json({ message: 'Not Implemented' })
     },
   }
