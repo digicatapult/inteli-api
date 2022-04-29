@@ -24,7 +24,7 @@ module.exports = function (recipeService) {
         material,
         alloy,
         price,
-        // requiredCerts,
+        requiredCerts: JSON.stringify(requiredCerts),
         supplier,
       })
       logger.info('returned')

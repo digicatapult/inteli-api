@@ -9,6 +9,7 @@ const logger = require('../../app/logger')
 
 describe('Recipes', function () {
   describe('POST recipes', function () {
+    this.timeout(15000)
     let app
 
     before(async function () {

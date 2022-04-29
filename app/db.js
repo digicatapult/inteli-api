@@ -17,7 +17,6 @@ const client = knex({
 })
 
 async function addRecipe(recipe) {
-  recipe.requiredCerts = JSON.stringify(recipe.requiredCerts)
   return client('recipes').insert(recipe).returning(['id'])
 }
 
