@@ -23,14 +23,14 @@ exports.up = async (knex) => {
 
     def.datetime('created_at').notNullable().default(now())
     def.datetime('updated_at').notNullable().default(now())
-    def.string('externalId')
-    def.string('name')
-    def.string('imageAttachmentId')
-    def.string('material')
-    def.string('alloy')
-    def.string('price')
-    def.jsonb('requiredCerts') // TODO
-    def.string('supplier')
+    def.string('externalId').notNullable()
+    def.string('name').notNullable()
+    def.string('imageAttachmentId').notNullable()
+    def.string('material').notNullable()
+    def.string('alloy').notNullable()
+    def.string('price').notNullable()
+    def.jsonb('requiredCerts').notNullable()
+    def.string('supplier').notNullable()
 
     def.primary(['id'])
   })
