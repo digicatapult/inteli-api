@@ -15,6 +15,7 @@ module.exports = function (recipeService) {
 
       const { id, externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier } = req.body
 
+      logger.info('querying')
       const recipe = await recipeService.createRecipe({
         id,
         externalId,
@@ -23,12 +24,15 @@ module.exports = function (recipeService) {
         material,
         alloy,
         price,
-        requiredCerts,
+        // requiredCerts,
         supplier,
       })
+      logger.info('returned')
       if (recipe == null) {
+        logger.info('null')
         return res.status(200).json({ message: 'An error occurred' })
       }
+      logger.info('Returning success')
       res.status(201).json(recipe)
     },
   }

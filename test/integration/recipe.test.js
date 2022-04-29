@@ -15,9 +15,9 @@ describe('Recipes', function () {
       app = await createHttpServer()
     })
 
-    after(async function () {
-      await cleanup()
-    })
+    // after(async function () {
+    //   await cleanup()
+    // })
 
     it('should cause schema validation errors', async function () {
       logger.info('recipe test')
@@ -53,6 +53,7 @@ describe('Recipes', function () {
 
       const response = await postRecipeRoute(newRecipe, app)
       expect(response.status).to.equal(201)
+      logger.info(response.body)
     })
   })
 })

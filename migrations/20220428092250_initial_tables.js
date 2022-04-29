@@ -29,7 +29,7 @@ exports.up = async (knex) => {
     def.string('material').notNullable()
     def.string('alloy').notNullable()
     def.string('price').notNullable()
-    def.jsonb('requiredCerts').notNullable()
+    def.json('requiredCerts').notNullable()
     def.string('supplier').notNullable()
 
     def.primary(['id'])
@@ -39,7 +39,7 @@ exports.up = async (knex) => {
 }
 
 exports.down = async (knex) => {
-  await knex.schema.dropTable('attachments')
   await knex.schema.dropTable('recipes')
+  await knex.schema.dropTable('attachments')
   await knex.raw('DROP EXTENSION "uuid-ossp"')
 }

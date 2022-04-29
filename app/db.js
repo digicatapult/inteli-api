@@ -17,9 +17,8 @@ const client = knex({
 })
 
 async function addRecipe(recipe) {
-  return client('recipes')
-    .insert(recipe)
-    .returning(['id', 'externalId', 'name', 'imageAttachmentId', 'material', 'alloy', 'price', 'supplier'])
+  recipe.requiredCerts = JSON.stringify(recipe.requiredCerts)
+  return client('recipes').insert(recipe).returning(['id'])
 }
 
 module.exports = {

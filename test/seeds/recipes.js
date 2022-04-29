@@ -13,6 +13,7 @@ const seed = async () => {
     {
       id: '00000000-0000-1000-8000-000000000000',
       filename: 'foo.jpg',
+      binary_blob: 9999999,
     },
   ])
 }
