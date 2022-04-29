@@ -7,7 +7,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const compression = require('compression')
 const { PORT, API_VERSION, API_MAJOR_VERSION } = require('./env')
-const logger = require('./logger')
+const logger = require('./utils/Logger')
 const v1ApiDoc = require('./api-v1/api-doc')
 const v1RecipeService = require('./api-v1/services/recipeService')
 const v1AttachmentService = require('./api-v1/services/attachmentService')
@@ -38,6 +38,8 @@ async function createHttpServer() {
     apiDoc: v1ApiDoc,
     securityHandlers: {},
     dependencies: {
+      // same like below: paths: [path.resolve(__dirname, `api-${API_MAJOR_VERSION}/routes`)],
+      // also this is not a service, i think we should rename and call it a controller or model
       recipeService: v1RecipeService,
       attachmentService: v1AttachmentService,
       buildService: v1BuildService,
@@ -63,6 +65,10 @@ async function createHttpServer() {
   // Sorry - app.use checks arity
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
+    // confused about this error middleware
+    // 1. can be the top level if we do next or return res.send
+    // 2. would be nice to include error object, serialization would remove the error obj
+    // 3. i think auth should throw an instance of unauth error along with other props e.g. status
     if (err.status) {
       res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })
     } else {
@@ -71,12 +77,14 @@ async function createHttpServer() {
     }
   })
 
+  // do we need too wrap this up?
   return { app }
 }
 
 /* istanbul ignore next */
 async function startServer() {
   try {
+    // why do we await?
     const { app } = await createHttpServer()
 
     const setupGracefulExit = ({ sigName, server, exitCode }) => {
@@ -118,4 +126,6 @@ async function startServer() {
   }
 }
 
-module.exports = { startServer, createHttpServer }
+// why this can not be index.js
+
+module.exports = { startServer }
