@@ -34,12 +34,12 @@ exports.up = async (knex) => {
 
     def.primary(['id'])
 
-    def.foreign('imageAttachmentId').references('attachment').on('id').onDelete('CASCADE').onUpdate('CASCADE')
+    def.foreign('imageAttachmentId').references('id').on('attachments').onDelete('CASCADE').onUpdate('CASCADE')
   })
 }
 
 exports.down = async (knex) => {
   await knex.schema.dropTable('attachments')
-  await knex.schema.dropTable('recipe')
+  await knex.schema.dropTable('recipes')
   await knex.raw('DROP EXTENSION "uuid-ossp"')
 }
