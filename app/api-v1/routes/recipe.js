@@ -29,7 +29,7 @@ module.exports = function (recipeService) {
       if (recipe == null) {
         return res.status(200).json({ message: 'An error occurred' })
       }
-      return res.status(201).json(recipe)
+      res.status(201).json(recipe)
     },
   }
 
