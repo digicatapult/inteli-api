@@ -1,3 +1,5 @@
+const logger = require('../../logger')
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (recipeService) {
   const doc = {
@@ -5,6 +7,8 @@ module.exports = function (recipeService) {
       res.status(500).json({ message: 'Not Implemented' })
     },
     POST: async function (req, res) {
+      logger.info('Request:', req)
+      logger.child({ body: req.body }).info('body')
       if (!req.body) {
         return res.status(400).json({ message: 'Invalid request' })
       }
@@ -25,7 +29,7 @@ module.exports = function (recipeService) {
       if (recipe == null) {
         return res.status(200).json({ message: 'An error occurred' })
       }
-      res.status(201).json(recipe)
+      return res.status(201).json(recipe)
     },
   }
 
