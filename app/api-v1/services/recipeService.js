@@ -4,9 +4,7 @@ async function createRecipe(reqBody) {
   if (!reqBody) {
     return null
   }
-
   const recipe = await addRecipe(reqBody)
-
   return recipe
 }
 

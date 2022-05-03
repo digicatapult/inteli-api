@@ -16,14 +16,13 @@ describe('Recipes', function () {
       app = await createHttpServer()
     })
 
-    // after(async function () {
-    //   await cleanup()
-    // })
+    after(async function () {
+      await cleanup()
+    })
 
     it('should cause schema validation errors', async function () {
       logger.info('recipe test')
       const newRecipe = {
-        id: 'foobar3000',
         externalId: 'foobar3000',
         name: 'foobar3000',
         imageAttachmentId: '00000000-0000-0000-0000-000000000000',
@@ -39,9 +38,7 @@ describe('Recipes', function () {
     })
 
     it('should accept valid body', async function () {
-      logger.info('recipe test')
       const newRecipe = {
-        id: 'foobar3000',
         externalId: 'foobar3000',
         name: 'foobar3000',
         imageAttachmentId: '00000000-0000-1000-8000-000000000000',
@@ -54,7 +51,6 @@ describe('Recipes', function () {
 
       const response = await postRecipeRoute(newRecipe, app)
       expect(response.status).to.equal(201)
-      logger.info(response.body)
     })
   })
 })

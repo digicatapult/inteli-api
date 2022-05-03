@@ -17,7 +17,7 @@ const client = knex({
 })
 
 async function addRecipe(recipe) {
-  return client('recipes').insert(recipe).returning(['id'])
+  return client('recipes').insert(recipe).returning('*')
 }
 
 module.exports = {
