@@ -16,11 +16,16 @@ const client = knex({
   },
 })
 
+async function getAttachment(id) {
+  return client('attachments').select(['id']).where({ id })
+}
+
 async function addRecipe(recipe) {
   return client('recipes').insert(recipe).returning('*')
 }
 
 module.exports = {
   client,
+  getAttachment,
   addRecipe,
 }
