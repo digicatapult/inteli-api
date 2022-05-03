@@ -2,7 +2,7 @@ const { describe, before, it } = require('mocha')
 const { expect } = require('chai')
 
 const { createHttpServer } = require('../../app/server')
-const { cleanup } = require('../seeds/recipes')
+const { seed, cleanup } = require('../seeds/recipes')
 const { postRecipeRoute } = require('../helper/routeHelper')
 
 const logger = require('../../app/logger')
@@ -13,6 +13,7 @@ describe('Recipes', function () {
     let app
 
     before(async function () {
+      await seed()
       app = await createHttpServer()
     })
 
