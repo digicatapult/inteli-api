@@ -7,12 +7,19 @@ module.exports = function (attachmentService) {
     },
     POST: async function (req, res) {
       logger.info('Attachment upload: ', req.file)
+
       if (!req.file) {
         res.status(400).json({ message: 'No file uploaded' })
       }
-      const attachment = await attachmentService.createAttachment(req.file)
-      const result = attachment.length === 1 ? attachment[0] : {}
-      res.status(201).json({ ...result, size: req.file.size })
+
+      try {
+        const attachment = await attachmentService.createAttachment(req.file)
+        const result = attachment[0]
+        res.status(201).json({ ...result, size: req.file.size })
+      } catch (err) {
+        logger.warn('Error in POST /attachment: %s', err.message)
+        res.status(500).send(err.message)
+      }
     },
   }
 

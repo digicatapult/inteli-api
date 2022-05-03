@@ -2,11 +2,9 @@ const fs = require('fs')
 const { insertAttachment } = require('../../db')
 
 const createAttachment = async (file) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     fs.readFile(file.path, async (err, data) => {
-      if (err) {
-        reject(err)
-      }
+      if (err) throw err
       const attachment = await insertAttachment(file.originalname, data)
       resolve(attachment)
     })
