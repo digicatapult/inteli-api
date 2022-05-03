@@ -1,7 +1,7 @@
 const logger = require('../logger')
 
 class CustomError extends Error {
-  constructor({ code, message, service }) {
+  constructor({ code = 500, message, service }) {
     super(message)
     this.code = code
     this.message = message
@@ -9,26 +9,17 @@ class CustomError extends Error {
   }
 }
 
-const errorResponse = (res, err) => {
-  logger.warn(`Error in ${err.service} service: ${err.message}`)
-
-  switch (err.constructor) {
-    case CustomError:
-      res.status(err.code).send(err.message)
-      break
-    default:
-      res.status(500).send(err.message)
-  }
-}
-
 const handleErrors = (err, req, res, next) => {
   if (err instanceof CustomError) {
-    errorResponse(res, err)
-  } else if (err.errors) {
-    // openapi validation
+    logger.warn(`Error in ${err.service} service: ${err.message}`)
+    res.status(err.code).send(err.message)
+  }
+  // openapi validation
+  else if (err.errors) {
     res.status(err.status).send(err.errors)
-  } else if (err.code) {
-    // multer errors
+  }
+  // multer errors
+  else if (err.code) {
     res.status(400).send(err.message)
   } else if (err.status) {
     res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })

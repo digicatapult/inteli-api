@@ -6,11 +6,11 @@ module.exports = function (attachmentService) {
     GET: async function (req, res) {
       res.status(500).json({ message: 'Not Implemented' })
     },
-    POST: async function (req, res, next) {
+    POST: async function (req, res) {
       logger.info('Attachment upload: ', req.file)
 
       if (!req.file) {
-        next(new CustomError({ code: 400, message: 'No file uploaded', service: 'attachment' }))
+        throw new CustomError({ code: 400, message: 'No file uploaded', service: 'attachment' })
       }
 
       const attachment = await attachmentService.createAttachment(req.file)
