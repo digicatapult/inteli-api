@@ -53,5 +53,21 @@ describe('Recipes', function () {
       const response = await postRecipeRoute(newRecipe, app)
       expect(response.status).to.equal(201)
     })
+
+    it('invalid attachement id returns null', async function () {
+      const newRecipe = {
+        externalId: 'foobar3000',
+        name: 'foobar3000',
+        imageAttachmentId: '00000000-0000-2000-8000-000000000000',
+        material: 'foobar3000',
+        alloy: 'foobar3000',
+        price: 'foobar3000',
+        requiredCerts: [{ description: 'foobar3000' }],
+        supplier: 'foobar3000',
+      }
+
+      const response = await postRecipeRoute(newRecipe, app)
+      expect(response.status).to.equal(200)
+    })
   })
 })
