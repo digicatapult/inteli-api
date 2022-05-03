@@ -13,18 +13,19 @@ module.exports = function (recipeService) {
 
       const { externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier } = req.body
 
-      const recipe = await recipeService.createRecipe({
-        externalId,
-        name,
-        imageAttachmentId,
-        material,
-        alloy,
-        price,
-        requiredCerts: JSON.stringify(requiredCerts),
-        supplier,
-      })
-      if (recipe == null) {
-        return res.status(200).json({ message: 'An error occurred' })
+      try {
+        const recipe = await recipeService.createRecipe({
+          externalId,
+          name,
+          imageAttachmentId,
+          material,
+          alloy,
+          price,
+          requiredCerts: JSON.stringify(requiredCerts),
+          supplier,
+        })
+      } catch (err) {
+        return res.status(err.code).json({ message: err.message })
       }
       res.status(201).json(recipe)
     },
