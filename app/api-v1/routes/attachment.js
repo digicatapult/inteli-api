@@ -1,5 +1,5 @@
 const logger = require('../../logger')
-const { FileUploadError } = require('../../utils/errors')
+const { errorResponse, FileUploadError } = require('../../utils/errors')
 
 module.exports = function (attachmentService) {
   const doc = {
@@ -18,8 +18,7 @@ module.exports = function (attachmentService) {
         const result = attachment[0]
         res.status(201).json({ ...result, size: req.file.size })
       } catch (err) {
-        logger.warn('Error in POST /attachment: %s', err.message)
-        res.status(err.code || 500).send(err.message)
+        errorResponse(res, err)
       }
     },
   }
