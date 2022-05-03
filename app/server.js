@@ -44,7 +44,7 @@ async function createHttpServer() {
     apiDoc: v1ApiDoc,
     consumesMiddleware: {
       'multipart/form-data': function (req, res, next) {
-        multer(multerOptions).single()(req, res, function (err) {
+        multer(multerOptions).single('file')(req, res, function (err) {
           if (err) return next(err)
           next()
         })
@@ -80,6 +80,9 @@ async function createHttpServer() {
     if (err.errors) {
       // openapi validation
       res.status(err.status).send(err.errors)
+    } else if (err.code) {
+      // multer errors
+      res.status(400).send(err.message)
     } else if (err.status) {
       res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })
     } else {

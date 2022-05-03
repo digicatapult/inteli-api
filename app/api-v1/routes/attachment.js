@@ -1,13 +1,18 @@
-// eslint-disable-next-line no-unused-vars
+const logger = require('../../logger')
+
 module.exports = function (attachmentService) {
   const doc = {
     GET: async function (req, res) {
       res.status(500).json({ message: 'Not Implemented' })
     },
     POST: async function (req, res) {
-      console.log(req.body)
-      console.log(req.file)
-      res.status(500).json({ message: 'Not Implemented' })
+      logger.info('Attachment upload: ', req.file)
+      if (!req.file) {
+        res.status(400).json({ message: 'No file uploaded' })
+      }
+      const attachment = await attachmentService.createAttachment(req.file)
+      const result = attachment.length === 1 ? attachment[0] : {}
+      res.status(201).json({ ...result, size: req.file.size })
     },
   }
 
