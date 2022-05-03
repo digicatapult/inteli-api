@@ -15,6 +15,7 @@ const v1AttachmentService = require('./api-v1/services/attachmentService')
 const v1BuildService = require('./api-v1/services/buildService')
 const v1OrderService = require('./api-v1/services/orderService')
 const v1PartService = require('./api-v1/services/partService')
+const { handleErrors } = require('./utils/errors')
 
 async function createHttpServer() {
   const app = express()
@@ -73,23 +74,7 @@ async function createHttpServer() {
   }
 
   app.use(`/${API_MAJOR_VERSION}/swagger`, swaggerUi.serve, swaggerUi.setup(null, options))
-
-  // Sorry - app.use checks arity
-  // eslint-disable-next-line no-unused-vars
-  app.use((err, req, res, next) => {
-    if (err.errors) {
-      // openapi validation
-      res.status(err.status).send(err.errors)
-    } else if (err.code) {
-      // multer errors
-      res.status(400).send(err.message)
-    } else if (err.status) {
-      res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })
-    } else {
-      logger.error('Fallback Error %j', err.stack)
-      res.status(500).send('Fatal error!')
-    }
-  })
+  app.use(handleErrors)
 
   return { app }
 }
