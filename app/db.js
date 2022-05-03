@@ -17,7 +17,7 @@ const client = knex({
 })
 
 async function getAttachment(id) {
-  return client('attachments').select(['id']).where({ id })
+  return client('attachments').select(['id', 'filename', 'binary_blob']).where({ id })
 }
 
 async function addRecipe(recipe) {
