@@ -1,26 +1,22 @@
 const logger = require('../../logger')
-const { errorResponse, FileUploadError } = require('../../utils/errors')
+const { handleErrors, FileUploadError } = require('../../utils/errors')
 
 module.exports = function (attachmentService) {
   const doc = {
     GET: async function (req, res) {
       res.status(500).json({ message: 'Not Implemented' })
     },
-    POST: async function (req, res) {
+    POST: handleErrors(async function (req, res) {
       logger.info('Attachment upload: ', req.file)
 
-      try {
-        if (!req.file) {
-          throw new FileUploadError({ code: 400, message: 'No file uploaded', service: 'attachment' })
-        }
-
-        const attachment = await attachmentService.createAttachment(req.file)
-        const result = attachment[0]
-        res.status(201).json({ ...result, size: req.file.size })
-      } catch (err) {
-        errorResponse(res, err)
+      if (!req.file) {
+        throw new FileUploadError({ code: 400, message: 'No file uploaded', service: 'attachment' })
       }
-    },
+
+      const attachment = await attachmentService.createAttachment(req.file)
+      const result = attachment[0]
+      res.status(201).json({ ...result, size: req.file.size })
+    }),
   }
 
   doc.GET.apiDoc = {

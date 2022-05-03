@@ -21,7 +21,13 @@ const errorResponse = (res, err) => {
   }
 }
 
+const handleErrors = (handler) => (req, res) => {
+  handler(req, res).catch((err) => {
+    errorResponse(res, err)
+  })
+}
+
 module.exports = {
-  errorResponse,
+  handleErrors,
   FileUploadError,
 }
