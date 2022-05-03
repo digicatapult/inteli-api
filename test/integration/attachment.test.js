@@ -42,7 +42,7 @@ describe('attachments', function () {
     it('should return 400 - no file', async function () {
       const response = await postAttachmentNoFile(app)
       expect(response.status).to.equal(400)
-      expect(response.body).to.deep.equal({ message: 'No file uploaded' })
+      expect(response.error.text).to.equal('No file uploaded')
     })
   })
 })

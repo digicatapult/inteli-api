@@ -1,4 +1,5 @@
 const logger = require('../../logger')
+const { FileUploadError } = require('../../utils/errors')
 
 module.exports = function (attachmentService) {
   const doc = {
@@ -8,17 +9,17 @@ module.exports = function (attachmentService) {
     POST: async function (req, res) {
       logger.info('Attachment upload: ', req.file)
 
-      if (!req.file) {
-        res.status(400).json({ message: 'No file uploaded' })
-      }
-
       try {
+        if (!req.file) {
+          throw new FileUploadError({ code: 400, message: 'No file uploaded', service: 'attachment' })
+        }
+
         const attachment = await attachmentService.createAttachment(req.file)
         const result = attachment[0]
         res.status(201).json({ ...result, size: req.file.size })
       } catch (err) {
         logger.warn('Error in POST /attachment: %s', err.message)
-        res.status(500).send(err.message)
+        res.status(err.code).send(err.message)
       }
     },
   }
