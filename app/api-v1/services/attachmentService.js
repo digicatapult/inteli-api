@@ -1,11 +1,11 @@
 const fs = require('fs')
 const { insertAttachment } = require('../../db')
-const { CustomError } = require('../../utils/errors')
+const { HttpResponseError } = require('../../utils/errors')
 
 const createAttachment = async (file) => {
   return new Promise((resolve) => {
     fs.readFile(file.path, async (err, data) => {
-      if (err) throw new CustomError({ code: 500, message: err.message, service: 'attachment' })
+      if (err) throw new HttpResponseError({ code: 500, message: err.message, service: 'attachment' })
       const attachment = await insertAttachment(file.originalname, data)
       resolve(attachment)
     })

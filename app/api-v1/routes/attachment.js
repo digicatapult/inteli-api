@@ -1,5 +1,5 @@
 const logger = require('../../logger')
-const { CustomError } = require('../../utils/errors')
+const { BadRequestError } = require('../../utils/errors')
 
 module.exports = function (attachmentService) {
   const doc = {
@@ -10,7 +10,7 @@ module.exports = function (attachmentService) {
       logger.info('Attachment upload: ', req.file)
 
       if (!req.file) {
-        throw new CustomError({ code: 400, message: 'No file uploaded', service: 'attachment' })
+        throw new BadRequestError({ message: 'No file uploaded', service: 'attachment' })
       }
 
       const attachment = await attachmentService.createAttachment(req.file)

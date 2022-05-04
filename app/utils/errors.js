@@ -1,6 +1,6 @@
 const logger = require('../logger')
 
-class CustomError extends Error {
+class HttpResponseError extends Error {
   constructor({ code = 500, message, service }) {
     super(message)
     this.code = code
@@ -9,8 +9,14 @@ class CustomError extends Error {
   }
 }
 
+class BadRequestError extends HttpResponseError {
+  constructor({ message, service }) {
+    super({ code: 400, message, service })
+  }
+}
+
 const handleErrors = (err, req, res, next) => {
-  if (err instanceof CustomError) {
+  if (err instanceof HttpResponseError) {
     logger.warn(`Error in ${err.service} service: ${err.message}`)
     res.status(err.code).send(err.message)
   }
@@ -33,5 +39,6 @@ const handleErrors = (err, req, res, next) => {
 
 module.exports = {
   handleErrors,
-  CustomError,
+  BadRequestError,
+  HttpResponseError,
 }
