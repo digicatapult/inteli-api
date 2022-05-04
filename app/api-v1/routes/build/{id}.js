@@ -15,6 +15,9 @@ module.exports = function (buildService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
     ],
     responses: {

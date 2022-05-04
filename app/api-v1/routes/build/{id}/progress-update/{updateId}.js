@@ -15,6 +15,9 @@ module.exports = function (buildService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
       {
         description: 'Id of the build progress update action',
@@ -22,6 +25,9 @@ module.exports = function (buildService) {
         required: true,
         name: 'updateId',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
     ],
     responses: {

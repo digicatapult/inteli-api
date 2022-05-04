@@ -15,6 +15,9 @@ module.exports = function (buildService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
       {
         description: 'Id of the build start action',
@@ -22,6 +25,9 @@ module.exports = function (buildService) {
         required: true,
         name: 'startId',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
     ],
     responses: {

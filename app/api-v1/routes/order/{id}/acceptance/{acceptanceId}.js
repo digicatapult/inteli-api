@@ -15,6 +15,9 @@ module.exports = function (orderService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
       {
         description: 'Id of the purchase-order acceptance',
@@ -22,6 +25,9 @@ module.exports = function (orderService) {
         required: true,
         name: 'acceptanceId',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
     ],
     responses: {

@@ -18,6 +18,9 @@ module.exports = function (partService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
     ],
     responses: {
@@ -67,6 +70,9 @@ module.exports = function (partService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
     ],
     requestBody: {

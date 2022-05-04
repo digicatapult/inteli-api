@@ -18,6 +18,9 @@ module.exports = function (recipeService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
       {
         description: 'Id of the recipe creation action',
@@ -25,6 +28,9 @@ module.exports = function (recipeService) {
         required: true,
         name: 'creationId',
         allowEmptyValue: false,
+        schema: {
+          type: 'string',
+        },
       },
     ],
     responses: {
