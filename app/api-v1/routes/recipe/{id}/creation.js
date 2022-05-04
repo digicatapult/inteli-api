@@ -19,7 +19,7 @@ module.exports = function (recipeService) {
         name: 'id',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],
@@ -71,7 +71,7 @@ module.exports = function (recipeService) {
         name: 'id',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],
