@@ -26,7 +26,7 @@ module.exports = function (orderService) {
         name: 'acceptanceId',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],

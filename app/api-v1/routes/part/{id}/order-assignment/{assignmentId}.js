@@ -26,7 +26,7 @@ module.exports = function (partService) {
         name: 'assignmentId',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],

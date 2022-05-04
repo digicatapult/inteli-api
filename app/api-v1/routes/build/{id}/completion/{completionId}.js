@@ -26,7 +26,7 @@ module.exports = function (buildService) {
         name: 'completionId',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],

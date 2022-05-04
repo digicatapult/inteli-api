@@ -26,7 +26,7 @@ module.exports = function (partService) {
         name: 'certificationId',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],

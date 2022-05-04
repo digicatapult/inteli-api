@@ -26,7 +26,7 @@ module.exports = function (buildService) {
         name: 'startId',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],

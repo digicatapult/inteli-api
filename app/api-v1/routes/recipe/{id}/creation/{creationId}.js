@@ -29,7 +29,7 @@ module.exports = function (recipeService) {
         name: 'creationId',
         allowEmptyValue: false,
         schema: {
-          type: 'string',
+          $ref: '#/components/schemas/ObjectReference',
         },
       },
     ],
