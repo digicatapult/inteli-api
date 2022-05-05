@@ -8,7 +8,7 @@ module.exports = function (recipeService) {
     },
     POST: async function (req, res) {
       if (!req.body) {
-        return res.status(400).json({ message: 'Invalid request' })
+        throw new BadRequestError({ message: 'No body provided uploaded', service: 'recipe' })
       }
 
       const { externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier } = req.body
@@ -27,6 +27,8 @@ module.exports = function (recipeService) {
       if (recipe == null) {
         return res.status(200).json({ message: 'An error occurred' })
       }
+
+      logger.info('Recipe created: ', recipe.id)
 
       res.status(201).json(recipe)
     },
