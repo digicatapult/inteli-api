@@ -1,22 +1,32 @@
+const jwksMock = require('mock-jwks')
+const createJWKSMock = require('mock-jwks').default
 const { describe, before, it } = require('mocha')
 const { expect } = require('chai')
 
 const { createHttpServer } = require('../../app/server')
 const { postAttachment, postAttachmentNoFile } = require('../helper/routeHelper')
-const { FILE_UPLOAD_SIZE_LIMIT_BYTES } = require('../../app/env')
+const { AUTH_ISSUER, AUTH_AUDIENCE, FILE_UPLOAD_SIZE_LIMIT_BYTES } = require('../../app/env')
 
 describe('attachments', function () {
   describe('valid file upload', function () {
     let app
+    let authToken
+    let jwksMock
 
     before(async function () {
       app = await createHttpServer()
+      jwksMock = createJWKSMock(AUTH_ISSUER)
+      jwksMock.start()
+      authToken = jwksMock.token({
+        aud: AUTH_AUDIENCE,
+        iss: AUTH_ISSUER,
+      })
     })
 
     it('should return 201 - file uploaded', async function () {
       const size = 100
       const filename = 'test.pdf'
-      const response = await postAttachment(app, Buffer.from('a'.repeat(size)), filename)
+      const response = await postAttachment(app, Buffer.from('a'.repeat(size)), filename, authToken)
 
       expect(response.status).to.equal(201)
       expect(response.body).to.have.property('id')

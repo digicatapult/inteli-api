@@ -31,11 +31,12 @@ async function healthCheck({ app }) {
     })
 }
 
-async function postAttachment({ app }, fileData, filename) {
+async function postAttachment({ app }, fileData, filename, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/attachment`)
     .set('Accept', 'application/json')
     .set('Content-type', 'multipart/form-data')
+    .set('Authorization', `Bearer ${token}`)
     .attach('file', fileData, filename)
     .then((response) => {
       return response
