@@ -1,6 +1,5 @@
-const jwksMock = require('mock-jwks')
 const createJWKSMock = require('mock-jwks').default
-const { describe, before, it } = require('mocha')
+const { describe, before, it, after } = require('mocha')
 const { expect } = require('chai')
 
 const { createHttpServer } = require('../../app/server')
@@ -21,6 +20,10 @@ describe('attachments', function () {
         aud: AUTH_AUDIENCE,
         iss: AUTH_ISSUER,
       })
+    })
+
+    after(async function() {
+      await jwksMock.stop()
     })
 
     it('should return 201 - file uploaded', async function () {
