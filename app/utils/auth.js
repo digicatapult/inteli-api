@@ -1,6 +1,7 @@
 const jwksRsa = require('jwks-rsa')
 const jwt = require('jsonwebtoken')
-const { AUTH_JWKS_URI, AUTH_AUDIENCE, AUTH_ISSUER} = require('../env')
+const { AUTH_JWKS_URI, AUTH_AUDIENCE, AUTH_ISSUER } = require('../env')
+const { UnauthorizedError } = require('../utils/errors')
 
 const client = jwksRsa({
   cache: true,
@@ -32,9 +33,9 @@ const verifyJwks = async (req) => {
   return new Promise((resolve, reject) => {
     jwt.verify(authToken, getKey, verifyOptions, (err, decoded) => {
       if (err) {
-        return reject({ message: 'An error occurred during jwks verification' })
-      }  
-      
+        reject(new UnauthorizedError({ message: 'An error occurred during jwks verification' }))
+      }
+
       req.token = authToken
       req.user = decoded
       resolve(true)
@@ -42,6 +43,6 @@ const verifyJwks = async (req) => {
   })
 }
 
-module.exports = { 
-  verifyJwks
+module.exports = {
+  verifyJwks,
 }

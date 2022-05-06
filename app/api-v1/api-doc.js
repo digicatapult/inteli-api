@@ -530,7 +530,7 @@ const apiDoc = {
         scheme: 'bearer',
         bearerFormat: 'JWT',
       },
-    }
+    },
   },
   paths: {},
 }

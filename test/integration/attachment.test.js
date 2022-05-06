@@ -22,7 +22,7 @@ describe('attachments', function () {
       })
     })
 
-    after(async function() {
+    after(async function () {
       await jwksMock.stop()
     })
 
@@ -36,14 +36,6 @@ describe('attachments', function () {
       expect(response.body.filename).to.equal(filename)
       expect(response.body.size).to.equal(size)
     })
-  })
-
-  describe('invalid file upload', function () {
-    let app
-
-    before(async function () {
-      app = await createHttpServer()
-    })
 
     it('should return 400 - over file size limit', async function () {
       const response = await postAttachment(app, Buffer.alloc(FILE_UPLOAD_SIZE_LIMIT_BYTES + 1), 'tooLarge.pdf')
@@ -53,7 +45,7 @@ describe('attachments', function () {
     })
 
     it('should return 400 - no file', async function () {
-      const response = await postAttachmentNoFile(app)
+      const response = await postAttachmentNoFile(app, authToken)
       expect(response.status).to.equal(400)
       expect(response.error.text).to.equal('No file uploaded')
     })

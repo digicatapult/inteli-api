@@ -54,7 +54,7 @@ async function createHttpServer() {
       },
     },
     securityHandlers: {
-      bearerAuth: (req) => verifyJwks(req)
+      bearerAuth: (req) => verifyJwks(req),
     },
     dependencies: {
       recipeService: v1RecipeService,

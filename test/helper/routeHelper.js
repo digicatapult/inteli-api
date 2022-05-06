@@ -47,10 +47,11 @@ async function postAttachment({ app }, fileData, filename, token) {
     })
 }
 
-async function postAttachmentNoFile({ app }) {
+async function postAttachmentNoFile({ app }, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/attachment`)
     .set('Accept', 'application/json')
+    .set('Authorization', `Bearer ${token}`)
     .then((response) => {
       return response
     })
