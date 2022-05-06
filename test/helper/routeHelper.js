@@ -31,14 +31,14 @@ async function healthCheck({ app }) {
     })
 }
 
-async function postRecipeRoute(recipe, { app }) {
+async function postRecipeRoute(recipe, { app }, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/recipe`)
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${token}`)
     .send(recipe)
     .then((response) => {
-      console.log(response)
       return response
     })
     .catch((err) => {
