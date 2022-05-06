@@ -27,6 +27,7 @@ services:
     image: ghcr.io/digicatapult/dscp-identity-service:latest
     command: /bin/sh -c "
       sleep 60 &&
+      npx knex migrate:latest &&
       node app/index.js"
     ports:
       - 3001:3001
