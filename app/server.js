@@ -38,8 +38,6 @@ async function createHttpServer() {
     apiDoc: v1ApiDoc,
     securityHandlers: {},
     dependencies: {
-      // same like below: paths: [path.resolve(__dirname, `api-${API_MAJOR_VERSION}/routes`)],
-      // also this is not a service, i think we should rename and call it a controller or model
       recipeService: v1RecipeService,
       attachmentService: v1AttachmentService,
       buildService: v1BuildService,
@@ -64,11 +62,9 @@ async function createHttpServer() {
 
   // Sorry - app.use checks arity
   // eslint-disable-next-line no-unused-vars
+
+  // TODO abstract to a helper file and define instances for all sorts of Errors e.g. TimeoutError...
   app.use((err, req, res, next) => {
-    // confused about this error middleware
-    // 1. can be the top level if we do next or return res.send
-    // 2. would be nice to include error object, serialization would remove the error obj
-    // 3. i think auth should throw an instance of unauth error along with other props e.g. status
     if (err.status) {
       res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })
     } else {
@@ -127,5 +123,4 @@ async function startServer() {
 }
 
 // why this can not be index.js
-
 module.exports = { startServer }

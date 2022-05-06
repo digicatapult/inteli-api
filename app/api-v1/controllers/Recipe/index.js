@@ -3,29 +3,20 @@ const { runProcess } = require('../../../utils/PolkadotApi')
 
 module.exports = {
   transaction: {
-    create: (req, res) => {
-      // no need to validate, apiDoc does it, wooO!
+    create: async (req, res, next) => {
       const { id } = req.params
-
-
-      console.log({ id, body: req.body })
-
-      const process = {
-        inputs: [],
-        outputs: [{
-          roles: {
-            Owner: 'role-a',
-          },
-          metadata: {
-            // req.body
-            test: { type: 'LITERAL', value: 'some_value' }
-          },
-        }],
+      try {
+        // todo update db
+        // create ne entry with status 'pending'
+        const transactionIds = await runProcess(req.body, 'token')
+        res.send({ 
+          transactionIds,
+          recipeId: id,
+          message: 'transaction has been created'
+        })
+      } catch (err) {
+        return next(err)
       }
-
-      console.log('runProcess: ', runProcess(req.body, 'abc'))
-
-      res.send('ok')
     }
     // enrich (add token id, uniq id with each req)
     // create entry locally
