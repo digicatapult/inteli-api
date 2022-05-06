@@ -25,10 +25,6 @@ module.exports = function (recipeService) {
         supplier,
       })
 
-      if (recipe == null) {
-        return res.status(200).json({ message: 'An error occurred' })
-      }
-
       logger.info('Recipe created: ', recipe.id)
 
       res.status(201).json(recipe)

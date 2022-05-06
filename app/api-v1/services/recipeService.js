@@ -6,10 +6,10 @@ async function createRecipe(reqBody) {
     throw new BadRequestError({ message: 'Invalid recipe input' })
   }
 
-  const { attachmentId } = reqBody
+  const { imageAttachmentId } = reqBody
 
-  const attachment = getAttachment(attachmentId)
-  if (!attachment) {
+  const attachment = await getAttachment(imageAttachmentId)
+  if (!attachment.length) {
     throw new BadRequestError({ message: 'Attachment id not found', service: 'recipe' })
   }
 

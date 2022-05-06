@@ -54,7 +54,7 @@ describe('Recipes', function () {
       expect(response.status).to.equal(201)
     })
 
-    it('invalid attachement id returns null', async function () {
+    it('invalid attachment id returns null', async function () {
       const newRecipe = {
         externalId: 'foobar3000',
         name: 'foobar3000',
@@ -67,7 +67,8 @@ describe('Recipes', function () {
       }
 
       const response = await postRecipeRoute(newRecipe, app)
-      expect(response.status).to.equal(200)
+      expect(response.status).to.equal(400)
+      expect(response.text).to.equal('Attachment id not found')
     })
   })
 })
