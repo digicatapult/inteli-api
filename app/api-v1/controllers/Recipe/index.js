@@ -23,7 +23,7 @@ module.exports = {
         const transaction = await client('transactions').insert({
           type: 'recipe',
           token_id: token[0],
-          recipe_id: id,
+          item_id: id,
           status: 'submitted',
         }).returning(['id']).then(t => t[0])
 

@@ -6,11 +6,11 @@ exports.up = async (knex) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
     def.json('metadata').notNullable() // TODO - confirm
     def.datetime('created_at').notNullable().default(now())
+    
     def.primary(['id'])
   })
 }
 
 exports.down = async (knex) => {
   await knex.schema.dropTable('recipe')
-  await knex.raw('DROP EXTENSION "uuid-ossp"')
 }
