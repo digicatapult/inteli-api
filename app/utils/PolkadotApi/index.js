@@ -7,16 +7,15 @@ const url = `http://localhost:3001/v3/run-process`
 
 module.exports = { 
   async runProcess(payload, authToken) {
-    payload.outputs[0].metadata.message = {
-      type: 'LITERAL',
-      value: 'some random data',
-    }
     const formData = new FormData()
     formData.append('request', JSON.stringify(payload))
 
     const res = await fetch(url, {
       method: 'POST',
       body: formData,
+      headers: {
+        authorization: `Bearer ${authToken}`
+      }
     })
 
     return res.json()

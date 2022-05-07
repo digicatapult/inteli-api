@@ -1,26 +1,38 @@
 const { runProcess } = require('../../../utils/PolkadotApi')
-
+const { client } = require('../../../db')
 
 module.exports = {
   transaction: {
     create: async (req, res, next) => {
       const { id } = req.params
       try {
-        // todo update db
-        // create ne entry with status 'pending'
-        const transactionIds = await runProcess(req.body, 'token')
+        // TEMP, while auth is being implemented
+        req.role = { Owner: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY' }
+        // 1. TODO confim POST body
+        // 2. TODO export like db.Recipe.insert()
+        const recipe = await client('recipe').where({ id }).first()
+        // 3. TODO confirm handling of local db record
+        if (!recipe) return res.status(404).send('not found')
+        const token = await runProcess({
+          inputs: [],
+          outputs: [{
+            roles: req.role,
+            metadata: recipe.metadata, // 4. TODO confirm metadata object
+          }]
+        })
+        const transaction = await client('transactions').insert({
+          type: 'recipe',
+          token_id: token[0],
+          recipe_id: id,
+          status: 'submitted',
+        }).returning(['id']).then(t => t[0])
+
         res.send({ 
-          transactionIds,
-          recipeId: id,
-          message: 'transaction has been created'
+          message: `transaction ${transaction.id} has been created`,
         })
       } catch (err) {
         return next(err)
       }
     }
-    // enrich (add token id, uniq id with each req)
-    // create entry locally
-    // returns something
   }
 }
-// mmm?
