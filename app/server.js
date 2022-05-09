@@ -78,26 +78,7 @@ async function createHttpServer() {
   }
 
   app.use(`/${API_MAJOR_VERSION}/swagger`, swaggerUi.serve, swaggerUi.setup(null, options))
-
-<<<<<<< HEAD
-  // Sorry - app.use checks arity
-  // eslint-disable-next-line no-unused-vars
-
-  // TODO abstract to a helper file and define instances for all sorts of Errors e.g. TimeoutError...
-  app.use((err, req, res, next) => {
-    if (err.status) {
-      res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })
-    } else {
-      logger.error('Fallback Error %j', err.stack)
-      res.status(500).send('Fatal error!')
-    }
-  })
-=======
   app.use(handleErrors)
->>>>>>> main
-
-  // do we need too wrap this up?
-  return { app }
 }
 
 /* istanbul ignore next */
