@@ -18,6 +18,9 @@ module.exports = function (partService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
       },
     ],
     responses: {
@@ -55,6 +58,7 @@ module.exports = function (partService) {
         },
       },
     },
+    security: [{ bearerAuth: [] }],
     tags: ['part'],
   }
 
@@ -67,6 +71,9 @@ module.exports = function (partService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
       },
     ],
     requestBody: {
@@ -110,6 +117,7 @@ module.exports = function (partService) {
         },
       },
     },
+    security: [{ bearerAuth: [] }],
     tags: ['part'],
   }
 

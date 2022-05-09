@@ -18,6 +18,9 @@ module.exports = function (recipeService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
       },
       {
         description: 'Id of the recipe creation action',
@@ -25,6 +28,9 @@ module.exports = function (recipeService) {
         required: true,
         name: 'creationId',
         allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
       },
     ],
     responses: {
@@ -59,6 +65,7 @@ module.exports = function (recipeService) {
         },
       },
     },
+    security: [{ bearerAuth: [] }],
     tags: ['recipe'],
   }
 

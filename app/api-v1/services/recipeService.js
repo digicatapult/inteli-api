@@ -1,9 +1,22 @@
-module.exports = {
-  createTransaction: () => {
-    // validate
-    // enrich (add token id, uniq id with each req)
-    // create entry locally
-    // returns something
+const { getAttachment, addRecipe } = require('../../db')
+const { BadRequestError } = require('../../utils/errors')
+
+async function createRecipe(reqBody) {
+  if (!reqBody) {
+    throw new BadRequestError({ message: 'Invalid recipe input' })
   }
+
+  const { imageAttachmentId } = reqBody
+
+  const attachment = await getAttachment(imageAttachmentId)
+  if (!attachment.length) {
+    throw new BadRequestError({ message: 'Attachment id not found', service: 'recipe' })
+  }
+
+  const recipe = await addRecipe(reqBody)
+  return recipe
 }
-// mmm?
+
+module.exports = {
+  createRecipe,
+}

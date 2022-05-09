@@ -114,7 +114,7 @@ const apiDoc = {
           id: {
             $ref: '#/components/schemas/ObjectReference',
           },
-          name: {
+          filename: {
             description: 'Name of the file uploaded as an attachment',
             type: 'string',
             maxLength: 255,
@@ -524,7 +524,13 @@ const apiDoc = {
         allOf: [{ $ref: '#/components/schemas/ChainAction' }, { $ref: '#/components/schemas/NewRecipeCreation' }],
       },
     },
-    securitySchemes: {},
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
   },
   paths: {},
 }
@@ -532,7 +538,10 @@ const apiDoc = {
 // make all schema properties required
 const makeSchemaPropsRequired = (schemaObj) => {
   if (schemaObj.type === 'object' && schemaObj.properties) {
-    schemaObj.required = Object.keys(schemaObj.properties)
+    const props = Object.keys(schemaObj.properties)
+    if (props.length > 0) {
+      schemaObj.required = props
+    }
     Object.values(schemaObj.properties).forEach(makeSchemaPropsRequired)
   }
 }

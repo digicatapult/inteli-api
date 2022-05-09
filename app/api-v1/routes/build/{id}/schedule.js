@@ -18,6 +18,9 @@ module.exports = function (buildService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
       },
     ],
     responses: {
@@ -55,6 +58,7 @@ module.exports = function (buildService) {
         },
       },
     },
+    security: [{ bearerAuth: [] }],
     tags: ['build'],
   }
 
@@ -67,6 +71,9 @@ module.exports = function (buildService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
       },
     ],
     requestBody: {
@@ -110,6 +117,7 @@ module.exports = function (buildService) {
         },
       },
     },
+    security: [{ bearerAuth: [] }],
     tags: ['build'],
   }
 

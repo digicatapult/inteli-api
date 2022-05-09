@@ -15,6 +15,19 @@ module.exports = function (buildService) {
         required: true,
         name: 'id',
         allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
+      },
+      {
+        description: 'Id of the build schedule action',
+        in: 'path',
+        required: true,
+        name: 'scheduleId',
+        allowEmptyValue: false,
+        schema: {
+          $ref: '#/components/schemas/ObjectReference',
+        },
       },
     ],
     responses: {
@@ -49,6 +62,7 @@ module.exports = function (buildService) {
         },
       },
     },
+    security: [{ bearerAuth: [] }],
     tags: ['build'],
   }
 
