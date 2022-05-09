@@ -5,6 +5,7 @@
   "main": "app/index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --config ./test/mocharc.js ./test",
+    "test:unit": "NODE_ENV=test mocha --config ./test/mocharc.js ./app",
     "lint": "eslint .",
     "depcheck": "depcheck",
     "start": "NODE_ENV=production node app/index.js",

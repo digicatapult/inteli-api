@@ -1,13 +1,12 @@
 const { runProcess } = require('../../../utils/PolkadotApi')
 const { client } = require('../../../db')
+const { mapRecipeData } = require('./helpers')
 
 module.exports = {
   transaction: {
     create: async (req, res, next) => {
       const { id } = req.params
       try {
-        // TEMP, while auth is being implemented
-        req.role = { Owner: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY' }
         // 1. TODO confim POST body
         // 2. TODO export like db.Recipe.insert()
         const recipe = await client('recipe').where({ id }).first()
@@ -16,8 +15,7 @@ module.exports = {
         const token = await runProcess({
           inputs: [],
           outputs: [{
-            roles: req.role,
-            metadata: recipe.metadata, // 4. TODO confirm metadata object
+            metadata: mapRecipeData(recipe), // 4. TODO confirm metadata object
           }]
         })
         const transaction = await client('transactions').insert({
