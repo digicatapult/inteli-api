@@ -2,11 +2,7 @@ const envalid = require('envalid')
 const dotenv = require('dotenv')
 const { version } = require('../package.json')
 
-if (process.env.NODE_ENV === 'test') {
-  dotenv.config({ path: 'test/test.env' })
-} else {
-  dotenv.config({ path: '.env' })
-}
+dotenv.config({ path: '.env' })
 
 const vars = envalid.cleanEnv(
   process.env,
@@ -15,6 +11,9 @@ const vars = envalid.cleanEnv(
     PORT: envalid.port({ default: 80, devDefault: 3000 }),
     API_VERSION: envalid.str({ default: version }),
     API_MAJOR_VERSION: envalid.str({ default: 'v1' }),
+    DSCP_API_HOST: envalid.host({ devDefault: 'localhost' }),
+    DSCP_API_PORT: envalid.port({ default: 3001 }),
+    DSCP_API_MAJOR_VERSION: envalid.str({ default: 'v3' }),
     LOG_LEVEL: envalid.str({ default: 'info', devDefault: 'debug' }),
     DB_HOST: envalid.host({ devDefault: 'localhost' }),
     DB_PORT: envalid.port({ default: 5432 }),

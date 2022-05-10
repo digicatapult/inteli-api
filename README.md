@@ -13,6 +13,9 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | LOG_LEVEL                    |    N     |                       `info`                        | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
 | API_VERSION                  |    N     |                          -                          | API version                                                                          |
 | API_MAJOR_VERSION            |    N     |                          -                          | API major version                                                                    |
+| DSCP_API_HOST                |    N     |                     `localhost`                     | `dscp-api` host                                                                      |
+| DSCP_API_PORT                |    N     |                       `3001`                        | `dscp-api` port                                                                      |
+| DSCP_API_MAJOR_VERSION       |    N     |                        `v3`                         | `dscp-api` major version                                                             |
 | DB_HOST                      |    Y     |                          -                          | PostgreSQL database hostname                                                         |
 | DB_PORT                      |    N     |                       `5432`                        | PostgreSQL database port                                                             |
 | DB_NAME                      |    N     |                      `inteli`                       | PostgreSQL database name                                                             |
@@ -23,6 +26,10 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | AUTH_AUDIENCE                |    N     |                    `inteli-dev`                     | Identifier of the Auth0 API                                                          |
 | AUTH_ISSUER                  |    N     |           `https://inteli.eu.auth0.com/`            | Domain of the Auth0 API `                                                            |
 | AUTH_TOKEN_URL               |    N     |      `https://inteli.eu.auth0.com/oauth/token`      | Auth0 API endpoint that issues an Authorisation (Bearer) access token                |
+| AUTH_TEST_USERNAME           |    N     |                          -                          | Username of the auth0 user for testing                                               |
+| AUTH_TEST_PASSWORD           |    N     |                          -                          | Password of the auth0 user for testing                                               |
+| AUTH_TEST_CLIENT_ID          |    N     |                          -                          | Client ID of the auth0 application for testing                                       |
+| AUTH_TEST_CLIENT_SECRET      |    N     |                          -                          | Client secret of the auth0 application for testing                                   |
 
 ## Getting started
 
@@ -47,3 +54,5 @@ npm run dev
 ## Authentication
 
 The endpoints on `inteli-api` require Bearer Authentication using a JSON Web Token. Tokens are generated externally as an Auth0 Machine to Machine token. You will need to create your own Auth0 API, which can be done for free, and set the appropriate [environment variables](#configuration) (those prefixed with `AUTH`). Follow the start of this [tutorial](https://auth0.com/docs/quickstart/backend/nodejs#configure-auth0-apis) to create an API. Go [here](app/routes/auth.js) and [here](app/auth.js) to see where the environment variables are used.
+
+Integration tests use a preconfigured Auth0 test application and user to authenticate across multiple `dscp` services. Running integration tests locally requires a `.env` at root containing values for all envs prefixed with `AUTH_TEST_`. Follow tutorial [here](https://auth0.com/docs/get-started/authentication-and-authorization-flow/call-your-api-using-resource-owner-password-flow) to create your own test application and user.
