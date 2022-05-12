@@ -61,7 +61,7 @@ describe('recipe controller', () => {
 
     describe('if recipe does not exists in local db', () => {
       beforeEach(async () => {
-        whereRecipeStub = stub().resolves(null);
+        whereRecipeStub = stub().resolves([]);
         response = await submitTransaction({ params: { id: 1 } })
       })
       

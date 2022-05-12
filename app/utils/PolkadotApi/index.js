@@ -9,6 +9,7 @@ module.exports = {
     const formData = new FormData()
     formData.append('request', JSON.stringify(payload))
 
+    console.log(payload.outputs[0].metadata)
     const res = await fetch(url, {
       method: 'POST',
       body: formData,

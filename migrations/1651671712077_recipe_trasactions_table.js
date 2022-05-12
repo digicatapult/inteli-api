@@ -2,11 +2,10 @@ exports.up = async (knex) => {
   const uuidGenerateV4 = () => knex.raw('uuid_generate_v4()')
   const now = () => knex.fn.now()
 
-  await knex.schema.createTable('transactions', (def) => {
+  await knex.schema.createTable('recipe_transactions', (def) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
-    def.string('type').notNullable()
     def.integer('token_id').unsigned().notNullable()
-    def.uuid('item_id').notNullable()
+    def.uuid('recipe_id').notNullable()
     def.enu('status', [ 'submitted', 'minted'])
     def.datetime('created_at').notNullable().default(now())
 
