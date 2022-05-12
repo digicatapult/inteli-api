@@ -6,7 +6,10 @@ module.exports = function (recipeService) {
     GET: async function (req, res) {
       res.status(500).json({ message: 'Not Implemented' })
     },
-    POST: transaction.create
+    POST: async function(req, res) {
+      const { status, body } = await transaction.create(req)
+      res.status(status).send(body)
+    }
   }
 
   doc.GET.apiDoc = {

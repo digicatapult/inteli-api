@@ -1,35 +1,44 @@
 const { runProcess } = require('../../../utils/PolkadotApi')
 const { client } = require('../../../db')
 const { mapRecipeData } = require('./helpers')
+const { BadRequestError, NotFoundError } = require('../../../utils/errors')
 
 module.exports = {
   transaction: {
-    create: async (req, res, next) => {
+    create: async (req) => {
+      const service = '/recipe/{id}/creation'
       const { id } = req.params
-      try {
-        // 1. TODO confim POST body
-        // 2. TODO export like db.Recipe.insert()
-        const recipe = await client('recipe').where({ id }).first()
-        // 3. TODO confirm handling of local db record
-        if (!recipe) return res.status(404).send('not found')
-        const token = await runProcess({
-          inputs: [],
-          outputs: [{
-            metadata: mapRecipeData(recipe), // 4. TODO confirm metadata object
-          }]
-        })
-        const transaction = await client('transactions').insert({
-          type: 'recipe',
-          token_id: token[0],
-          item_id: id,
-          status: 'submitted',
-        }).returning(['id']).then(t => t[0])
+      if (!id) throw new BadRequestError({ // TODO confirm POST body
+        message: 'missing [id] param from request',
+        service,
+      })
+    
+      const recipe = await client.from('recipes').select('*').where({ id })
+      console.log({ recipe })
+      if (!recipe) throw new NotFoundError({
+        message: 'recipe not found',
+        service,
+      })
 
-        res.send({ 
-          message: `transaction ${transaction.id} has been created`,
-        })
-      } catch (err) {
-        return next(err)
+      const token = await runProcess({
+        inputs: [],
+        outputs: [{
+          metadata: mapRecipeData(recipe),
+        }]
+      })
+
+      console.log({ token })
+
+      const transaction = await client.from('transactions').select(['id']).insert({
+        type: 'recipe',
+        token_id: token[0],
+        item_id: id,
+        status: 'submitted',
+      }).then(t => t[0])
+
+      return { 
+        status: 200,
+        message: `transaction ${transaction.id} has been created`,
       }
     }
   }
