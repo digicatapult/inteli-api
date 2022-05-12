@@ -1,25 +1,25 @@
 version: '3'
 
 services:
-  postgres-data:
+  postgres-inteli-api:
     image: postgres:14.1-alpine
-    container_name: postgres
+    container_name: postgres-inteli-api
     ports:
       - 5432:5432
     volumes:
-      - data-storage:/var/lib/postgresql/data
+      - inteli-api-storage:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=inteli
   
-  postgres-dscp:
+  postgres-identity-service:
     image: postgres:14.1-alpine
     container_name: postgres-identity
     ports:
       - 5433:5432
     volumes:
-      - dscp-storage:/var/lib/postgresql/data
+      - identity-storage:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
@@ -41,7 +41,7 @@ services:
       - AUTH_AUDIENCE=inteli-dev
       - AUTH_ISSUER=https://inteli.eu.auth0.com/
       - AUTH_TOKEN_URL=https://inteli.eu.auth0.com/oauth/token
-      - DB_HOST=postgres-dscp
+      - DB_HOST=postgres-identity-service
       - DB_PORT=5432
       - DB_NAME=dscp
       - DB_USERNAME=postgres
@@ -94,5 +94,5 @@ services:
       - AUTH_TOKEN_URL=https://inteli.eu.auth0.com/oauth/token
     restart: on-failure
 volumes:
-  data-storage:
-  dscp-storage:
+  inteli-api-storage:
+  identity-storage:
