@@ -7,17 +7,6 @@ const mapRecipeData = (data) => ({
   supplier: { type: 'LITERAL', value: data.supplier },
 })
 
-/*
-    def.string('externalId').notNullable()
-    def.string('name').notNullable()
-    def.uuid('imageAttachmentId').notNullable()
-    def.string('material').notNullable()
-    def.string('alloy').notNullable()
-    def.string('price').notNullable()
-    def.json('requiredCerts').notNullable()
-    def.string('supplier').notNullable()
-*/
-
 module.exports = {
-  mapRecipeData
+  mapRecipeData,
 }

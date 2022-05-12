@@ -9,8 +9,8 @@ const { transaction } = require('../')
 // TODO move to fixtures
 const payload = {
   params: {
-    id: 'recipe-id'
-  }
+    id: 'recipe-id',
+  },
 }
 
 const submitTransaction = async (req) => {
@@ -23,19 +23,18 @@ const submitTransaction = async (req) => {
 
 describe('recipe controller', () => {
   let response
-  let insertTransactionStub = stub().resolves([{ id: 'uuid' }]);
-  let selectStub = stub().returnsThis();
-  let whereRecipeStub = stub().resolves({ id: 1 });
+  let insertTransactionStub = stub().returnsThis()
+  let selectStub = stub().returnsThis()
+  let whereRecipeStub = stub().resolves([{ id: 1 }])
 
   before(async () => {
-    nock('http://localhost:3001')
-      .post('/v3/run-process')
-      .reply(200, [20])
+    nock('http://localhost:3001').post('/v3/run-process').reply(200, [20])
     stub(client, 'from').callsFake(() => {
       return {
         select: selectStub,
+        returning: stub().resolves([{ id: 'transaction-uuid' }]),
         insert: insertTransactionStub,
-        where: whereRecipeStub
+        where: whereRecipeStub,
       }
     })
   })
@@ -45,7 +44,7 @@ describe('recipe controller', () => {
   describe('transactions /create', () => {
     describe('if req.params.id is not provided', () => {
       beforeEach(async () => {
-        response = await submitTransaction({ params: { } })
+        response = await submitTransaction({ params: {} })
       })
 
       it('throws validation error', () => {
@@ -61,10 +60,10 @@ describe('recipe controller', () => {
 
     describe('if recipe does not exists in local db', () => {
       beforeEach(async () => {
-        whereRecipeStub = stub().resolves([]);
+        whereRecipeStub = stub().resolves([])
         response = await submitTransaction({ params: { id: 1 } })
       })
-      
+
       it('throws not found error along with the message', () => {
         expect(response).to.be.an.instanceOf(NotFoundError)
         expect(response.message).to.be.equal('recipe not found')
@@ -77,10 +76,8 @@ describe('recipe controller', () => {
 
     describe('happy path', () => {
       beforeEach(async () => {
-        runProcessPost = nock('http://localhost:3001')
-          .post('/v3/run-process')
-          .reply(200, [20])
-        whereRecipeStub = stub().resolves({ id: 1 });
+        nock('http://localhost:3001').post('/v3/run-process').reply(200, [20])
+        whereRecipeStub = stub().resolves([{ id: 1 }])
         response = await submitTransaction(payload)
       })
 
@@ -89,20 +86,21 @@ describe('recipe controller', () => {
       it('checks if recipe is in local db', () => {
         expect(whereRecipeStub.getCall(0).args[0]).to.deep.equal({ id: 'recipe-id' })
       })
-      
-      it('inserts new transaction to local db', () => {
-        expect(insertTransactionStub.getCall(0).args).to.be.deep.equal([{
-          item_id: "recipe-id",
-          status: "submitted",
-          token_id: 20,
-          type: "recipe",
-        }])
+
+      it('inserts new transaction to local db', async () => {
+        expect(insertTransactionStub.getCall(0).args).to.be.deep.equal([
+          {
+            recipe_id: 'recipe-id',
+            status: 'submitted',
+            token_id: 20,
+          },
+        ])
       })
 
       it('returns 200 along with the transaction id', () => {
         expect(response).to.deep.equal({
           status: 200,
-          message: 'transaction uuid has been created',
+          message: 'transaction transaction-uuid has been created',
         })
       })
     })

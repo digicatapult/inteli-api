@@ -12,7 +12,7 @@ module.exports = async () => {
 
   await client('attachments').insert([
     {
-      id: attachmentId, 
+      id: attachmentId,
       filename: 'foo.jpg',
       binary_blob: 9999999,
     },
@@ -21,8 +21,8 @@ module.exports = async () => {
     id: '00000000-0000-1000-8000-000000000001',
     externalId: 'TEST-externalId',
     name: 'TEST-name',
-    imageAttachmentId: attachmentId, 
-    material: 'TEST-material', 
+    imageAttachmentId: attachmentId,
+    material: 'TEST-material',
     alloy: 'TEST-alloy',
     price: '99.99',
     requiredCerts: JSON.stringify([{ description: 'TEST-certificate' }]),

@@ -6,7 +6,7 @@ exports.up = async (knex) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
     def.integer('token_id').unsigned().notNullable()
     def.uuid('recipe_id').notNullable()
-    def.enu('status', [ 'submitted', 'minted'])
+    def.enu('status', ['submitted', 'minted'])
     def.datetime('created_at').notNullable().default(now())
 
     // TODO - how to handle hasMany relationships? e.g. each recipe/order can have multiple transactions

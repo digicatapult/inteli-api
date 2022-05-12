@@ -20,7 +20,6 @@ async function getKey(header, cb) {
 }
 
 const verifyJwks = async (req) => {
-  return true
   const authHeader = req.headers['authorization']
   const authToken = authHeader ? authHeader.replace('Bearer ', '') : ''
 
