@@ -65,7 +65,7 @@ spec:
             timeoutSeconds: 3
             periodSeconds: 5
           env:
-           - name: POLKADOT_API
+            - name: POLKADOT_API
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "inteli-api.fullname" . }}-config
