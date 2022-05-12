@@ -15,7 +15,6 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | API_MAJOR_VERSION            |    N     |                          -                          | API major version                                                                    |
 | DSCP_API_HOST                |    N     |                     `localhost`                     | `dscp-api` host                                                                      |
 | DSCP_API_PORT                |    N     |                       `3001`                        | `dscp-api` port                                                                      |
-| DSCP_API_MAJOR_VERSION       |    N     |                        `v3`                         | `dscp-api` major version                                                             |
 | DB_HOST                      |    Y     |                          -                          | PostgreSQL database hostname                                                         |
 | DB_PORT                      |    N     |                       `5432`                        | PostgreSQL database port                                                             |
 | DB_NAME                      |    N     |                      `inteli`                       | PostgreSQL database name                                                             |
