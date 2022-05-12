@@ -12,13 +12,13 @@ module.exports = function (recipeService, identityService) {
         throw new BadRequestError({ message: 'No body provided uploaded', service: 'recipe' })
       }
 
-      const { externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier, role } = req.body
+      const { externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier } = req.body
 
       const { address: supplierAddress } = await identityService.getMemberByAlias(req, supplier)
 
       const recipe = await recipeService.createRecipe({
         external_id: externalId,
-        role_address: role,
+        role_address: supplierAddress,
         name,
         image_attachment_id: imageAttachmentId,
         material,

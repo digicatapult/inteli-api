@@ -42,10 +42,6 @@ const apiDoc = {
             description: 'Example image of the item uploaded as an attachment',
             allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
           },
-          role: {
-            description: 'Example image of the item uploaded as an attachment',
-            allOf: [{ $ref: '#/components/schemas/OnChainAddress' }],
-          },
           material: {
             description: 'Primary material of the constructed recipe',
             allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
