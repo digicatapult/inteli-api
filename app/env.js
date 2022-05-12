@@ -29,7 +29,7 @@ const vars = envalid.cleanEnv(
     AUTH_ISSUER: envalid.url({ devDefault: 'https://inteli.eu.auth0.com/' }),
     AUTH_TOKEN_URL: envalid.url({ devDefault: 'https://inteli.eu.auth0.com/oauth/token' }),
     IDENTITY_SERVICE_HOST: envalid.host({ devDefault: 'localhost' }),
-    IDENTITY_SERVICE_PORT: envalid.port({ devDefault: 3001 }),
+    IDENTITY_SERVICE_PORT: envalid.port({ devDefault: 3002 }),
   },
   {
     strict: true,
