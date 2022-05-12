@@ -30,6 +30,8 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | AUTH_TEST_PASSWORD           |    N     |                          -                          | Password of the auth0 user for testing                                               |
 | AUTH_TEST_CLIENT_ID          |    N     |                          -                          | Client ID of the auth0 application for testing                                       |
 | AUTH_TEST_CLIENT_SECRET      |    N     |                          -                          | Client secret of the auth0 application for testing                                   |
+| IDENTITY_SERVICE_HOST        |    Y     |                                                     | Hostname of the `dscp-identity-service`                                              |
+| IDENTITY_SERVICE_PORT        |    Y     |                                                     | Port of the `dscp-identity-service`                                                  |
 
 ## Getting started
 
