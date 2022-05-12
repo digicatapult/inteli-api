@@ -1,5 +1,5 @@
 const nock = require('nock')
-const { assert, expect } = require('chai')
+const { expect } = require('chai')
 const { stub } = require('sinon')
 
 const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
@@ -23,13 +23,12 @@ const submitTransaction = async (req) => {
 
 describe('recipe controller', () => {
   let response
-  let runProcessPost
   let insertTransactionStub = stub().resolves([{ id: 'uuid' }]);
   let selectStub = stub().returnsThis();
   let whereRecipeStub = stub().resolves({ id: 1 });
 
   before(async () => {
-    runProcessPost = nock('http://localhost:3001')
+    nock('http://localhost:3001')
       .post('/v3/run-process')
       .reply(200, [20])
     stub(client, 'from').callsFake(() => {
@@ -92,8 +91,6 @@ describe('recipe controller', () => {
       })
       
       it('inserts new transaction to local db', () => {
-
-        console.log(insertTransactionStub.getCall(0).args)
         expect(insertTransactionStub.getCall(0).args).to.be.deep.equal([{
           item_id: "recipe-id",
           status: "submitted",

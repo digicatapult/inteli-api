@@ -14,7 +14,6 @@ module.exports = {
       })
     
       const recipe = await client.from('recipes').select('*').where({ id })
-      console.log({ recipe })
       if (!recipe) throw new NotFoundError({
         message: 'recipe not found',
         service,
@@ -26,8 +25,6 @@ module.exports = {
           metadata: mapRecipeData(recipe),
         }]
       })
-
-      console.log({ token })
 
       const transaction = await client.from('transactions').select(['id']).insert({
         type: 'recipe',
