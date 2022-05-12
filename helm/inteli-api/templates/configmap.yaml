@@ -7,7 +7,7 @@ metadata:
 data:
   port: {{ .Values.config.port | quote }}
   logLevel: {{ .Values.config.logLevel }}
-  polkadotApi: {{ .Values.config.polkadotApi | quote }}
+  polkadotApi: {{ .Values.config.polkadotApi }}
   dbHost: {{ include "inteli-api.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}
   dbName: {{ .Values.config.dbName }}
