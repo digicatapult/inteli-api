@@ -1,6 +1,6 @@
 config:
   port: 80
-  dscpApiHost: dscpApi
+  dscpApiHost: dscp-api
   logLevel: info
   dbName: inteli
   dbPort: 5432
