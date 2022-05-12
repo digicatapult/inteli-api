@@ -129,4 +129,7 @@ async function startServer() {
 }
 
 // why this can not be index.js
-module.exports = { startServer }
+module.exports = {
+  startServer,
+  createHttpServer,
+}
