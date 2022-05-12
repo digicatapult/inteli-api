@@ -1,4 +1,5 @@
 const { describe, before, it } = require('mocha')
+const nock = require('nock')
 const { expect } = require('chai')
 
 const { createHttpServer } = require('../../app/server')
@@ -10,6 +11,7 @@ describe('authentication', function () {
   let app
 
   before(async function () {
+    nock.cleanAll() // ensure nock isn't mocking auth
     app = await createHttpServer()
   })
 

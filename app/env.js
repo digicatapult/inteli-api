@@ -2,7 +2,11 @@ const envalid = require('envalid')
 const dotenv = require('dotenv')
 const { version } = require('../package.json')
 
-dotenv.config({ path: '.env' })
+if (process.env.NODE_ENV === 'test') {
+  dotenv.config({ path: 'test/test.env' })
+} else {
+  dotenv.config({ path: '.env' })
+}
 
 const vars = envalid.cleanEnv(
   process.env,
