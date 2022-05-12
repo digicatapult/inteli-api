@@ -13,6 +13,7 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | LOG_LEVEL                    |    N     |                       `info`                        | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
 | API_VERSION                  |    N     |                          -                          | API version                                                                          |
 | API_MAJOR_VERSION            |    N     |                          -                          | API major version                                                                    |
+| POLKADOT_API                 |    N     |               `http://localhost:3001`               | DSCP-API hostname for substrate node                                                 |
 | DB_HOST                      |    Y     |                          -                          | PostgreSQL database hostname                                                         |
 | DB_PORT                      |    N     |                       `5432`                        | PostgreSQL database port                                                             |
 | DB_NAME                      |    N     |                      `inteli`                       | PostgreSQL database name                                                             |

@@ -1,11 +1,11 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
 
-// const { API_HOST, API_PORT } = require('../../env')
-const url = `http://localhost:3001/v3/run-process`
+const { POLKADOT_API } = require('../../env')
 
 module.exports = {
   async runProcess(payload, authToken) {
+    const url = `${POLKADOT_API}/v3/run-process`
     const formData = new FormData()
     formData.append('request', JSON.stringify(payload))
 
