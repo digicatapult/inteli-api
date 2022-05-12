@@ -2,7 +2,7 @@ const logger = require('../../utils/Logger')
 const { BadRequestError } = require('../../utils/errors')
 
 // eslint-disable-next-line no-unused-vars
-module.exports = function (recipeService) {
+module.exports = function (recipeService, identityService) {
   const doc = {
     GET: async function (req, res) {
       res.status(500).json({ message: 'Not Implemented' })
@@ -13,6 +13,8 @@ module.exports = function (recipeService) {
       }
 
       const { externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier, role } = req.body
+
+      const { address: supplierAddress } = await identityService.getMemberByAlias(req, supplier)
 
       const recipe = await recipeService.createRecipe({
         external_id: externalId,
@@ -28,7 +30,10 @@ module.exports = function (recipeService) {
 
       logger.info('Recipe created: ', recipe.id)
 
-      res.status(201).json(recipe)
+      res.status(201).json({
+        id: recipe.id,
+        ...req.body,
+      })
     },
   }
 
