@@ -7,7 +7,7 @@ const { seed, cleanup } = require('../seeds/recipes')
 const { postRecipeRoute } = require('../helper/routeHelper')
 const { AUTH_ISSUER, AUTH_AUDIENCE } = require('../../app/env')
 
-const logger = require('../../app/logger')
+const logger = require('../../app/utils/Logger')
 
 describe('Recipes', function () {
   describe('POST recipes', function () {
