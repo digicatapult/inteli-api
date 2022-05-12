@@ -5,7 +5,7 @@ exports.up = async (knex) => {
   if (!extInstalled) {
     await knex.raw('CREATE EXTENSION "uuid-ossp"')
   }
-  
+
   const uuidGenerateV4 = () => knex.raw('uuid_generate_v4()')
   const now = () => knex.fn.now()
 
