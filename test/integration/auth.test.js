@@ -5,7 +5,7 @@ const { expect } = require('chai')
 const { createHttpServer } = require('../../app/server')
 const { postAttachment } = require('../helper/routeHelper')
 const { getAuthToken } = require('../helper/auth')
-const { lastTokenId } = require('../../app/utils/api')
+const { lastTokenId } = require('../../app/api-v1/services/dscpApiService')
 
 describe('authentication', function () {
   let app

@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
 
-const { DSCP_API_HOST, DSCP_API_PORT } = require('../env')
+const { DSCP_API_HOST, DSCP_API_PORT } = require('../../env')
 const baseUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}/v3`
 
 const lastTokenId = async (authToken) => {
