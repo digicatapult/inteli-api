@@ -3,7 +3,7 @@ const request = require('supertest')
 
 const { API_MAJOR_VERSION } = require('../../app/env')
 
-async function apiDocs({ app }) {
+async function apiDocs(app) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/api-docs`)
     .set('Accept', 'application/json')
@@ -17,7 +17,7 @@ async function apiDocs({ app }) {
     })
 }
 
-async function healthCheck({ app }) {
+async function healthCheck(app) {
   return request(app)
     .get('/health')
     .set('Accept', 'application/json')
@@ -31,7 +31,7 @@ async function healthCheck({ app }) {
     })
 }
 
-async function postRecipeRoute(recipe, { app }, token) {
+async function postRecipeRoute(recipe, app, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/recipe`)
     .set('Accept', 'application/json')
@@ -47,7 +47,7 @@ async function postRecipeRoute(recipe, { app }, token) {
     })
 }
 
-async function postAttachment({ app }, fileData, filename, token) {
+async function postAttachment(app, fileData, filename, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/attachment`)
     .set('Accept', 'application/json')
@@ -63,7 +63,7 @@ async function postAttachment({ app }, fileData, filename, token) {
     })
 }
 
-async function postAttachmentNoFile({ app }, token) {
+async function postAttachmentNoFile(app, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/attachment`)
     .set('Accept', 'application/json')

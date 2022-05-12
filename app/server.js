@@ -86,7 +86,6 @@ async function createHttpServer() {
 /* istanbul ignore next */
 async function startServer() {
   try {
-    // why do we await?
     const app = await createHttpServer()
 
     const setupGracefulExit = ({ sigName, server, exitCode }) => {
@@ -128,7 +127,6 @@ async function startServer() {
   }
 }
 
-// why this can not be index.js
 module.exports = {
   startServer,
   createHttpServer,

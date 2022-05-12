@@ -3,7 +3,7 @@ const { describe, before, it } = require('mocha')
 const { expect } = require('chai')
 
 const { createHttpServer } = require('../../app/server')
-const { seed, cleanup } = require('../seeds/recipes')
+const seed = require('../seeds/recipes')
 const { postRecipeRoute } = require('../helper/routeHelper')
 const { AUTH_ISSUER, AUTH_AUDIENCE } = require('../../app/env')
 
@@ -28,7 +28,6 @@ describe('Recipes', function () {
     })
 
     after(async function () {
-      await cleanup()
       await jwksMock.stop()
     })
 
