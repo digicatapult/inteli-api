@@ -42,6 +42,10 @@ const apiDoc = {
             description: 'Example image of the item uploaded as an attachment',
             allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
           },
+          role: {
+            description: 'Example image of the item uploaded as an attachment',
+            allOf: [{ $ref: '#/components/schemas/OnChainAddress' }],
+          },
           material: {
             description: 'Primary material of the constructed recipe',
             allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
@@ -94,6 +98,11 @@ const apiDoc = {
             allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
           },
         },
+      },
+      OnChainAddress: {
+        type: 'string',
+        description: 'A literal which will be represented as on-chain metadata',
+        maxLength: 55,
       },
       OnChainLiteral: {
         type: 'string',

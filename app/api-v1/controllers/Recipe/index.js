@@ -25,7 +25,7 @@ module.exports = {
         inputs: [],
         outputs: [
           {
-            roles: { Owner: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY' },
+            roles: { Owner: recipe[0].role_address },
             metadata: mapRecipeData(recipe[0]),
           },
         ],

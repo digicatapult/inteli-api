@@ -19,13 +19,14 @@ module.exports = async () => {
   ])
   await client('recipes').insert({
     id: '00000000-0000-1000-8000-000000000001',
-    externalId: 'TEST-externalId',
+    external_id: 'TEST-externalId',
+    role_address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA',
     name: 'TEST-name',
-    imageAttachmentId: attachmentId,
+    image_attachment_id: attachmentId,
     material: 'TEST-material',
     alloy: 'TEST-alloy',
     price: '99.99',
-    requiredCerts: JSON.stringify([{ description: 'TEST-certificate' }]),
+    required_certs: JSON.stringify([{ description: 'TEST-certificate' }]),
     supplier: 'TEST-supplier',
   })
 }

@@ -12,16 +12,17 @@ module.exports = function (recipeService) {
         throw new BadRequestError({ message: 'No body provided uploaded', service: 'recipe' })
       }
 
-      const { externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier } = req.body
+      const { externalId, name, imageAttachmentId, material, alloy, price, requiredCerts, supplier, role } = req.body
 
       const recipe = await recipeService.createRecipe({
-        externalId,
+        external_id: externalId,
+        role_address: role,
         name,
-        imageAttachmentId,
+        image_attachment_id: imageAttachmentId,
         material,
         alloy,
         price,
-        requiredCerts: JSON.stringify(requiredCerts),
+        required_certs: JSON.stringify(requiredCerts),
         supplier,
       })
 

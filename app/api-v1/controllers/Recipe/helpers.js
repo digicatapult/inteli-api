@@ -3,7 +3,7 @@ const mapRecipeData = (data) => ({
   material: { type: 'LITERAL', value: data.material },
   alloy: { type: 'LITERAL', value: data.alloy },
   price: { type: 'LITERAL', value: data.price },
-  requiredCerts: { type: 'LITERAL', value: data.requiredCerts },
+  requiredCerts: { type: 'LITERAL', value: data.required_certs },
   supplier: { type: 'LITERAL', value: data.supplier },
 })
 
