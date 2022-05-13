@@ -9,12 +9,12 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | variable                     | required |                       default                       | description                                                                          |
 | :--------------------------- | :------: | :-------------------------------------------------: | :----------------------------------------------------------------------------------- |
 | SERVICE_TYPE                 |    N     |                       `info`                        | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
-| PORT                         |    N     |                       `3001`                        | The port for the API to listen on                                                    |
+| PORT                         |    N     |                        `80`                         | The port for the API to listen on                                                    |
 | LOG_LEVEL                    |    N     |                       `info`                        | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
-| API_VERSION                  |    N     |                          -                          | API version                                                                          |
-| API_MAJOR_VERSION            |    N     |                          -                          | API major version                                                                    |
-| DSCP_API_HOST                |    N     |                     `localhost`                     | `dscp-api` host                                                                      |
-| DSCP_API_PORT                |    N     |                       `3001`                        | `dscp-api` port                                                                      |
+| API_VERSION                  |    N     |               `package.json version`                | API version                                                                          |
+| API_MAJOR_VERSION            |    N     |                        `v1`                         | API major version                                                                    |
+| DSCP_API_HOST                |    Y     |                          -                          | `dscp-api` host                                                                      |
+| DSCP_API_PORT                |    Y     |                          -                          | `dscp-api` port                                                                      |
 | DB_HOST                      |    Y     |                          -                          | PostgreSQL database hostname                                                         |
 | DB_PORT                      |    N     |                       `5432`                        | PostgreSQL database port                                                             |
 | DB_NAME                      |    N     |                      `inteli`                       | PostgreSQL database name                                                             |
