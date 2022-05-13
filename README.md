@@ -25,10 +25,6 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | AUTH_AUDIENCE                |    N     |                    `inteli-dev`                     | Identifier of the Auth0 API                                                          |
 | AUTH_ISSUER                  |    N     |           `https://inteli.eu.auth0.com/`            | Domain of the Auth0 API `                                                            |
 | AUTH_TOKEN_URL               |    N     |      `https://inteli.eu.auth0.com/oauth/token`      | Auth0 API endpoint that issues an Authorisation (Bearer) access token                |
-| AUTH_TEST_USERNAME           |    N     |                          -                          | Username of the auth0 user for testing                                               |
-| AUTH_TEST_PASSWORD           |    N     |                          -                          | Password of the auth0 user for testing                                               |
-| AUTH_TEST_CLIENT_ID          |    N     |                          -                          | Client ID of the auth0 application for testing                                       |
-| AUTH_TEST_CLIENT_SECRET      |    N     |                          -                          | Client secret of the auth0 application for testing                                   |
 | IDENTITY_SERVICE_HOST        |    Y     |                                                     | Hostname of the `dscp-identity-service`                                              |
 | IDENTITY_SERVICE_PORT        |    Y     |                                                     | Port of the `dscp-identity-service`                                                  |
 
@@ -56,4 +52,15 @@ npm run dev
 
 The endpoints on `inteli-api` require Bearer Authentication using a JSON Web Token. Tokens are generated externally as an Auth0 Machine to Machine token. You will need to create your own Auth0 API, which can be done for free, and set the appropriate [environment variables](#configuration) (those prefixed with `AUTH`). Follow the start of this [tutorial](https://auth0.com/docs/quickstart/backend/nodejs#configure-auth0-apis) to create an API. Go [here](app/routes/auth.js) and [here](app/auth.js) to see where the environment variables are used.
 
-Integration tests use a preconfigured Auth0 test application and user to authenticate across multiple `dscp` services. Running integration tests locally requires a `/test/test.env` file containing values for all envs prefixed with `AUTH_TEST_`. Follow tutorial [here](https://auth0.com/docs/get-started/authentication-and-authorization-flow/call-your-api-using-resource-owner-password-flow) to create your own test application and user.
+## Testing
+
+Integration tests use a preconfigured Auth0 test application and user to authenticate across multiple `dscp` services. Follow the tutorial [here](https://auth0.com/docs/get-started/authentication-and-authorization-flow/call-your-api-using-resource-owner-password-flow) to create your own.
+
+Once a test application and user is created, running integration tests locally requires a `/test/test.env` file containing the following environment variables:
+
+| variable                | required | default | description                                        |
+| :---------------------- | :------: | :-----: | :------------------------------------------------- |
+| AUTH_TEST_USERNAME      |    Y     |    -    | Username of the auth0 user for testing             |
+| AUTH_TEST_PASSWORD      |    Y     |    -    | Password of the auth0 user for testing             |
+| AUTH_TEST_CLIENT_ID     |    Y     |    -    | Client ID of the auth0 application for testing     |
+| AUTH_TEST_CLIENT_SECRET |    Y     |    -    | Client secret of the auth0 application for testing |
