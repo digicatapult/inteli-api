@@ -18,14 +18,13 @@ module.exports = function (recipeService, identityService) {
 
       const recipe = await recipeService.createRecipe({
         external_id: externalId,
-        role_address: supplierAddress,
         name,
         image_attachment_id: imageAttachmentId,
         material,
         alloy,
         price,
         required_certs: JSON.stringify(requiredCerts),
-        supplier,
+        supplier: supplierAddress,
       })
 
       logger.info('Recipe created: ', recipe.id)
