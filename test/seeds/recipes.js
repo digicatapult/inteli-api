@@ -16,6 +16,11 @@ module.exports = async () => {
       filename: 'foo.jpg',
       binary_blob: 9999999,
     },
+    {
+      id: '00000000-0000-1000-8000-000000000001',
+      filename: 'foo1.jpg',
+      binary_blob: 9999999,
+    },
   ])
   await client('recipes').insert({
     id: '00000000-0000-1000-8000-000000000001',

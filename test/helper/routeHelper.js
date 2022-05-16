@@ -47,7 +47,23 @@ async function postRecipeRoute(recipe, app, token) {
     })
 }
 
-async function postAttachment(app, fileData, filename, token) {
+async function getRecipeRoute({ app }, token) {
+  return request(app)
+    .get(`/${API_MAJOR_VERSION}/recipe`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${token}`)
+    .send()
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      console.error(`postRecipeErr ${err}`)
+      return err
+    })
+}
+
+async function postAttachment({ app }, fileData, filename, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/attachment`)
     .set('Accept', 'application/json')
@@ -81,6 +97,7 @@ module.exports = {
   apiDocs,
   healthCheck,
   postRecipeRoute,
+  getRecipeRoute,
   postAttachment,
   postAttachmentNoFile,
 }

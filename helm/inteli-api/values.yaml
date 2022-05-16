@@ -1,5 +1,7 @@
 config:
   port: 80
+  dscpApiHost: dscp-api
+  dscpApiPort: 80
   logLevel: info
   dbName: inteli
   polkadotApi: 'http://localhost:3001'
