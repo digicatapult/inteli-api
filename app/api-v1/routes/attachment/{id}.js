@@ -31,6 +31,23 @@ module.exports = function (attachmentService) {
               format: 'binary',
             },
           },
+          'application/json': {
+            schema: {
+              description: 'Attachment json',
+              anyOf: [
+                {
+                  type: 'object',
+                  properties: {},
+                  additionalProperties: true,
+                },
+                {
+                  type: 'array',
+                  items: {},
+                },
+              ],
+            },
+            example: {},
+          },
         },
       },
       default: {
