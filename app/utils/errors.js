@@ -27,6 +27,18 @@ class UnauthorizedError extends HttpResponseError {
   }
 }
 
+class IncorrectSupplierError extends HttpResponseError {
+  constructor({ message }) {
+    super({ code: 422, message })
+  }
+}
+
+class RecipeDoesNoExistError extends HttpResponseError {
+  constructor({ message }) {
+    super({ code: 422, message })
+  }
+}
+
 const handleErrors = (err, req, res, next) => {
   if (err instanceof HttpResponseError) {
     logger.warn(`Error in ${err.service} service: ${err.message}`)
@@ -54,5 +66,7 @@ module.exports = {
   BadRequestError,
   HttpResponseError,
   UnauthorizedError,
+  IncorrectSupplierError,
   InternalError,
+  RecipeDoesNoExistError,
 }
