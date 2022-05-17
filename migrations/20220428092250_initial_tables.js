@@ -23,7 +23,6 @@ exports.up = async (knex) => {
 
     def.datetime('created_at').notNullable().default(now())
     def.datetime('updated_at').notNullable().default(now())
-    def.string('role_address')
     def.string('external_id').notNullable()
     def.string('name').notNullable()
     def.uuid('image_attachment_id').notNullable()

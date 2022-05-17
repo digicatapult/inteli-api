@@ -84,13 +84,13 @@ async function createHttpServer() {
   app.use(`/${API_MAJOR_VERSION}/swagger`, swaggerUi.serve, swaggerUi.setup(null, options))
   app.use(handleErrors)
 
-  return app
+  return { app }
 }
 
 /* istanbul ignore next */
 async function startServer() {
   try {
-    const app = await createHttpServer()
+    const { app } = await createHttpServer()
 
     const setupGracefulExit = ({ sigName, server, exitCode }) => {
       process.on(sigName, async () => {

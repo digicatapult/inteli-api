@@ -31,7 +31,7 @@ async function healthCheck(app) {
     })
 }
 
-async function postRecipeRoute(recipe, app, token) {
+async function postRecipeRoute(recipe, { app }, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/recipe`)
     .set('Accept', 'application/json')
@@ -79,7 +79,7 @@ async function postAttachment({ app }, fileData, filename, token) {
     })
 }
 
-async function postAttachmentNoFile(app, token) {
+async function postAttachmentNoFile({ app }, token) {
   return request(app)
     .post(`/${API_MAJOR_VERSION}/attachment`)
     .set('Accept', 'application/json')

@@ -20,16 +20,18 @@ module.exports = {
           message: 'recipe not found',
           service,
         })
-
-      const token = await runProcess({
+      
+      const payload = {
         inputs: [],
         outputs: [
           {
-            roles: { Owner: recipe[0].role_address },
+            roles: { Owner: recipe[0].supplier },
             metadata: mapRecipeData(recipe[0]),
           },
         ],
-      })
+      }
+
+      const token = await runProcess(payload, req.token)
 
       const transaction = await client
         .from('recipe_transactions')
