@@ -15,12 +15,30 @@ const client = knex({
   },
 })
 
+async function postOrderDb(reqBody) {
+  return client('orders')
+    .insert({
+      supplier: reqBody.supplier,
+      required_by: reqBody.requiredBy,
+      items: reqBody.items,
+    })
+    .returning('*')
+}
+
 async function getAttachment(id) {
   return client('attachments').select(['id', 'filename', 'binary_blob']).where({ id })
 }
 
 async function addRecipe(recipe) {
   return client('recipes').insert(recipe).returning('*')
+}
+
+async function getRecipeByIDs(ids) {
+  return client('recipes').select('*').whereIn('id', ids)
+}
+
+async function getRecipeByIDdb(id) {
+  return client('recipes').select('*').where({ id })
 }
 
 async function getRecipes() {
@@ -33,8 +51,11 @@ const insertAttachment = async (name, fileData) => {
 
 module.exports = {
   client,
+  postOrderDb,
   getAttachment,
   addRecipe,
   getRecipes,
   insertAttachment,
+  getRecipeByIDs,
+  getRecipeByIDdb,
 }
