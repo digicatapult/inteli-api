@@ -1,4 +1,4 @@
-const { runProcess } = require('../../../utils/Dscp-api')
+const { runProcess } = require('../../../utils/dscp-api')
 const { client } = require('../../../db')
 const { mapRecipeData } = require('./helpers')
 const { BadRequestError, NotFoundError } = require('../../../utils/errors')
