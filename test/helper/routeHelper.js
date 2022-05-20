@@ -3,7 +3,7 @@ const request = require('supertest')
 
 const { API_MAJOR_VERSION } = require('../../app/env')
 
-async function apiDocs(app) {
+async function apiDocs({ app }) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/api-docs`)
     .set('Accept', 'application/json')
@@ -17,7 +17,7 @@ async function apiDocs(app) {
     })
 }
 
-async function healthCheck(app) {
+async function healthCheck({ app }) {
   return request(app)
     .get('/health')
     .set('Accept', 'application/json')

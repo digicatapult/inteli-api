@@ -4,6 +4,7 @@
   "description": "Insert repo description",
   "main": "app/index.js",
   "scripts": {
+    "db:migrate": "npx knex migrate:latest --env test",
     "test": "NODE_ENV=test mocha --config ./test/mocharc.js ./test",
     "test:unit": "NODE_ENV=test mocha --config ./test/mocharc.js ./app",
     "lint": "eslint .",

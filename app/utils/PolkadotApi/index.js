@@ -1,11 +1,11 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
 
-const { POLKADOT_API } = require('../../env')
+const { DSCP_API_PORT, DSCP_API_HOST } = require('../../env')
 
 module.exports = {
   async runProcess(payload, authToken) {
-    const url = `${POLKADOT_API}/v3/run-process`
+    const url = `${DSCP_API_HOST}:${DSCP_API_PORT}/v3/run-process`
     const formData = new FormData()
     formData.append('request', JSON.stringify(payload))
 

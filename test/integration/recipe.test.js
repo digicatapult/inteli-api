@@ -11,7 +11,7 @@ const { AUTH_ISSUER, AUTH_AUDIENCE } = require('../../app/env')
 
 const logger = require('../../app/utils/Logger')
 
-describe('Recipes', function () {
+describe.only('Recipes', function () {
   describe('POST recipes', function () {
     this.timeout(15000)
     let app
@@ -164,7 +164,7 @@ describe('Recipes', function () {
 
     setupIdentityMock()
 
-    it('should accept valid body', async function () {
+    it.only('should accept valid body', async function () {
       const recipes = await Promise.all(
         recipesFixture.map(async (newRecipe) => {
           const { body: recipe } = await postRecipeRoute(newRecipe, app, authToken)
@@ -173,6 +173,7 @@ describe('Recipes', function () {
       )
 
       const response = await getRecipeRoute(app, authToken)
+      console.log(response)
       expect(response.status).to.equal(200)
       expect(response.body).to.be.an('array')
       expect(response.body.length).to.equal(recipes.length)

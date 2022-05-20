@@ -11,7 +11,6 @@ if (process.env.NODE_ENV === 'test') {
 const vars = envalid.cleanEnv(
   process.env,
   {
-    POLKADOT_API: envalid.host({ default: 'http://localhost:3001' }),
     SERVICE_TYPE: envalid.str({ default: 'inteli-api'.toUpperCase().replace(/-/g, '_') }),
     PORT: envalid.port({ default: 80, devDefault: 3000 }),
     API_VERSION: envalid.str({ default: version }),

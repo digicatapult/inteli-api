@@ -5,6 +5,8 @@ const { BadRequestError } = require('../../utils/errors')
 module.exports = function (recipeService, identityService) {
   const doc = {
     GET: async function (req, res) {
+      try {
+
       const recipes = await recipeService.getRecipes()
       const result = await Promise.all(
         recipes.map(async (recipe) => {
@@ -24,6 +26,10 @@ module.exports = function (recipeService, identityService) {
         })
       )
       res.status(200).json(result)
+      } catch(e) {
+        console.log('toyo : ', e)
+      }
+
     },
     POST: async function (req, res) {
       if (!req.body) {
