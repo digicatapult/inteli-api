@@ -9,7 +9,6 @@ data:
   dscpApiHost: {{ .Values.config.dscpApiHost }}
   dscpApiPort: {{ .Values.config.dscpApiPort | quote }}
   logLevel: {{ .Values.config.logLevel }}
-  polkadotApi: {{ .Values.config.polkadotApi }}
   dbHost: {{ include "inteli-api.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}
   dbName: {{ .Values.config.dbName }}
