@@ -20,7 +20,7 @@ module.exports = {
           message: 'recipe not found',
           service,
         })
-      
+
       const payload = {
         inputs: [],
         outputs: [

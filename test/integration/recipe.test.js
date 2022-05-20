@@ -12,7 +12,7 @@ const nock = require('nock')
 
 const logger = require('../../app/utils/Logger')
 
-describe.only('Recipes', function () {
+describe('Recipes', function () {
   describe('POST recipes', function () {
     this.timeout(5000)
     let app
@@ -43,16 +43,14 @@ describe.only('Recipes', function () {
         .get('/v1/members/5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA')
         .reply(200, {
           alias: 'alias',
-          address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA'
+          address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA',
         })
     })
-
 
     after(async function () {
       await jwksMock.stop()
       nock.cleanAll()
     })
-
 
     it('should accept valid body', async function () {
       const newRecipe = {
@@ -166,7 +164,7 @@ describe.only('Recipes', function () {
     let authToken
     let jwksMock
 
-    beforeEach(async function () {
+    before(async () => {
       await seed()
       app = await createHttpServer()
       jwksMock = createJWKSMock(AUTH_ISSUER)
@@ -175,34 +173,37 @@ describe.only('Recipes', function () {
         aud: AUTH_AUDIENCE,
         iss: AUTH_ISSUER,
       })
-      setupIdentityMock()
+    })
 
+    beforeEach(async function () {
       nock(`http://${IDENTITY_SERVICE_HOST}:${IDENTITY_SERVICE_PORT}`)
         .persist()
         .get('/v1/members/foobar3000')
         .reply(200, {
           alias: 'foobar3000-alias',
-          address: 'foobar3000'
+          address: 'foobar3000',
         })
         .persist()
         .get('/v1/members/valid-1')
         .reply(200, {
           alias: 'valid-alias-1',
-          address: 'valid-1'
+          address: 'valid-1',
         })
         .persist()
         .get('/v1/members/valid-2')
         .reply(200, {
           alias: 'valid-alias-2',
-          address: 'valid-2'
+          address: 'valid-2',
         })
         .persist()
         .get('/v1/members/5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA')
         .reply(200, {
           alias: 'alias',
-          address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA'
+          address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA',
         })
     })
+
+    setupIdentityMock()
 
     after(async function () {
       await jwksMock.stop()
@@ -234,10 +235,15 @@ describe.only('Recipes', function () {
         })
       )
 
-      const response = await getRecipeRoute(app, authToken)
-      expect(response.status).to.equal(200)
-      expect(response.body).to.be.an('array')
-      expect(response.body.length).to.equal(recipes.length + 1) // + 1 because one created by the helper
+      const { status, body } = await getRecipeRoute(app, authToken)
+      expect(status).to.equal(200)
+      expect(body).to.be.an('array')
+      const ids = recipes.map(({ id }) => id)
+      body
+        .filter(({ id }) => ids.includes(id))
+        .map((recipe, i) => {
+          expect(recipes[i]).to.deep.contains(recipe)
+        })
     })
 
     it('should fail to get by non-existant id - 404', async function () {

@@ -79,6 +79,7 @@ async function getRecipeRoute({ app }, token) {
 }
 
 async function getRecipeByIdRoute({ app }, id, token) {
+  console.log({ id })
   return request(app)
     .get(`/${API_MAJOR_VERSION}/recipe/${id}`)
     .set('Accept', 'application/json')
