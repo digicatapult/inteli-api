@@ -23,10 +23,9 @@ module.exports = {
     get: async (req) => {
       const path = '/recipe/{id}/creation/${creationId}'
       const { creationId, id } = req.params
-      const [transaction] = await client
-        .from('recipe_transactions')
-        .select('*').where({ id: creationId, token_id: id })
+      const [transaction] = await client.from('recipe_transactions').select('*').where({ id: creationId, token_id: id })
 
+      if (!id || !creationId) throwErr(400, path)
       if (!transaction) throwErr(404, path)
 
       return {
