@@ -1,4 +1,4 @@
-const { transaction } = require('../../../controllers/Recipe')
+const { transaction } = require('../../../../controllers/Recipe')
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (recipeService) {
