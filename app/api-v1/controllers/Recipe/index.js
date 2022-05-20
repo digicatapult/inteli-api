@@ -14,8 +14,8 @@ module.exports = {
           service,
         })
 
-      const recipe = await client.from('recipes').select('*').where({ id })
-      if (!recipe || !recipe.length)
+      const [recipe] = await client.from('recipes').select('*').where({ id })
+      if (!recipe)
         throw new NotFoundError({
           message: 'recipe not found',
           service,
@@ -25,14 +25,13 @@ module.exports = {
         inputs: [],
         outputs: [
           {
-            roles: { Owner: recipe[0].supplier },
-            metadata: mapRecipeData(recipe[0]),
+            roles: { Owner: recipe.supplier },
+            metadata: mapRecipeData(recipe),
           },
         ],
       }
 
       const token = await runProcess(payload, req.token)
-
       const transaction = await client
         .from('recipe_transactions')
         .insert({

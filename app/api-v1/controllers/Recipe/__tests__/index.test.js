@@ -6,11 +6,18 @@ const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const { client } = require('../../../../db')
 const { transaction } = require('../')
 
-// TODO move to fixtures
 const payload = {
   params: {
     id: 'recipe-id',
   },
+  token: 'some-auth-token',
+}
+
+const recipeExample = {
+  id: 1,
+  price: '99.99',
+  material: 'iron',
+  supplier: 'supplier-address',
 }
 
 const submitTransaction = async (req) => {
@@ -25,7 +32,7 @@ describe('recipe controller', () => {
   let response
   let insertTransactionStub = stub().returnsThis()
   let selectStub = stub().returnsThis()
-  let whereRecipeStub = stub().resolves([{ id: 1 }])
+  let whereRecipeStub = stub().resolves([recipeExample])
 
   before(async () => {
     nock('http://localhost:3001').post('/v3/run-process').reply(200, [20])
@@ -77,7 +84,7 @@ describe('recipe controller', () => {
     describe('happy path', () => {
       beforeEach(async () => {
         nock('http://localhost:3001').post('/v3/run-process').reply(200, [20])
-        whereRecipeStub = stub().resolves([{ id: 1 }])
+        whereRecipeStub = stub().resolves([recipeExample])
         response = await submitTransaction(payload)
       })
 

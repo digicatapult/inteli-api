@@ -5,7 +5,7 @@ const { DSCP_API_PORT, DSCP_API_HOST } = require('../../env')
 
 module.exports = {
   async runProcess(payload, authToken) {
-    const url = `${DSCP_API_HOST}:${DSCP_API_PORT}/v3/run-process`
+    const url = `http://${DSCP_API_HOST}:${DSCP_API_PORT}/v3/run-process`
     const formData = new FormData()
     formData.append('request', JSON.stringify(payload))
 
