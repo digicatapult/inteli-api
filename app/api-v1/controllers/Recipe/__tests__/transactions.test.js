@@ -5,6 +5,7 @@ const { stub } = require('sinon')
 const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const { client } = require('../../../../db')
 const { transaction } = require('..')
+const { transactionsExample, recipeId } = require('./transaction_fiixtures')
 
 const postPayload = {
   params: {
@@ -70,7 +71,7 @@ describe('recipe controller', () => {
 
   afterEach(() => nock.cleanAll)
 
-  describe.only('transactions /getAll', () => {
+  describe('transactions /getAll', () => {
     describe('if req.params.id is not provided', () => {
       beforeEach(async () => {
         response = await getAllTransactions({ params: {} })
@@ -100,26 +101,14 @@ describe('recipe controller', () => {
 
     describe('happy path', () => {
       beforeEach(async () => {
-        whereRecipeStub = stub().resolves([
-          { id: '00000000-0000-1000-8000-000000000000' },
-          { id: '00000000-0000-1000-8000-000000000001' },
-        ])
-        response = await getAllTransactions({ params: { id: 1 } })
+        whereRecipeStub = stub().resolves(transactionsExample)
+        response = await getAllTransactions({ params: { id: recipeId } })
       })
 
       it('returns array of transaction', () => {
         const { status, ...body } = response
         expect(status).to.be.equal(200)
-        expect(body).to.deep.equal({
-          creations: [
-            {
-              id: '00000000-0000-1000-8000-000000000000',
-            },
-            {
-              id: '00000000-0000-1000-8000-000000000001',
-            },
-          ],
-        })
+        expect(body).to.deep.equal({ creations: transactionsExample })
       })
     })
   })
@@ -127,6 +116,7 @@ describe('recipe controller', () => {
   describe('transactions /create', () => {
     describe('if req.params.id is not provided', () => {
       beforeEach(async () => {
+        whereRecipeStub.reset()
         response = await submitTransaction({ params: {} })
       })
 
