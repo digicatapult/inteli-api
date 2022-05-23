@@ -27,7 +27,6 @@ module.exports = {
       if (!id) throwErr(400, req)
 
       const transactions = await db.getAllRecipeTransactions(id)
-      console.log({ transactions })
       if (transactions.length < 1) throwErr(404, req)
 
       return {
@@ -39,7 +38,10 @@ module.exports = {
       const { creationId, id } = req.params
       if (!id || !creationId) throwErr(400, req)
 
-      const [transaction] = await db.client.from('recipe_transactions').select('*').where({ id: creationId, token_id: id })
+      const [transaction] = await db.client
+        .from('recipe_transactions')
+        .select('*')
+        .where({ id: creationId, token_id: id })
       if (!transaction) throwErr(404, req)
 
       return {

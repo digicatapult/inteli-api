@@ -72,7 +72,7 @@ describe('recipe controller', () => {
 
   afterEach(() => nock.cleanAll)
 
-  describe('transactions /getAll', () => {  
+  describe('transactions /getAll', () => {
     const context = {}
     const withGetTransactionsStub = (context, returnVal) => {
       beforeEach(async () => {
@@ -102,17 +102,17 @@ describe('recipe controller', () => {
 
     describe('if none transactions found', () => {
       withGetTransactionsStub({}, [])
-      
+
       beforeEach(async () => {
         response = await getAllTransactions({ params: { id: 1 } })
       })
-      
+
       it('throws not found error along with the message', () => {
         expect(response).to.be.an.instanceOf(NotFoundError)
         expect(response.message).to.be.equal('not found')
       })
     })
-    
+
     describe('happy path', () => {
       const context = {}
       withGetTransactionsStub(context, transactionsExample)
