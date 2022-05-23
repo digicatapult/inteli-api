@@ -4,7 +4,7 @@ const { stub } = require('sinon')
 
 const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const { client } = require('../../../../db')
-const { transaction } = require('../')
+const { transaction } = require('..')
 
 const postPayload = {
   params: {
@@ -29,6 +29,14 @@ const recipeExample = {
 const submitTransaction = async (req) => {
   try {
     return await transaction.create(req)
+  } catch (err) {
+    return err
+  }
+}
+
+const getAllTransactions = async (req) => {
+  try {
+    return await transaction.getAll(req)
   } catch (err) {
     return err
   }
@@ -61,6 +69,60 @@ describe('recipe controller', () => {
   })
 
   afterEach(() => nock.cleanAll)
+
+  describe.only('transactions /getAll', () => {
+    describe('if req.params.id is not provided', () => {
+      beforeEach(async () => {
+        response = await getAllTransactions({ params: {} })
+      })
+
+      it('throws validation error', () => {
+        expect(response).to.be.an.instanceOf(BadRequestError)
+        expect(response.message).to.be.equal('missing parameters')
+      })
+
+      it('does not perform any database calls and does not create transaction', () => {
+        expect(whereRecipeStub.calledOnce).to.equal(false)
+        expect(insertTransactionStub.calledOnce).to.equal(false)
+      })
+    })
+    describe('if none transactions found', () => {
+      beforeEach(async () => {
+        whereRecipeStub = stub().resolves([])
+        response = await getAllTransactions({ params: { id: 1 } })
+      })
+
+      it('throws not found error along with the message', () => {
+        expect(response).to.be.an.instanceOf(NotFoundError)
+        expect(response.message).to.be.equal('not found')
+      })
+    })
+
+    describe('happy path', () => {
+      beforeEach(async () => {
+        whereRecipeStub = stub().resolves([
+          { id: '00000000-0000-1000-8000-000000000000' },
+          { id: '00000000-0000-1000-8000-000000000001' },
+        ])
+        response = await getAllTransactions({ params: { id: 1 } })
+      })
+
+      it('returns array of transaction', () => {
+        const { status, ...body } = response
+        expect(status).to.be.equal(200)
+        expect(body).to.deep.equal({
+          creations: [
+            {
+              id: '00000000-0000-1000-8000-000000000000',
+            },
+            {
+              id: '00000000-0000-1000-8000-000000000001',
+            },
+          ],
+        })
+      })
+    })
+  })
 
   describe('transactions /create', () => {
     describe('if req.params.id is not provided', () => {

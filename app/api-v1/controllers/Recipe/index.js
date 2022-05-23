@@ -28,11 +28,11 @@ module.exports = {
       const transactions = await client.from('recipe_transactions').select('*').where({ recipe_id: id })
 
       if (!id) throwErr(400, path)
-      if (!transactions.length < 1) throwErr(404, path)
+      if (transactions.length < 1) throwErr(404, path)
 
       return {
         status: 200,
-        creation: transaction,
+        creations: transactions,
       }
     },
     get: async (req) => {
