@@ -4,8 +4,9 @@ const { stub } = require('sinon')
 
 const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const { client } = require('../../../../db')
+const db = require('../../../../db')
 const { transaction } = require('..')
-const { transactionsExample, recipeId } = require('./transaction_fiixtures')
+const { transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
 
 const postPayload = {
   params: {
@@ -71,8 +72,20 @@ describe('recipe controller', () => {
 
   afterEach(() => nock.cleanAll)
 
-  describe('transactions /getAll', () => {
+  describe('transactions /getAll', () => {  
+    const context = {}
+    const withGetTransactionsStub = (context, returnVal) => {
+      beforeEach(async () => {
+        context.getAllRecipeTransactionsStub = stub(db, 'getAllRecipeTransactions').resolves(returnVal)
+      })
+      afterEach(() => {
+        context.getAllRecipeTransactionsStub.restore()
+      })
+    }
+
     describe('if req.params.id is not provided', () => {
+      withGetTransactionsStub(context, transactionsExample)
+
       beforeEach(async () => {
         response = await getAllTransactions({ params: {} })
       })
@@ -83,32 +96,35 @@ describe('recipe controller', () => {
       })
 
       it('does not perform any database calls and does not create transaction', () => {
-        expect(whereRecipeStub.calledOnce).to.equal(false)
-        expect(insertTransactionStub.calledOnce).to.equal(false)
+        expect(context.getAllRecipeTransactionsStub.calledOnce).to.equal(false)
       })
     })
+
     describe('if none transactions found', () => {
+      withGetTransactionsStub({}, [])
+      
       beforeEach(async () => {
-        whereRecipeStub = stub().resolves([])
         response = await getAllTransactions({ params: { id: 1 } })
       })
-
+      
       it('throws not found error along with the message', () => {
         expect(response).to.be.an.instanceOf(NotFoundError)
         expect(response.message).to.be.equal('not found')
       })
     })
-
+    
     describe('happy path', () => {
+      const context = {}
+      withGetTransactionsStub(context, transactionsExample)
+
       beforeEach(async () => {
-        whereRecipeStub = stub().resolves(transactionsExample)
         response = await getAllTransactions({ params: { id: recipeId } })
       })
 
       it('returns array of transaction', () => {
-        const { status, ...body } = response
+        const { status, response: body } = response
         expect(status).to.be.equal(200)
-        expect(body).to.deep.equal({ creations: transactionsExample })
+        expect(body).to.deep.equal(listResponse)
       })
     })
   })

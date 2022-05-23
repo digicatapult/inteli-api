@@ -10,7 +10,7 @@ module.exports = function (orderService, identityService) {
 
       const { statusCode, result } = await orderService.postOrder({ ...req.body, supplier: supplierAddress })
       if (!req.body) {
-        throw new BadRequestError({ message: 'No body uploaded', service: 'order' })
+        throw new BadRequestError({ message: 'No body uploaded', req })
       }
       return res.status(statusCode).json({ ...result[0], supplier: req.body.supplier })
     },
