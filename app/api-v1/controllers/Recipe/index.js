@@ -19,7 +19,22 @@ const throwErr = (type, path) => {
 }
 
 module.exports = {
+  // TODO abstranct to transactions controller and first path e.g. /recipe /order is database model
+  // do this along with order
   transaction: {
+    getAll: async (req) => {
+      const path = '/recipe/{id}/creation'
+      const { id } = req.params
+      const transactions = await client.from('recipe_transactions').select('*').where({ recipe_id: id })
+
+      if (!id) throwErr(400, path)
+      if (!transactions.length < 1) throwErr(404, path)
+
+      return {
+        status: 200,
+        creation: transaction,
+      }
+    },
     get: async (req) => {
       const path = '/recipe/{id}/creation/${creationId}'
       const { creationId, id } = req.params
