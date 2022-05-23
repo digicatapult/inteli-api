@@ -6,7 +6,7 @@ const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const { client } = require('../../../../db')
 const db = require('../../../../db')
 const { transaction } = require('..')
-const { transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
+const { recipeExample, transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
 
 const postPayload = {
   params: {
@@ -14,18 +14,13 @@ const postPayload = {
   },
   token: 'some-auth-token',
 }
+
 const getPayload = {
   params: {
     id: 'recipe-id',
     creationId: 'transaction-id',
   },
   token: 'some-auth-token',
-}
-const recipeExample = {
-  id: 1,
-  price: '99.99',
-  material: 'iron',
-  supplier: 'supplier-address',
 }
 
 const submitTransaction = async (req) => {
@@ -231,7 +226,7 @@ describe('recipe controller', () => {
       expect(response).to.deep.equal({
         status: 200,
         creation: {
-          id: 1,
+          id: 'RECIPE00-0000-1000-8000-000000000000',
           price: '99.99',
           material: 'iron',
           supplier: 'supplier-address',

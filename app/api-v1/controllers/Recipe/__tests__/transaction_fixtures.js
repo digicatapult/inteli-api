@@ -1,5 +1,11 @@
 module.exports = {
   recipeId: 'RECIPE00-0000-1000-8000-000000000000',
+  recipeExample: {
+    id: 'RECIPE00-0000-1000-8000-000000000000',
+    price: '99.99',
+    material: 'iron',
+    supplier: 'supplier-address',
+  },
   transactionsExample: [
     {
       id: 'TRASACTI-0000-1000-8000-000000000000',
