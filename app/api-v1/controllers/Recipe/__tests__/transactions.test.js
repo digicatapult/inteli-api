@@ -6,7 +6,7 @@ const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const { client } = require('../../../../db')
 const db = require('../../../../db')
 const { transaction } = require('..')
-const { transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
+const { recipeExample, transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
 
 const postPayload = {
   params: {
@@ -20,12 +20,6 @@ const getPayload = {
     creationId: 'transaction-id',
   },
   token: 'some-auth-token',
-}
-const recipeExample = {
-  id: 1,
-  price: '99.99',
-  material: 'iron',
-  supplier: 'supplier-address',
 }
 
 const submitTransaction = async (req) => {
@@ -104,10 +98,10 @@ describe('recipe controller', () => {
       withGetTransactionsStub({}, [])
 
       beforeEach(async () => {
-        response = await getAllTransactions({ params: { id: 1 } })
+        response = await getAllTransactions({ params: { id: 'RECIPE00-9000-1000-8000-000000000000' } })
       })
 
-      it.only('returns an empty list', () => {
+      it('returns an empty list', () => {
         const { status, response: body } = response
         expect(status).to.be.equal(200)
         expect(body).to.deep.equal([])
@@ -123,6 +117,7 @@ describe('recipe controller', () => {
       })
 
       it('returns array of transaction', () => {
+        const { status, response: body } = response
         expect(status).to.be.equal(200)
         expect(body).to.deep.equal(listResponse)
       })
@@ -150,7 +145,7 @@ describe('recipe controller', () => {
     describe('if recipe does not exists in local db', () => {
       beforeEach(async () => {
         whereRecipeStub = stub().resolves([])
-        response = await submitTransaction({ params: { id: 1 } })
+        response = await submitTransaction({ params: { id: 'RECIPE00-9000-1000-8000-000000000000' } })
       })
 
       it('throws not found error along with the message', () => {
@@ -231,7 +226,7 @@ describe('recipe controller', () => {
       expect(response).to.deep.equal({
         status: 200,
         creation: {
-          id: 1,
+          id: 'RECIPE00-9000-1000-8000-000000000000',
           price: '99.99',
           material: 'iron',
           supplier: 'supplier-address',
