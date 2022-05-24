@@ -27,7 +27,6 @@ module.exports = {
       if (!id) throwErr(400, req)
 
       const transactions = await db.getAllRecipeTransactions(id)
-      if (transactions.length < 1) throwErr(404, req)
 
       return {
         status: 200,

@@ -107,9 +107,10 @@ describe('recipe controller', () => {
         response = await getAllTransactions({ params: { id: 1 } })
       })
 
-      it('throws not found error along with the message', () => {
-        expect(response).to.be.an.instanceOf(NotFoundError)
-        expect(response.message).to.be.equal('not found')
+      it.only('returns an empty list', () => {
+        const { status, response: body } = response
+        expect(status).to.be.equal(200)
+        expect(body).to.deep.equal([])
       })
     })
 
@@ -122,7 +123,6 @@ describe('recipe controller', () => {
       })
 
       it('returns array of transaction', () => {
-        const { status, response: body } = response
         expect(status).to.be.equal(200)
         expect(body).to.deep.equal(listResponse)
       })
