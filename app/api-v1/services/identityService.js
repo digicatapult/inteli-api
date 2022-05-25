@@ -21,7 +21,7 @@ const getMemberByAlias = async (req, alias) => {
     throw new BadRequestError({ message: `Member "${alias}" does not exist` })
   }
 
-  throw new InternalError({ message: 'Internal server error', res })
+  throw new InternalError({ message: 'Internal server error' })
 }
 
 const getMemberBySelf = async (req) => {

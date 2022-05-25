@@ -5,7 +5,7 @@ const { HttpResponseError } = require('../../utils/errors')
 const createAttachmentFromFile = async (file) => {
   return new Promise((resolve) => {
     fs.readFile(file.path, async (err, data) => {
-      if (err) throw new HttpResponseError({ code: 500, message: err.message, file })
+      if (err) throw new HttpResponseError({ code: 500, message: err.message })
       const attachment = await createAttachment(file.originalname, data)
       resolve(attachment)
     })

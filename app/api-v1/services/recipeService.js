@@ -10,7 +10,7 @@ async function createRecipe(reqBody) {
 
   const attachment = await getAttachment(image_attachment_id)
   if (!attachment.length) {
-    throw new BadRequestError({ message: 'Attachment id not found', reqBody })
+    throw new BadRequestError({ message: 'Attachment id not found', req: reqBody })
   }
 
   const [recipe] = await addRecipe(reqBody)
