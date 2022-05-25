@@ -116,7 +116,7 @@ describe('recipe controller', () => {
         response = await getAllTransactions({ params: { id: recipeId } })
       })
 
-      it('returns array of transaction', () => {
+      it('returns an array of transactions', () => {
         const { status, response: body } = response
         expect(status).to.be.equal(200)
         expect(body).to.deep.equal(listResponse)
