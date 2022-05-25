@@ -9,11 +9,11 @@ async function postOrder(reqBody) {
 
   const recipes = await getRecipeByIDs(uniqueRecipeIDs)
   if (recipes.length != uniqueRecipeIDs.length) {
-    throw new RecipeDoesNotExistError({ message: 'Order post error - Recipe does not exist', reqBody })
+    throw new RecipeDoesNotExistError({ message: 'Order post error - Recipe does not exist' })
   } else {
     recipes.forEach((recipeItem) => {
       if (recipeItem.supplier != reqBody.supplier) {
-        throw new IncorrectSupplierError({ message: 'Order post error - Supplier does not match', reqBody })
+        throw new IncorrectSupplierError({ message: 'Order post error - Supplier does not match' })
       }
     })
   }

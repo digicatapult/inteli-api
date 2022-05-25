@@ -175,7 +175,7 @@ describe('recipe controller', () => {
         expect(insertTransactionStub.getCall(0).args).to.be.deep.equal([
           {
             recipe_id: 'recipe-id',
-            status: 'submitted',
+            status: 'Submitted',
             token_id: 20,
           },
         ])
