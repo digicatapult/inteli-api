@@ -40,7 +40,7 @@ module.exports = {
       const [transaction] = await db.client
         .from('recipe_transactions')
         .select('*')
-        .where({ id: creationId, token_id: id })
+        .where({ id: creationId, recipe_id: id })
       if (!transaction) throwErr(404, req)
 
       return {
