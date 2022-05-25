@@ -70,7 +70,7 @@ module.exports = {
         .insert({
           token_id: token[0],
           recipe_id: id,
-          status: 'submitted',
+          status: 'Submitted',
         })
         .returning(['id'])
         .then((t) => t[0])
