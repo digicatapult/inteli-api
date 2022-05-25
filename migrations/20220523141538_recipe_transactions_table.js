@@ -4,7 +4,7 @@ exports.up = async (knex) => {
 
   await knex.schema.createTable('recipe_transactions', (def) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
-    def.integer('token_id').unsigned().notNullable()
+    def.integer('token_id')
     def.uuid('recipe_id').notNullable()
     def.enu('type', ['Creation']).notNullable()
     def.enu('status', ['Created', 'Submitted', 'Rejected', 'Amended', 'Accepted'])
