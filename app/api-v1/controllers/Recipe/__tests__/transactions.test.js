@@ -87,7 +87,7 @@ describe('recipe controller', () => {
 
       it('throws validation error', () => {
         expect(response).to.be.an.instanceOf(BadRequestError)
-        expect(response.message).to.be.equal('missing parameters')
+        expect(response.message).to.be.equal('Bad Request: missing params')
       })
 
       it('does not perform any database calls and does not create transaction', () => {
@@ -134,7 +134,7 @@ describe('recipe controller', () => {
 
       it('throws validation error', () => {
         expect(response).to.be.an.instanceOf(BadRequestError)
-        expect(response.message).to.be.equal('missing parameters')
+        expect(response.message).to.be.equal('Bad Request: missing params')
       })
 
       it('does not perform any database calls and does not create transaction', () => {
@@ -151,7 +151,7 @@ describe('recipe controller', () => {
 
       it('throws not found error along with the message', () => {
         expect(response).to.be.an.instanceOf(NotFoundError)
-        expect(response.message).to.be.equal('not found')
+        expect(response.message).to.be.equal('Not Found: recipes')
       })
 
       it('does not create a transaction', () => {
@@ -202,7 +202,7 @@ describe('recipe controller', () => {
 
       it('throws validation error', () => {
         expect(response).to.be.an.instanceOf(BadRequestError)
-        expect(response.message).to.be.equal('missing parameters')
+        expect(response.message).to.be.equal('Bad Request: missing params')
       })
 
       it('does not perform any database calls and does not create transaction', () => {
@@ -218,7 +218,7 @@ describe('recipe controller', () => {
 
       it('throws not found error along with the message', () => {
         expect(response).to.be.an.instanceOf(NotFoundError)
-        expect(response.message).to.be.equal('not found')
+        expect(response.message).to.be.equal('Not Found: recipe_transactions')
       })
     })
 

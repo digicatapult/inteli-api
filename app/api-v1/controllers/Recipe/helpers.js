@@ -4,7 +4,7 @@ const mapRecipeData = (data) => ({
   alloy: { type: 'LITERAL', value: data.alloy },
   price: { type: 'LITERAL', value: data.price },
   requiredCerts: { type: 'LITERAL', value: data.required_certs },
-  supplier: { type: 'ROLE', value: data.supplier },
+  supplier: { type: 'LITERAL', value: data.supplier },
 })
 
 module.exports = {
