@@ -64,11 +64,10 @@ module.exports = {
           },
         ],
       }
-      const token = await runProcess(payload, req.token)
+      runProcess(payload, req.token)
       const transaction = await db.client
         .from('recipe_transactions')
         .insert({
-          token_id: token[0],
           recipe_id: id,
           status: 'Submitted',
         })

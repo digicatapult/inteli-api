@@ -177,7 +177,6 @@ describe('recipe controller', () => {
           {
             recipe_id: 'recipe-id',
             status: 'Submitted',
-            token_id: 20,
           },
         ])
       })
