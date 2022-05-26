@@ -6,7 +6,8 @@ module.exports = function (attachmentService) {
       const response = await attachmentService.getAttachmentByID(req.params.id)
 
       if (req.headers.accept.includes('json') && response.filename === 'json') {
-        res.status(200).json(response)
+        const json = JSON.parse(response.binary_blob)
+        res.status(200).json(json)
       } else if (req.headers.accept.includes('json') && response.filename != 'json') {
         throw new BadRequestError({ message: 'Filename does not match JSON' })
       } else {

@@ -85,19 +85,16 @@ describe('attachments', function () {
     expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
   })
 
-  it('should return something', async function () {
-    const attachment = '00000000-0000-1000-8000-000000000001'
+  it('should return from the JSON route', async function () {
+    const attachment = '00000000-0000-1000-9000-000000000001'
     const response = await getAttachmentRouteJSON(attachment, app, authToken)
-    console.log(response.body)
     expect(response.status).to.equal(200)
-    //expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
+    expect(response.body).deep.equal({ 'First Item': 'Test Data' })
   })
 
-  it.only('should return something', async function () {
+  it('should return from the octet route', async function () {
     const attachment = '00000000-0000-1000-8000-000000000001'
     const response = await getAttachmentRouteOctet(attachment, app, authToken)
-    console.log(response.body)
     expect(response.status).to.equal(200)
-    //expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
   })
 })
