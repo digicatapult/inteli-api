@@ -1,9 +1,16 @@
 const createJWKSMock = require('mock-jwks').default
 const { describe, before, it, after } = require('mocha')
 const { expect } = require('chai')
+const seed = require('../seeds/recipes')
 
 const { createHttpServer } = require('../../app/server')
-const { postAttachment, postAttachmentNoFile, postAttachmentJSON } = require('../helper/routeHelper')
+const {
+  postAttachment,
+  postAttachmentNoFile,
+  postAttachmentJSON,
+  getAttachmentRouteJSON,
+  getAttachmentRouteOctet,
+} = require('../helper/routeHelper')
 const { AUTH_ISSUER, AUTH_AUDIENCE, FILE_UPLOAD_SIZE_LIMIT_BYTES } = require('../../app/env')
 
 describe('attachments', function () {
@@ -12,6 +19,7 @@ describe('attachments', function () {
   let jwksMock
 
   before(async function () {
+    await seed()
     app = await createHttpServer()
     jwksMock = createJWKSMock(AUTH_ISSUER)
     jwksMock.start()
@@ -75,5 +83,21 @@ describe('attachments', function () {
 
     expect(response.status).to.equal(400)
     expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
+  })
+
+  it('should return something', async function () {
+    const attachment = '00000000-0000-1000-8000-000000000001'
+    const response = await getAttachmentRouteJSON(attachment, app, authToken)
+    console.log(response.body)
+    expect(response.status).to.equal(200)
+    //expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
+  })
+
+  it.only('should return something', async function () {
+    const attachment = '00000000-0000-1000-8000-000000000001'
+    const response = await getAttachmentRouteOctet(attachment, app, authToken)
+    console.log(response.body)
+    expect(response.status).to.equal(200)
+    //expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
   })
 })

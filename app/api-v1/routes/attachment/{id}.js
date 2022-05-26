@@ -1,8 +1,25 @@
 // eslint-disable-next-line no-unused-vars
+const { BadRequestError } = require('../../../utils/errors')
 module.exports = function (attachmentService) {
   const doc = {
     GET: async function (req, res) {
-      res.status(500).json({ message: 'Not Implemented' })
+      const response = await attachmentService.getAttachmentByID(req.params.id)
+
+      if (req.headers.accept.includes('json') && response.filename === 'json') {
+        res.status(200).json(response)
+      } else if (req.headers.accept.includes('json') && response.filename != 'json') {
+        throw new BadRequestError({ message: 'Filename does not match JSON' })
+      } else {
+        res.status(200)
+        res.set({
+          immutable: true,
+          maxAge: 365 * 24 * 60 * 60 * 1000,
+          'content-disposition': `attachment; filename="${response.filename}"`,
+          'access-control-expose-headers': 'content-disposition',
+          'content-type': 'application/octet-stream',
+        })
+        res.send(response.binary_blob)
+      }
     },
   }
 

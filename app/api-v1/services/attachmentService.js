@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { insertAttachment } = require('../../db')
+const { insertAttachment, getAttachmentByIdDb } = require('../../db')
 const { HttpResponseError } = require('../../utils/errors')
 
 const createAttachmentFromFile = async (file) => {
@@ -17,7 +17,14 @@ const createAttachment = async (name, buffer) => {
   return attachment
 }
 
+async function getAttachmentByID(id) {
+  const [attachmentResult] = await getAttachmentByIdDb(id)
+
+  return attachmentResult
+}
+
 module.exports = {
   createAttachment,
   createAttachmentFromFile,
+  getAttachmentByID,
 }
