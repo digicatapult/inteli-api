@@ -27,7 +27,10 @@ module.exports = {
       if (!id) throwErr(400, req)
 
       const transactions = await db.getAllRecipeTransactions(id)
+<<<<<<< HEAD
       if (transactions.length < 1) throwErr(404, req)
+=======
+>>>>>>> main
 
       return {
         status: 200,
@@ -41,7 +44,11 @@ module.exports = {
       const [transaction] = await db.client
         .from('recipe_transactions')
         .select('*')
+<<<<<<< HEAD
         .where({ id: creationId, token_id: id })
+=======
+        .where({ id: creationId, recipe_id: id })
+>>>>>>> main
       if (!transaction) throwErr(404, req)
 
       return {
@@ -71,7 +78,7 @@ module.exports = {
         .insert({
           token_id: token[0],
           recipe_id: id,
-          status: 'submitted',
+          status: 'Submitted',
         })
         .returning(['id'])
         .then((t) => t[0])

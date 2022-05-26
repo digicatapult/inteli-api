@@ -99,12 +99,13 @@ describe('recipe controller', () => {
       withGetTransactionsStub({}, [])
 
       beforeEach(async () => {
-        response = await getAllTransactions({ params: { id: 1 } })
+        response = await getAllTransactions({ params: { id: 'RECIPE00-9000-1000-8000-000000000000' } })
       })
 
-      it('throws not found error along with the message', () => {
-        expect(response).to.be.an.instanceOf(NotFoundError)
-        expect(response.message).to.be.equal('not found')
+      it('returns an empty list', () => {
+        const { status, response: body } = response
+        expect(status).to.be.equal(200)
+        expect(body).to.deep.equal([])
       })
     })
 
@@ -116,7 +117,7 @@ describe('recipe controller', () => {
         response = await getAllTransactions({ params: { id: recipeId } })
       })
 
-      it('returns array of transaction', () => {
+      it('returns an array of transactions', () => {
         const { status, response: body } = response
         expect(status).to.be.equal(200)
         expect(body).to.deep.equal(listResponse)
@@ -145,7 +146,7 @@ describe('recipe controller', () => {
     describe('if recipe does not exists in local db', () => {
       beforeEach(async () => {
         whereRecipeStub = stub().resolves([])
-        response = await submitTransaction({ params: { id: 1 } })
+        response = await submitTransaction({ params: { id: 'RECIPE00-9000-1000-8000-000000000000' } })
       })
 
       it('throws not found error along with the message', () => {
@@ -175,7 +176,7 @@ describe('recipe controller', () => {
         expect(insertTransactionStub.getCall(0).args).to.be.deep.equal([
           {
             recipe_id: 'recipe-id',
-            status: 'submitted',
+            status: 'Submitted',
             token_id: 20,
           },
         ])
@@ -226,7 +227,7 @@ describe('recipe controller', () => {
       expect(response).to.deep.equal({
         status: 200,
         creation: {
-          id: 'RECIPE00-0000-1000-8000-000000000000',
+          id: 'RECIPE00-9000-1000-8000-000000000000',
           price: '99.99',
           material: 'iron',
           supplier: 'supplier-address',

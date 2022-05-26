@@ -21,7 +21,22 @@ const getMemberByAlias = async (req, alias) => {
     throw new BadRequestError({ message: `Member "${alias}" does not exist` })
   }
 
-  throw new InternalError({ message: 'Internal server error', res })
+  throw new InternalError({ message: 'Internal server error' })
+}
+
+const getMemberBySelf = async (req) => {
+  const response = await fetch(`${URL_PREFIX}/self`, {
+    headers: {
+      Authorization: `Bearer ${req.token}`,
+    },
+  })
+
+  if (res.ok) {
+    const member = await res.json()
+    return member
+  }
+
+  throw new InternalError({ message: 'Internal server error' })
 }
 
 const getMemberByAddress = (...args) => getMemberByAlias(...args)
@@ -29,4 +44,5 @@ const getMemberByAddress = (...args) => getMemberByAlias(...args)
 module.exports = {
   getMemberByAlias,
   getMemberByAddress,
+  getMemberBySelf,
 }
