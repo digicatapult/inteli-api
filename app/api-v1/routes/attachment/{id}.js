@@ -1,15 +1,24 @@
 // eslint-disable-next-line no-unused-vars
-const { BadRequestError } = require('../../../utils/errors')
+const { BadRequestError, InternalError } = require('../../../utils/errors')
 module.exports = function (attachmentService) {
   const doc = {
     GET: async function (req, res) {
+      const { validate: uuidValidate } = require('uuid')
+      if (!uuidValidate(req.params.id)) {
+        throw new BadRequestError({ message: 'Id not valid uuid format' })
+      }
+
       const response = await attachmentService.getAttachmentByID(req.params.id)
 
       if (req.headers.accept.includes('json') && response.filename === 'json') {
-        const json = JSON.parse(response.binary_blob)
-        res.status(200).json(json)
+        try {
+          const json = JSON.parse(response.binary_blob)
+          res.status(200).json(json)
+        } catch (error) {
+          throw new InternalError({ message: error })
+        }
       } else if (req.headers.accept.includes('json') && response.filename != 'json') {
-        throw new BadRequestError({ message: 'Filename does not match JSON' })
+        throw new BadRequestError({ message: 'Not a JSON file' })
       } else {
         res.status(200)
         res.set({
