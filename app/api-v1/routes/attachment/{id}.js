@@ -1,15 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 const { BadRequestError, InternalError, NotAcceptableError } = require('../../../utils/errors')
 const { parseAccept } = require('../../../utils/parseAcceptHeader')
-const { validate: uuidValidate } = require('uuid')
 
 module.exports = function (attachmentService) {
   const doc = {
     GET: async function (req, res) {
-      if (!uuidValidate(req.params.id)) {
-        throw new BadRequestError({ message: 'Id not valid uuid format' })
-      }
-
       const response = await attachmentService.getAttachmentByID(req.params.id)
       const filename = response.filename
       const orderedAccept = parseAccept(req.headers.accept)

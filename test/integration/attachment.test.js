@@ -103,4 +103,16 @@ describe('attachments', function () {
     const response = await getAttachmentRouteJSON(attachment, app, authToken)
     expect(response.status).to.equal(406)
   })
+
+  it('should return 404 when rquesting incorrect ID', async function () {
+    const attachment = '00000000-0000-1000-8000-000000000002'
+    const response = await getAttachmentRouteOctet(attachment, app, authToken)
+    expect(response.status).to.equal(404)
+  })
+
+  it('should return 400 when rquesting incorrect ID', async function () {
+    const attachment = 'invalid'
+    const response = await getAttachmentRouteOctet(attachment, app, authToken)
+    expect(response.status).to.equal(400)
+  })
 })
