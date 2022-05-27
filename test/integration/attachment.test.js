@@ -4,9 +4,12 @@ const { expect } = require('chai')
 
 const { createHttpServer } = require('../../app/server')
 const { postAttachment, postAttachmentNoFile, postAttachmentJSON } = require('../helper/routeHelper')
-const { AUTH_ISSUER, AUTH_AUDIENCE, FILE_UPLOAD_SIZE_LIMIT_BYTES } = require('../../app/env')
+const { AUTH_ISSUER, AUTH_AUDIENCE, FILE_UPLOAD_SIZE_LIMIT_BYTES, AUTH_TYPE } = require('../../app/env')
 
-describe('attachments', function () {
+const describeAuthOnly = AUTH_TYPE === 'JWT' ? describe : describe.skip
+const describeNoAuthOnly = AUTH_TYPE === 'NONE' ? describe : describe.skip
+
+describeAuthOnly('attachments - authenticated', function () {
   let app
   let authToken
   let jwksMock
@@ -75,5 +78,24 @@ describe('attachments', function () {
 
     expect(response.status).to.equal(400)
     expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
+  })
+})
+
+describeNoAuthOnly('attachments - no auth', function () {
+  let app
+
+  before(async function () {
+    app = await createHttpServer()
+  })
+
+  it('should return 201 - file uploaded', async function () {
+    const size = 100
+    const filename = 'test.pdf'
+    const response = await postAttachment(app, Buffer.from('a'.repeat(size)), filename, null)
+
+    expect(response.status).to.equal(201)
+    expect(response.body).to.have.property('id')
+    expect(response.body.filename).to.equal(filename)
+    expect(response.body.size).to.equal(size)
   })
 })

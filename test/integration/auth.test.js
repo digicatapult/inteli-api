@@ -6,8 +6,11 @@ const { createHttpServer } = require('../../app/server')
 const { postAttachment } = require('../helper/routeHelper')
 const { getAuthToken } = require('../helper/auth')
 const { lastTokenId } = require('../../app/api-v1/services/dscpApiService')
+const { AUTH_TYPE } = require('../../app/env')
 
-describe('authentication', function () {
+const describeAuthOnly = AUTH_TYPE === 'JWT' ? describe : describe.skip
+
+describeAuthOnly('authentication', function () {
   let app
 
   before(async function () {

@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { BadRequestError } = require('../../utils/errors')
+const { getDefaultSecurity } = require('../../utils/auth')
+
 module.exports = function (orderService, identityService) {
   const doc = {
     GET: async function (req, res) {
@@ -57,7 +59,7 @@ module.exports = function (orderService, identityService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['order'],
   }
 
@@ -104,7 +106,7 @@ module.exports = function (orderService, identityService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['order'],
   }
 

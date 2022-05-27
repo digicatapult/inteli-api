@@ -1,3 +1,5 @@
+const { getDefaultSecurity } = require('../../../../../utils/auth')
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (orderService) {
   const doc = {
@@ -62,7 +64,7 @@ module.exports = function (orderService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['order'],
   }
 

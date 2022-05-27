@@ -1,3 +1,5 @@
+const { getDefaultSecurity } = require('../../../utils/auth')
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (recipeService) {
   const doc = {
@@ -55,7 +57,7 @@ module.exports = function (recipeService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['recipe'],
   }
 

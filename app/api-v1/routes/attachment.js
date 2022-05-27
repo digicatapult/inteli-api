@@ -1,5 +1,6 @@
 const logger = require('../../utils/Logger')
 const { BadRequestError } = require('../../utils/errors')
+const { getDefaultSecurity } = require('../../utils/auth')
 
 module.exports = function (attachmentService) {
   const doc = {
@@ -54,7 +55,7 @@ module.exports = function (attachmentService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['attachment'],
   }
 
@@ -123,7 +124,7 @@ module.exports = function (attachmentService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['attachment'],
   }
 

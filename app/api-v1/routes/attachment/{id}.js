@@ -1,3 +1,5 @@
+const { getDefaultSecurity } = require('../../../utils/auth')
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (attachmentService) {
   const doc = {
@@ -61,7 +63,7 @@ module.exports = function (attachmentService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['attachment'],
   }
 

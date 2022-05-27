@@ -1,3 +1,5 @@
+const { getDefaultSecurity } = require('../../../../../utils/auth')
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (partService) {
   const doc = {
@@ -62,7 +64,7 @@ module.exports = function (partService) {
         },
       },
     },
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['part'],
   }
 
