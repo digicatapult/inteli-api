@@ -177,6 +177,7 @@ describe('recipe controller', () => {
           {
             recipe_id: 'recipe-id',
             status: 'Submitted',
+            type: 'Creation',
           },
         ])
       })

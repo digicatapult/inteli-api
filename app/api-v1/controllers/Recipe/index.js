@@ -58,6 +58,7 @@ module.exports = {
         .insert({
           recipe_id: id,
           status: 'Submitted',
+          type: 'Creation',
         })
         .returning(['id'])
         .then((t) => t[0])
