@@ -22,7 +22,7 @@ describe('ParseAccept', function () {
   it('should return [ application/json, app;ication/octet-stream, application/*]', function () {
     expect(parseAccept('application/json, application/octet-stream;q=1, application/*')).deep.equal([
       'application/json',
-      'application/octect-stream',
+      'application/octet-stream',
       'application/*',
     ])
   })
