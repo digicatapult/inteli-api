@@ -34,14 +34,15 @@ module.exports = async () => {
       alloy: 'TEST-alloy',
       price: '99.99',
       required_certs: JSON.stringify([{ description: 'TEST-certificate' }]),
-      supplier: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutAA',
+      supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+      owner: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
     })
     .returning(['id'])
 
   await db.client('recipe_transactions').insert({
     recipe_id: recipe.id,
     type: 'Creation',
-    status: 'Accepted',
+    status: 'InBlock',
     created_at: '2020-10-10',
   })
 
