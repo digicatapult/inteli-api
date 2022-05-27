@@ -19,14 +19,17 @@ describe('ParseAccept', function () {
     expect(parseAccept('application/json, application/*;q=0.9')).deep.equal(['application/json', 'application/*'])
   })
 
-  //  Fails when set like this, octet-stream;q=1 should have priority and come first but it doesn't
-  //   it('should return [ application/octet-stream, app;ication/json, application/*]', function () {
-  //     expect(parseAccept('application/json, application/octet-stream;q=1, application/*')).deep.equal([
-  //       'application/json',
-  //       'application/octet-stream',
-  //       'application/*',
-  //     ])
-  //   })
+  it('should return [ application/json, app;ication//*, application/octect-stream]', function () {
+    expect(parseAccept('application/json, application/octet-stream;q=0.1, application/*')).deep.equal([
+      'application/json',
+      'application/*',
+      'application/octet-stream',
+    ])
+  })
+
+  it('should return [ application/json, application/*]', function () {
+    expect(parseAccept('application/json;q=0.9, application/*')).deep.equal(['application/*', 'application/json'])
+  })
 
   it('should return [ application/json, application/octet-stream, application/*]', function () {
     expect(parseAccept('application/json, application/*, application/octet-stream')).deep.equal([
