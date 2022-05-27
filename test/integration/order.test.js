@@ -163,16 +163,5 @@ describeNoAuthOnly('order - no auth', function () {
       expect(response.body.items).to.contain('10000000-0000-1000-8000-000000000000')
       expect(response.status).to.equal(201)
     })
-
-    test('POST Order with more than one item - 201', async function () {
-      const newProject = {
-        supplier: 'valid-1',
-        requiredBy: new Date().toISOString(),
-        items: ['10000000-0000-1000-8000-000000000000', '10000000-0000-1000-8000-000000000000'],
-      }
-
-      const response = await postOrderRoute(newProject, app, null)
-      expect(response.status).to.equal(201)
-    })
   })
 })
