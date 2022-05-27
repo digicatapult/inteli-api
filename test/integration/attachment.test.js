@@ -1,10 +1,17 @@
 const createJWKSMock = require('mock-jwks').default
 const { describe, before, it, after } = require('mocha')
 const { expect } = require('chai')
+const seed = require('../seeds/recipes')
 
 const { createHttpServer } = require('../../app/server')
-const { postAttachment, postAttachmentNoFile, postAttachmentJSON } = require('../helper/routeHelper')
 const { AUTH_ISSUER, AUTH_AUDIENCE, FILE_UPLOAD_SIZE_LIMIT_BYTES, AUTH_TYPE } = require('../../app/env')
+const {
+  postAttachment,
+  postAttachmentNoFile,
+  postAttachmentJSON,
+  getAttachmentRouteJSON,
+  getAttachmentRouteOctet,
+} = require('../helper/routeHelper')
 
 const describeAuthOnly = AUTH_TYPE === 'JWT' ? describe : describe.skip
 const describeNoAuthOnly = AUTH_TYPE === 'NONE' ? describe : describe.skip
@@ -15,6 +22,7 @@ describeAuthOnly('attachments - authenticated', function () {
   let jwksMock
 
   before(async function () {
+    await seed()
     app = await createHttpServer()
     jwksMock = createJWKSMock(AUTH_ISSUER)
     jwksMock.start()
@@ -78,6 +86,37 @@ describeAuthOnly('attachments - authenticated', function () {
 
     expect(response.status).to.equal(400)
     expect(response.error.text).to.equal('Unexpected token t in JSON at position 0')
+  })
+
+  it('should return from the JSON route', async function () {
+    const attachment = '00000000-0000-1000-9000-000000000001'
+    const response = await getAttachmentRouteJSON(attachment, app, authToken)
+    expect(response.status).to.equal(200)
+    expect(response.body).deep.equal({ 'First Item': 'Test Data' })
+  })
+
+  it('should return from the octet route', async function () {
+    const attachment = '00000000-0000-1000-8000-000000000001'
+    const response = await getAttachmentRouteOctet(attachment, app, authToken)
+    expect(response.status).to.equal(200)
+  })
+
+  it('should return 406 when rquesting json from the octet route', async function () {
+    const attachment = '00000000-0000-1000-8000-000000000001'
+    const response = await getAttachmentRouteJSON(attachment, app, authToken)
+    expect(response.status).to.equal(406)
+  })
+
+  it('should return 404 when rquesting incorrect ID', async function () {
+    const attachment = '00000000-0000-1000-8000-000000000002'
+    const response = await getAttachmentRouteOctet(attachment, app, authToken)
+    expect(response.status).to.equal(404)
+  })
+
+  it('should return 400 when rquesting incorrect ID', async function () {
+    const attachment = 'invalid'
+    const response = await getAttachmentRouteOctet(attachment, app, authToken)
+    expect(response.status).to.equal(400)
   })
 })
 
