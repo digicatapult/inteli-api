@@ -160,7 +160,6 @@ async function getAttachmentRouteOctet(id, { app }, token) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/attachment/${id}`)
     .set('Accept', 'application/octet-stream')
-    .set('Content-Type', 'application/octet-stream')
     .set('Authorization', `Bearer ${token}`)
     .send()
     .then((response) => {
@@ -176,7 +175,6 @@ async function getAllRecipeTransactions({ app }, token, recipeId) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/recipe/${recipeId}/creation`)
     .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
     .set('Authorization', `Bearer ${token}`)
     .then((response) => {
       return response
