@@ -56,27 +56,6 @@ module.exports = function (attachmentService) {
           throw new NotAcceptableError({ message: 'Client file request not supported' })
         }
       }
-
-      if (req.headers.accept.includes('json') && response.filename === 'json') {
-        try {
-          const json = JSON.parse(response.binary_blob)
-          res.status(200).json(json)
-        } catch (error) {
-          throw new InternalError({ message: error })
-        }
-      } else if (req.headers.accept.includes('json') && response.filename != 'json') {
-        throw new BadRequestError({ message: 'Not a JSON file' })
-      } else {
-        res.status(200)
-        res.set({
-          immutable: true,
-          maxAge: 365 * 24 * 60 * 60 * 1000,
-          'content-disposition': `attachment; filename="${response.filename}"`,
-          'access-control-expose-headers': 'content-disposition',
-          'content-type': 'application/octet-stream',
-        })
-        res.send(response.binary_blob)
-      }
     },
   }
 
