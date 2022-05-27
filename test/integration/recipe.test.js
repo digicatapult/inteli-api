@@ -151,6 +151,7 @@ describeAuthOnly('recipes - authenticated', function () {
     setupIdentityMock()
 
     after(async function () {
+      await cleanup()
       await jwksMock.stop()
     })
 
@@ -206,52 +207,16 @@ describeAuthOnly('recipes - authenticated', function () {
 })
 
 describeNoAuthOnly('recipes - no auth', function () {
-  describe('POST recipes', function () {
-    this.timeout(5000)
+  describe('POST + GET recipes', function () {
     let app
 
-    before(async function () {
+    before(async () => {
       await seed()
       app = await createHttpServer()
     })
 
     after(async function () {
       await cleanup()
-    })
-
-    setupIdentityMock()
-
-    it('should accept valid body', async function () {
-      const newRecipe = {
-        externalId: 'foobar3000',
-        name: 'foobar3000',
-        imageAttachmentId: '00000000-0000-1000-8000-000000000000',
-        material: 'foobar3000',
-        alloy: 'foobar3000',
-        price: 'foobar3000',
-        requiredCerts: [{ description: 'foobar3000' }],
-        supplier: 'valid-1',
-      }
-
-      const response = await postRecipeRoute(newRecipe, app, null)
-      expect(response.status).to.equal(201)
-      const { id: responseId, ...responseRest } = response.body
-      expect(responseId).to.match(
-        /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
-      )
-      expect(responseRest).to.deep.equal({
-        ...newRecipe,
-        owner: 'valid-2',
-      })
-    })
-  })
-
-  describe('GET recipes', function () {
-    let app
-
-    before(async () => {
-      await seed()
-      app = await createHttpServer()
     })
 
     setupIdentityMock()
