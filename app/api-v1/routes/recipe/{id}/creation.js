@@ -70,7 +70,7 @@ module.exports = function () {
         name: 'id',
         allowEmptyValue: false,
         schema: {
-          $ref: '#/components/schemas/ObjectReference',
+          $ref: '#/components/schemas/ChainAction',
         },
       },
     ],
