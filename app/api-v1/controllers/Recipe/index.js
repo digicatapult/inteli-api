@@ -40,10 +40,15 @@ module.exports = {
       const { id } = req.params
       if (!id) throw new BadRequestError('missing params')
 
-      const [recipe] = await db.client.from('recipes').select('*').where({ id })
+      const [recipe] = await db.client
+        .from('recipes')
+        .join('attachments', 'recipes.image_attachment_id', 'attachments.id')
+        .select()
+        .where({ 'recipes.id': id })
       if (!recipe) throw new NotFoundError('recipes')
 
       const payload = {
+        file: recipe.binary_blob,
         inputs: [],
         outputs: [
           {

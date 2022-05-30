@@ -13,6 +13,8 @@ exports.up = async (knex) => {
     def.string('purchaser', 48).notNullable()
     def
       .enu('status', ['Created', 'Submitted', 'Rejected', 'Amended', 'Accepted'], {
+        enumName: 'order_status',
+        existingType: true,
         useNative: true,
       })
       .notNullable()
