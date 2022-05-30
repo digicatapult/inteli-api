@@ -10,7 +10,6 @@ exports.up = async (knex) => {
   await knex.schema.alterTable('recipe_transactions', (def) => {
     def.enum('status', ['Submitted', 'InBlock', 'Finalised', 'Failed'], {
       enumName: 'tx_status',
-      existingType: true,
       useNative: true,
     })
   })
