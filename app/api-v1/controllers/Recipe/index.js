@@ -16,7 +16,7 @@ module.exports = {
         status: 200,
         response: transactions.map(({ id, created_at, status }) => ({
           id,
-          submittedAt: created_at,
+          submittedAt: new Date(created_at).toISOString(),
           status,
         })),
       }
