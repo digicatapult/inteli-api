@@ -16,7 +16,7 @@ module.exports = {
         status: 200,
         response: transactions.map(({ id, created_at, status }) => ({
           id,
-          submittedAt: created_at.toISOString(),
+          submittedAt: created_at,
           status,
         })),
       }
@@ -25,10 +25,7 @@ module.exports = {
       const { creationId, id } = req.params
       if (!id || !creationId) throw new BadRequestError('missing params')
 
-      const [transaction] = await db.client
-        .from('recipe_transactions')
-        .select('*')
-        .where({ id: creationId, recipe_id: id })
+      const [transaction] = await db.getRecipeTransaction(creationId, id)
       if (!transaction) throw new NotFoundError('recipe_transactions')
 
       return {
@@ -40,11 +37,7 @@ module.exports = {
       const { id } = req.params
       if (!id) throw new BadRequestError('missing params')
 
-      const [recipe] = await db.client
-        .from('recipes')
-        .join('attachments', 'recipes.image_attachment_id', 'attachments.id')
-        .select()
-        .where({ 'recipes.id': id })
+      const [recipe] = await db.getRecipe(id)
       if (!recipe) throw new NotFoundError('recipes')
 
       const payload = {
@@ -58,15 +51,7 @@ module.exports = {
         ],
       }
       runProcess(payload, req.token)
-      const transaction = await db.client
-        .from('recipe_transactions')
-        .insert({
-          recipe_id: id,
-          status: 'Submitted',
-          type: 'Creation',
-        })
-        .returning(['id'])
-        .then((t) => t[0])
+      const transaction = await db.insertRecipeTransaction(id)
 
       return {
         status: 200,
