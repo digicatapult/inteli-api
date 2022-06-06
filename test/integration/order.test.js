@@ -48,7 +48,7 @@ describeAuthOnly('order - authenticated', function () {
       expect(response.body.supplier).deep.equal(newOrder.supplier)
     })
 
-    test('POST Order - Check ID & Manufacturer', async function () {
+    test('POST Order - Check ID & Supplier', async function () {
       const newOrder = {
         supplier: 'valid-1',
         requiredBy: new Date().toISOString(),
