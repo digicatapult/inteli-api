@@ -7,3 +7,10 @@ describe('order.getAll', () => {
     expect(result.status).to.equal(500)
   })
 })
+
+describe('order.get', () => {
+  it('should resolve 500 error', async () => {
+    const result = await orderController.get()
+    expect(result.status).to.equal(500)
+  })
+})

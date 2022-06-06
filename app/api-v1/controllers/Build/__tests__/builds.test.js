@@ -8,6 +8,13 @@ describe('build.getAll', () => {
   })
 })
 
+describe('build.get', () => {
+  it('should resolve 500 error', async () => {
+    const result = await buildController.get()
+    expect(result.status).to.equal(500)
+  })
+})
+
 describe('build.create', () => {
   it('should resolve 500 error', async () => {
     const result = await buildController.create()
