@@ -94,7 +94,7 @@ describeAuthOnly('recipes - authenticated', function () {
 
       const response = await postRecipeRoute(newRecipe, app, authToken)
       expect(response.status).to.equal(400)
-      expect(response.text).to.equal('Bad Request: Attachment id not found')
+      expect(response.body).to.deep.equal({ message: 'Bad Request: Attachment id not found' })
     })
 
     it('invalid supplier name errors', async function () {
@@ -111,7 +111,7 @@ describeAuthOnly('recipes - authenticated', function () {
 
       const response = await postRecipeRoute(newRecipe, app, authToken)
       expect(response.status).to.equal(400)
-      expect(response.text).to.equal('Bad Request: Member "invalid" does not exist')
+      expect(response.body).to.deep.equal({ message: 'Bad Request: Member "invalid" does not exist' })
     })
 
     it('identity server error propagates', async function () {
@@ -128,7 +128,7 @@ describeAuthOnly('recipes - authenticated', function () {
 
       const response = await postRecipeRoute(newRecipe, app, authToken)
       expect(response.status).to.equal(500)
-      expect(response.text).to.equal('Internal server error')
+      expect(response.body).to.deep.equal({ message: 'Internal server error' })
     })
   })
 

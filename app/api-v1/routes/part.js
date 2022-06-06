@@ -21,16 +21,6 @@ module.exports = function () {
             },
           },
         },
-        default: {
-          description: 'An error occurred',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/responses/Error',
-              },
-            },
-          },
-        },
       },
       security: getDefaultSecurity(),
       tags: ['part'],
