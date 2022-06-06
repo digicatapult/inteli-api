@@ -159,8 +159,7 @@ jobs:
       - name: Setup dependencies
         run: docker-compose up -d
         env: 
-          IDENTITY_AUTH_TYPE: ${{ matrix.auth }}
-          DSCP_API_AUTH_TYPE: ${{ matrix.auth }}
+          AUTH_TYPE: ${{ matrix.auth }}
       - name: Sleep
         uses: kibertoad/wait-action@1.0.1
         with:

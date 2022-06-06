@@ -74,7 +74,7 @@ Once a test application and user is created, running integration tests locally r
 Start dependencies with `AUTH_TYPE: 'JWT'`:
 
 ```
-IDENTITY_AUTH_TYPE=JWT DSCP_API_AUTH_TYPE=JWT docker compose up -d
+AUTH_TYPE=JWT docker compose up -d
 ```
 
 Run tests:

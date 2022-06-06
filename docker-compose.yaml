@@ -47,7 +47,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - SELF_ADDRESS=5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
-      - AUTH_TYPE=${IDENTITY_AUTH_TYPE:-NONE}
+      - AUTH_TYPE=${AUTH_TYPE:-NONE}
 
   dscp-node:
     image: ghcr.io/digicatapult/dscp-node:latest
@@ -94,7 +94,7 @@ services:
       - AUTH_AUDIENCE=inteli-dev
       - AUTH_ISSUER=https://inteli.eu.auth0.com/
       - AUTH_TOKEN_URL=https://inteli.eu.auth0.com/oauth/token
-      - AUTH_TYPE=${DSCP_API_AUTH_TYPE:-NONE}
+      - AUTH_TYPE=${AUTH_TYPE:-NONE}
     restart: on-failure
 volumes:
   inteli-api-storage:
