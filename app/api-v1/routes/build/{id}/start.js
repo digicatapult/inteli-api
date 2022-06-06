@@ -1,4 +1,4 @@
-const buildController = require('../../../controllers/build')
+const buildController = require('../../../controllers/Build')
 const { buildValidatedJsonHandler } = require('../../../../utils/routeResponseValidator')
 
 // eslint-disable-next-line no-unused-vars
