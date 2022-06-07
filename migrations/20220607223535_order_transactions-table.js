@@ -14,7 +14,11 @@ exports.up = function(knex) {
       enumName: 'order_type',
       useNative: true,
     }).notNullable()
-    def.enu('status', ['Created', 'Submitted', 'Rejected', 'Amended', 'Accepted'])
+    def.enu('status', ['Created', 'Submitted', 'Rejected', 'Amended', 'Accepted'], {
+      enumName: 'tx_status',
+      existingType: true,
+      useNative: true,
+    })
     def.datetime('created_at').notNullable().default(now())
     def.datetime('updated_at').notNullable().default(now())
 
