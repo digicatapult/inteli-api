@@ -42,6 +42,7 @@ module.exports = {
 
       const payload = {
         file: recipe.binary_blob,
+        filename: recipe.filename,
         inputs: [],
         outputs: [
           {

@@ -9,7 +9,6 @@ module.exports = {
     const formData = new FormData()
     formData.append('request', JSON.stringify(payload))
     if (file) formData.append('file', file, payload.filename)
-
     const res = await fetch(url, {
       method: 'POST',
       body: formData,
