@@ -184,6 +184,20 @@ async function getAllRecipeTransactions({ app }, token, recipeId) {
     })
 }
 
+async function createRecipeTransaction({ app }, token, recipeId) {
+  return request(app)
+    .post(`/${API_MAJOR_VERSION}/recipe/${recipeId}/creation`)
+    .set('Accept', 'application/json')
+    .set('Authorization', `Bearer ${token}`)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      console.error(`getAllRecipeTransactions ${err}`)
+      return err
+    })
+}
+
 module.exports = {
   apiDocs,
   healthCheck,
@@ -197,4 +211,5 @@ module.exports = {
   postAttachmentJSON,
   getAttachmentRouteJSON,
   getAttachmentRouteOctet,
+  createRecipeTransaction,
 }

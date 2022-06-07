@@ -56,6 +56,7 @@ module.exports = {
 
       return {
         status: 200,
+        transactionId: transaction.id,
         message: `transaction ${transaction.id} has been created`,
       }
     },
