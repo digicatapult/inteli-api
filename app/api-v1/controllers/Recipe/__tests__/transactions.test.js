@@ -178,6 +178,7 @@ describe('recipe controller', () => {
         expect(response).to.deep.equal({
           status: 200,
           message: 'transaction transaction-uuid has been created',
+          transactionId: 'transaction-uuid',
         })
       })
     })
