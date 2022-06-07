@@ -49,9 +49,13 @@ const getTransaction = async (req) => {
 describe('recipe controller', () => {
   let stubs = {}
   let response
+  let runProcessBody
 
   before(async () => {
-    nock('http://localhost:3001').post('/v3/run-process').reply(200, [20])
+    nock('http://localhost:3001').post('/v3/run-process', function(body) {
+      runProcessBody = body
+      return true
+    }).reply(200, [20])
   })
 
   afterEach(() => {
@@ -152,7 +156,10 @@ describe('recipe controller', () => {
 
     describe('happy path', () => {
       beforeEach(async () => {
-        nock('http://localhost:3001').post('/v3/run-process').reply(200, [20])
+        nock('http://localhost:3001').post('/v3/run-process', function(body) {
+          runProcessBody = body
+          return true
+        }).reply(200, [20])
         stubs.getRecipe.restore()
         stubs.insertTransaction.restore()
         stubs.getRecipe = stub(db, 'getRecipe').resolves([recipeExample])
@@ -164,10 +171,52 @@ describe('recipe controller', () => {
         stubs.getRecipe.restore()
       })
 
-      it('validates req params', () => {})
-
       it('checks if recipe is in local db', () => {
         expect(stubs.getRecipe.getCall(0).args[0]).to.deep.equal('recipe-id')
+      })
+      
+      it('calls runProcess with correct data', async () => {
+        const splitReqBody = runProcessBody.split('\n')
+        const dataHeader = splitReqBody[1]
+        const { inputs, outputs } = JSON.parse(splitReqBody[3])
+        const { roles, metadata } = outputs[0]
+
+        expect(dataHeader).to.equal('Content-Disposition: form-data; name="request"\r')
+        expect(inputs).to.deep.equal([])
+        expect(roles).to.deep.contain({
+          Owner: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        })
+        expect(metadata).to.deep.contain({
+          externalId: { type: 'LITERAL', value: 'TEST-externalId' },
+          name: { type: 'LITERAL', value: 'TEST-name' },
+          material: { type: 'LITERAL', value: 'TEST-material' },
+          alloy: { type: 'LITERAL', value: 'TEST-alloy' },
+          requiredCerts: { type: 'FILE', value: 'required_certs.json' },
+          image: { type: 'FILE', value: 'foo.jpg' },
+        })
+      })
+
+      it('calls runProcess with certificate data', async () => {
+        const splitReqBody = runProcessBody.split('\n')
+        const certificatesHeader1 = splitReqBody[5]
+        const certificatesHeader2 = splitReqBody[6]
+        const certificatesRequestBody = splitReqBody[8]
+
+        expect(certificatesHeader1).to.equal('Content-Disposition: form-data; name="file"; filename="required_certs.json"\r')
+        expect(certificatesHeader2).to.equal('Content-Type: application/json\r')
+        expect(certificatesRequestBody).to.equal('[{"description":"TEST-certificate"}]\r')
+      })
+
+      it('calls runProcess with image data', async () => {
+        const splitReqBody = runProcessBody.split('\n')
+
+        const imageHeader1 = splitReqBody[10]
+        const imageHeader2 = splitReqBody[11]
+        const imageRequestBody = splitReqBody[13]
+
+        expect(imageHeader1).to.equal('Content-Disposition: form-data; name="file"; filename="foo.jpg"\r')
+        expect(imageHeader2).to.equal('Content-Type: image/jpeg\r')
+        expect(imageRequestBody).to.equal('\x00\r')
       })
 
       it('inserts new transaction to local db', () => {

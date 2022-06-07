@@ -9,7 +9,7 @@ module.exports = {
     const formData = new FormData()
     formData.append('request', JSON.stringify(payload))
     if (requiredCerts) formData.append('file', requiredCerts, 'required_certs.json')
-    if (file) formData.append('file', file, payload.image.value)
+    if (file) formData.append('file', file, payload.outputs[0].metadata.image.value)
     const res = await fetch(url, {
       method: 'POST',
       body: formData,
