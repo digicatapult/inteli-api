@@ -42,7 +42,7 @@ module.exports = {
 
       const payload = {
         file: recipe.binary_blob,
-        filename: recipe.filename,
+        requiredCerts: Buffer.from(JSON.stringify(recipe.required_certs)),
         inputs: [],
         outputs: [
           {

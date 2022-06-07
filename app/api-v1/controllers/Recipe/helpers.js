@@ -3,7 +3,7 @@ const mapRecipeData = (data) => ({
   name: { type: 'LITERAL', value: data.name },
   material: { type: 'LITERAL', value: data.material },
   alloy: { type: 'LITERAL', value: data.alloy },
-  requiredCerts: { type: 'LITERAL', value: data.required_certs },
+  requiredCerts: { type: 'FILE', value: 'required_certs.json' },
   image: { type: 'FILE', value: data.filename },
 })
 
