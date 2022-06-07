@@ -50,10 +50,16 @@ class ItemNotFoundError extends HttpResponseError {
   }
 }
 
+class NotAcceptableError extends HttpResponseError {
+  constructor({ message }) {
+    super({ code: 406, message })
+  }
+}
+
 const handleErrors = (err, req, res, next) => {
   if (err instanceof HttpResponseError) {
     logger.warn(`Error in ${req.path} message: ${err.message}`, req)
-    res.status(err.code).send(err.message)
+    res.status(err.code).send({ message: err.message })
   }
   // openapi validation
   else if (err.errors) {
@@ -82,4 +88,5 @@ module.exports = {
   InternalError,
   RecipeDoesNotExistError,
   ItemNotFoundError,
+  NotAcceptableError,
 }

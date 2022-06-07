@@ -1,6 +1,7 @@
 const logger = require('../../utils/Logger')
 const { buildValidatedJsonHandler } = require('../../utils/routeResponseValidator')
 const { BadRequestError } = require('../../utils/errors')
+const { getDefaultSecurity } = require('../../utils/auth')
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (recipeService, identityService) {
@@ -46,18 +47,8 @@ module.exports = function (recipeService, identityService) {
               },
             },
           },
-          default: {
-            description: 'An error occurred',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/responses/Error',
-                },
-              },
-            },
-          },
         },
-        security: [{ bearerAuth: [] }],
+        security: getDefaultSecurity(),
         tags: ['recipe'],
       }
     ),
@@ -123,23 +114,13 @@ module.exports = function (recipeService, identityService) {
             content: {
               'application/json': {
                 schema: {
-                  $ref: '#/components/responses/BadRequestError',
-                },
-              },
-            },
-          },
-          default: {
-            description: 'An error occurred',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/responses/Error',
+                  $ref: '#/components/schemas/BadRequestError',
                 },
               },
             },
           },
         },
-        security: [{ bearerAuth: [] }],
+        security: getDefaultSecurity(),
         tags: ['recipe'],
       }
     ),

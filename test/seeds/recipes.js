@@ -7,8 +7,8 @@ const cleanup = async () => {
 
 const attachmentId = '00000000-0000-1000-8000-000000000000'
 
-module.exports = async () => {
-  await cleanup() // no need to export, it call it anyway...
+const seed = async () => {
+  await cleanup()
 
   await client('attachments').insert([
     {
@@ -20,6 +20,11 @@ module.exports = async () => {
       id: '00000000-0000-1000-8000-000000000001',
       filename: 'foo1.jpg',
       binary_blob: 9999999,
+    },
+    {
+      id: '00000000-0000-1000-9000-000000000001',
+      filename: 'json',
+      binary_blob: { 'First Item': 'Test Data' },
     },
   ])
   await client('recipes').insert({
@@ -34,4 +39,9 @@ module.exports = async () => {
     supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
     owner: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
   })
+}
+
+module.exports = {
+  cleanup,
+  seed,
 }
