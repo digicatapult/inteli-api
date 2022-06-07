@@ -153,10 +153,12 @@ describe('recipe controller', () => {
 
     describe('happy path', () => {
       beforeEach(async () => {
-        nock('http://localhost:3001').post('/v3/run-process', function(body) {
-          runProcessBody = body
-          return true
-        }).reply(200, [20])
+        nock('http://localhost:3001')
+          .post('/v3/run-process', function (body) {
+            runProcessBody = body
+            return true
+          })
+          .reply(200, [20])
         stubs.getRecipe.restore()
         stubs.insertTransaction.restore()
         stubs.getRecipe = stub(db, 'getRecipe').resolves([recipeExample])
@@ -172,7 +174,7 @@ describe('recipe controller', () => {
       it('checks if recipe is in local db', () => {
         expect(stubs.getRecipe.getCall(0).args[0]).to.deep.equal('recipe-id')
       })
-      
+
       it('calls runProcess with correct data', () => {
         const splitReqBody = runProcessBody.split('\n')
         const dataHeader = splitReqBody[1]
@@ -200,7 +202,9 @@ describe('recipe controller', () => {
         const certificatesHeader2 = splitReqBody[6]
         const certificatesRequestBody = splitReqBody[8]
 
-        expect(certificatesHeader1).to.equal('Content-Disposition: form-data; name="file"; filename="required_certs.json"\r')
+        expect(certificatesHeader1).to.equal(
+          'Content-Disposition: form-data; name="file"; filename="required_certs.json"\r'
+        )
         expect(certificatesHeader2).to.equal('Content-Type: application/json\r')
         expect(certificatesRequestBody).to.equal('[{"description":"TEST-certificate"}]\r')
       })
