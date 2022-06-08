@@ -41,7 +41,7 @@ module.exports = {
       if (!recipe) throw new NotFoundError('recipes')
 
       const payload = {
-        file: recipe.binary_blob,
+        image: recipe.binary_blob,
         requiredCerts: Buffer.from(JSON.stringify(recipe.required_certs)),
         inputs: [],
         outputs: [
