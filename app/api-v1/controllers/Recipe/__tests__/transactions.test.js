@@ -6,7 +6,7 @@ const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const db = require('../../../../db')
 const { transaction } = require('..')
 const { recipeExample, transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
-const { DSCP_API_HOST, DSCP_API_PORT  } = require('../../../../env')
+const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
 
 const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
 
