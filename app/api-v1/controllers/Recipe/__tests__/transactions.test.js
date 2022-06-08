@@ -192,7 +192,9 @@ describe('recipe controller', () => {
           material: { type: 'LITERAL', value: 'TEST-material' },
           alloy: { type: 'LITERAL', value: 'TEST-alloy' },
           requiredCerts: { type: 'FILE', value: 'required_certs.json' },
+          type: { type: 'LITERAL', value: 'RECIPE' },
           image: { type: 'FILE', value: 'foo.jpg' },
+          transactionId: { type: 'LITERAL', value: 'transaction-uuid' },
         })
       })
 
