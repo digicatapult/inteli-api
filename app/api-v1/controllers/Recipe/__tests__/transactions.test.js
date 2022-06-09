@@ -6,6 +6,9 @@ const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const db = require('../../../../db')
 const { transaction } = require('..')
 const { recipeExample, transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
+const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
+
+const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
 
 const postPayload = {
   params: {
@@ -52,7 +55,7 @@ describe('recipe controller', () => {
   let runProcessBody
 
   before(async () => {
-    nock('http://localhost:3001').post('/v3/run-process').reply(200, [20])
+    nock(dscpApiUrl).post('/v3/run-process').reply(200, [20])
   })
 
   afterEach(() => {
@@ -153,7 +156,7 @@ describe('recipe controller', () => {
 
     describe('happy path', () => {
       beforeEach(async () => {
-        nock('http://localhost:3001')
+        nock(dscpApiUrl)
           .post('/v3/run-process', function (body) {
             runProcessBody = body
             return true
@@ -192,7 +195,9 @@ describe('recipe controller', () => {
           material: { type: 'LITERAL', value: 'TEST-material' },
           alloy: { type: 'LITERAL', value: 'TEST-alloy' },
           requiredCerts: { type: 'FILE', value: 'required_certs.json' },
+          type: { type: 'LITERAL', value: 'RECIPE' },
           image: { type: 'FILE', value: 'foo.jpg' },
+          transactionId: { type: 'LITERAL', value: 'transaction-uuid' },
         })
       })
 

@@ -40,19 +40,19 @@ module.exports = {
       const [recipe] = await db.getRecipe(id)
       if (!recipe) throw new NotFoundError('recipes')
 
+      const transaction = await db.insertRecipeTransaction(id)
       const payload = {
-        file: recipe.binary_blob,
+        image: recipe.binary_blob,
         requiredCerts: Buffer.from(JSON.stringify(recipe.required_certs)),
         inputs: [],
         outputs: [
           {
             roles: { Owner: recipe.supplier },
-            metadata: mapRecipeData(recipe),
+            metadata: mapRecipeData({ ...recipe, transaction }),
           },
         ],
       }
       runProcess(payload, req.token)
-      const transaction = await db.insertRecipeTransaction(id)
 
       return {
         status: 200,
