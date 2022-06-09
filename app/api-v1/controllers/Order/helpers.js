@@ -1,6 +1,6 @@
 // TODO some helpers could be abstracted into a general place
 exports.mapOrderData = (data) => {
-  const recipes = data.recipes.reduce(({ id }, output) => {
+  const recipes = data.items.reduce((id, output) => {
     if (!id) return output
     return output[id] = { type: 'TOKEN_ID', value: id }
   }, {})
