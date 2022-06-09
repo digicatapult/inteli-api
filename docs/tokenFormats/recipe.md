@@ -29,6 +29,16 @@ A buyer submitted a recipe that describes how a part will be built by a supplier
 
 ```json
 {
+  "FixedNumberOfInputs": [
+    {
+      "num_inputs": 0
+    }
+  ],
+  "FixedNumberOfOutputs": [
+    {
+      "num_outputs": 1
+    }
+  ],
   "SenderHasOutputRole": [
     {
       "index": 0,
@@ -39,16 +49,6 @@ A buyer submitted a recipe that describes how a part will be built by a supplier
     {
       "index": 0,
       "role_key": "Supplier"
-    }
-  ],
-  "FixedNumberOfInputs": [
-    {
-      "num_inputs": 0
-    }
-  ],
-  "FixedNumberOfOutputs": [
-    {
-      "num_outputs": 1
     }
   ],
   "FixedOutputMetadataValue": [
