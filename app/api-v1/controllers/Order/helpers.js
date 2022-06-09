@@ -1,14 +1,15 @@
-exports.mapOrderData = (data) => ({
-  type: { type: 'LITERAL', value: data.type },
-  status: { type: 'LITERAL', value: data.status },
-  orderReference: { type: 'LITERAL', value: data.orderReference },
-  partId: { type: 'LITERAL', value: data.partId },
-  name: { type: 'LITERAL', value: data.name },
-  material: { type: 'LITERAL', value: data.material },
-  alloy: { type: 'LITERAL', value: data.alloy },
-  price: { type: 'LITERAL', value: data.price },
-  quantity: { type: 'LITERAL', value: data.quantity },
-  deliveryBy: { type: 'LITERAL', value: data.deliveryBy },
-  orderImage: { type: 'FILE', value: data.orderImage.fileName },
-  requiredCerts: { type: 'FILE', value: data.requiredCerts.fileName },
-})
+// TODO some helpers could be abstracted into a general place
+exports.mapOrderData = (data) => {
+  const recipes = data.recipes.reduce(({ id }, output) => {
+    if (!id) return output
+    return output[id] = { type: 'TOKEN_ID', value: id }
+  }, {})
+
+  return {
+    type: { type: 'LITERAL', value: 'ORDER' },
+    status: { type: 'LITERAL', value: data.status },
+    requiredBy: { type: 'LITERAL', value: data.requiredBy },
+    transactionId: { type: 'LITERAL', value: data.transaction.id },
+    ...recipes,
+  }
+}
