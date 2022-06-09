@@ -97,7 +97,7 @@ A supplier rejects an order along with amendment suggestions
 
 #### Inputs
 
-`[POST /order/{id}/submission]`
+`[/order/{id}/submission]`
 
 #### Outputs
 
@@ -188,6 +188,184 @@ A supplier rejects an order along with amendment suggestions
       "index": 0,
       "metadata_key": "recipe0",
       "metadata_value_type": "TokenId"
+    }
+  ]
+}
+```
+
+## POST /order/{id}/amendment
+
+A buyer agrees to amend an order following a supplier's rejection with amendment suggestions
+
+### Request body
+
+#### Inputs
+
+`[/order/{id}/rejection]`
+
+#### Outputs
+
+| Roles                | Metadata                    |
+| :------------------- | :-------------------------- |
+| Owner: `SupplierX`   | <Literal> type: `ORDER`     |
+| Buyer: `BAE`         | <Literal> status: `amended` |
+| Supplier:`SupplierX` |                             |
+
+### Restrictions
+
+```json
+{
+  "FixedNumberOfInputs": [
+    {
+      "num_inputs": 1
+    }
+  ],
+  "FixedInputMetadataValue": [
+    {
+      "index": 0,
+      "metadata_key": "type",
+      "metadata_value": "ORDER"
+    },
+    {
+      "index": 0,
+      "metadata_key": "status",
+      "metadata_value": "amended"
+    }
+  ],
+  "MatchInputOutputRole": [
+    {
+      "input_index": 0,
+      "input_role_key": "Buyer",
+      "output_index": 0,
+      "output_role_key": "Buyer"
+    },
+    {
+      "input_index": 0,
+      "input_role_key": "Supplier",
+      "output_index": 0,
+      "output_role_key": "Supplier"
+    }
+  ],
+  "MatchInputOutputMetadataValue": [
+    {
+      "input_index": 0,
+      "input_metadata_key": "type",
+      "output_index": 0,
+      "output_metadata_key": "type"
+    }
+  ],
+  "FixedNumberOfOutputs": [
+    {
+      "num_outputs": 1
+    }
+  ],
+  "SenderHasOutputRole": [
+    {
+      "index": 0,
+      "role_key": "Buyer"
+    }
+  ],
+  "FixedOutputMetadataValue": [
+    {
+      "index": 0,
+      "metadata_key": "status",
+      "metadata_value": "amended"
+    }
+  ]
+}
+```
+
+## POST /order/{id}/acceptance
+
+A supplier accepts an order
+
+### Request body
+
+#### Inputs
+
+`[/order/{id}/submission || /order/{id}/rejection]`
+
+#### Outputs
+
+| Roles                | Metadata                     |
+| :------------------- | :--------------------------- |
+| Owner: `BAE`         | <Literal> type: `ORDER`      |
+| Buyer: `BAE`         | <Literal> status: `accepted` |
+| Supplier:`SupplierX` |                              |
+
+### Restrictions
+
+```json
+{
+  "FixedNumberOfInputs": [
+    {
+      "num_inputs": 1
+    }
+  ],
+  "BinaryBoolean": [
+    {
+      "operator": "OR",
+      "restriction_a": {
+        "FixedInputMetadataValue": {
+          "index": 0,
+          "metadata_key": "status",
+          "metadata_value": "submitted"
+        }
+      },
+      "restriction_b": {
+        "FixedInputMetadataValue": {
+          "index": 0,
+          "metadata_key": "status",
+          "metadata_value": "amended"
+        }
+      }
+    }
+  ],
+  "FixedInputMetadataValue": [
+    {
+      "index": 0,
+      "metadata_key": "type",
+      "metadata_value": "ORDER"
+    }
+  ],
+  "MatchInputOutputRole": [
+    {
+      "input_index": 0,
+      "input_role_key": "Buyer",
+      "output_index": 0,
+      "output_role_key": "Buyer"
+    },
+    {
+      "input_index": 0,
+      "input_role_key": "Supplier",
+      "output_index": 0,
+      "output_role_key": "Supplier"
+    }
+  ],
+  "MatchInputOutputMetadataValue": [
+    {
+      "input_index": 0,
+      "input_metadata_key": "type",
+      "output_index": 0,
+      "output_metadata_key": "type"
+    }
+  ],
+  "FixedNumberOfOutputs": [
+    {
+      "num_outputs": 1
+    }
+  ],
+  "SenderHasOutputRole": [
+    {
+      "index": 0,
+      "role_key": "Supplier"
+    }
+  ],
+  "FixedOutputMetadataValue": [
+    {
+      "index": 0,
+      "metadata_key": "status",
+      "metadata_value": "accepted"
     }
   ]
 }
