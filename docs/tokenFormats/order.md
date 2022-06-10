@@ -1,10 +1,10 @@
 # Order
 
-Token formats and restrictions for the `Order` type
+Token formats and restrictions for the `Order` type.
 
 ## POST /order/{id}/submission
 
-A buyer submits an order consisting of 1-10 recipes from a supplier
+A buyer submits an order consisting of 1-10 recipes from a supplier.
 
 ### Request body
 
@@ -16,7 +16,7 @@ The latest token of each recipe in the order is consumed.
 #### Outputs
 
 `[RECIPE]`
-So that the recipe is available to be used again, a new token for each recipe in the order is created,
+So that the recipe is available to be used again, a new token for each recipe in the order is created.
 
 | Roles                | Metadata                 |
 | :------------------- | :----------------------- |
@@ -103,7 +103,7 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inp
 
 ## POST /order/{id}/rejection
 
-A supplier rejects an order along with amendment suggestions
+A supplier rejects an order, along with amendment suggestions.
 
 ### Request body
 
@@ -117,7 +117,7 @@ The latest token of each recipe in the order is consumed.
 #### Outputs
 
 `[RECIPE]`
-So that the recipe is available to be used again, a new token for each recipe in the order is created,
+So that the recipe is available to be used again, a new token for each recipe in the order is created.
 
 | Roles                | Metadata                 |
 | :------------------- | :----------------------- |
@@ -221,7 +221,7 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inp
 
 ## POST /order/{id}/amendment
 
-A buyer agrees to amend an order following a supplier's rejection with amendment suggestions
+A buyer agrees to amend an order following a supplier's rejection.
 
 ### Request body
 
@@ -303,13 +303,13 @@ A buyer agrees to amend an order following a supplier's rejection with amendment
 
 ## POST /order/{id}/acceptance
 
-A supplier accepts an order
+A supplier accepts an order.
 
 ### Request body
 
 #### Inputs
 
-`[/order/{id}/submission || /order/{id}/rejection]`
+`[/order/{id}/submission || /order/{id}/amendment]`
 
 #### Outputs
 
