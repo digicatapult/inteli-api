@@ -6,6 +6,10 @@ Token formats and restrictions for the `Order` type.
 
 A buyer submits an order consisting of 1-10 recipes from a supplier.
 
+| Inputs                      | Outputs                            |
+| :-------------------------- | :--------------------------------- |
+| Recipe0, Recipe1... RecipeN | Recipe0, Recipe1... RecipeN, Order |
+
 ### Request body
 
 #### Inputs
@@ -59,16 +63,6 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inp
       "role_key": "Supplier"
     }
   ],
-  "FixedNumberOfInputs": [
-    {
-      "num_inputs": 0
-    }
-  ],
-  "FixedNumberOfOutputs": [
-    {
-      "num_outputs": 1
-    }
-  ],
   "FixedOutputMetadataValue": [
     {
       "index": 0,
@@ -91,10 +85,89 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inp
       "index": 0,
       "metadata_key": "transactionId",
       "metadata_value_type": "Literal"
+    }
+  ]
+}
+```
+
+The following restrictions scale based on `N` number of recipes
+
+```json
+{
+  "SenderHasInputRole": [
+    {
+      "index": 0,
+      "role_key": "Buyer"
     },
+    //...
+    {
+      "index": "N",
+      "role_key": "Buyer"
+    }
+  ],
+  "FixedNumberOfInputs": [
+    {
+      "num_inputs": "N"
+    }
+  ],
+  "FixedNumberOfOutputs": [
+    {
+      "num_outputs": "N + 1"
+    }
+  ],
+  "MatchInputOutputRole": [
+    {
+      "input_index": 0,
+      "input_role_key": "Supplier",
+      "output_index": 0,
+      "output_role_key": "Supplier"
+    },
+    // ...
+    {
+      "input_index": "N",
+      "input_role_key": "Supplier",
+      "output_index": "N",
+      "output_role_key": "Supplier"
+    }
+  ],
+  "FixedInputMetadataValue": [
+    {
+      "index": 0,
+      "metadata_key": "type",
+      "metadata_value": "RECIPE"
+    },
+    // ...
+    {
+      "index": "N",
+      "metadata_key": "type",
+      "metadata_value": "RECIPE"
+    }
+  ],
+  "MatchInputOutputMetadataValue": [
+    {
+      "input_index": 0,
+      "input_metadata_key": "type",
+      "output_index": 0,
+      "output_metadata_key": "type"
+    },
+    // ...
+    {
+      "input_index": "N",
+      "input_metadata_key": "type",
+      "output_index": "N",
+      "output_metadata_key": "type"
+    }
+  ],
+  "FixedOutputMetadataValueType": [
     {
       "index": 0,
       "metadata_key": "recipe0",
+      "metadata_value_type": "TokenId"
+    },
+    // ...
+    {
+      "index": 0,
+      "metadata_key": "recipeN",
       "metadata_value_type": "TokenId"
     }
   ]
