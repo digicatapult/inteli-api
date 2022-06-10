@@ -10,9 +10,21 @@ A buyer submits an order consisting of 1-10 recipes from a supplier
 
 #### Inputs
 
-`[]`
+`[RECIPE]`
+The latest token of each recipe in the order is consumed.
 
 #### Outputs
+
+`[RECIPE]`
+So that the recipe is available to be used again, a new token for each recipe in the order is created,
+
+| Roles                | Metadata                 |
+| :------------------- | :----------------------- |
+| Owner: `BAE`         | <Literal> type: `RECIPE` |
+| Buyer: `BAE`         |                          |
+| Supplier:`SupplierX` |                          |
+
+The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inputs`.
 
 | Roles                | Metadata                                                        |
 | :------------------- | :-------------------------------------------------------------- |
@@ -99,7 +111,21 @@ A supplier rejects an order along with amendment suggestions
 
 `[/order/{id}/submission]`
 
+`[RECIPE]`
+The latest token of each recipe in the order is consumed.
+
 #### Outputs
+
+`[RECIPE]`
+So that the recipe is available to be used again, a new token for each recipe in the order is created,
+
+| Roles                | Metadata                 |
+| :------------------- | :----------------------- |
+| Owner: `BAE`         | <Literal> type: `RECIPE` |
+| Buyer: `BAE`         |                          |
+| Supplier:`SupplierX` |                          |
+
+The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inputs`.
 
 | Roles                | Metadata                            |
 | :------------------- | :---------------------------------- |
