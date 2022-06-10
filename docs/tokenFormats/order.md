@@ -101,7 +101,7 @@ The following restrictions scale based on `N` number of recipes
     },
     //...
     {
-      "index": "N",
+      "index": "N-1",
       "role_key": "Buyer"
     }
   ],
@@ -124,9 +124,9 @@ The following restrictions scale based on `N` number of recipes
     },
     // ...
     {
-      "input_index": "N",
+      "input_index": "N-1",
       "input_role_key": "Supplier",
-      "output_index": "N",
+      "output_index": "N-1",
       "output_role_key": "Supplier"
     }
   ],
@@ -138,7 +138,7 @@ The following restrictions scale based on `N` number of recipes
     },
     // ...
     {
-      "index": "N",
+      "index": "N-1",
       "metadata_key": "type",
       "metadata_value": "RECIPE"
     }
@@ -152,9 +152,9 @@ The following restrictions scale based on `N` number of recipes
     },
     // ...
     {
-      "input_index": "N",
+      "input_index": "N-1",
       "input_metadata_key": "type",
-      "output_index": "N",
+      "output_index": "N-1",
       "output_metadata_key": "type"
     }
   ],
