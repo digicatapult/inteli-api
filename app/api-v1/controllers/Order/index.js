@@ -2,11 +2,7 @@ const { runProcess } = require('../../../utils/dscp-api')
 const db = require('../../../db')
 const { mapOrderData } = require('./helpers')
 const idenity = require('../../services/identityService')
-const {
-  BadRequestError,
-  NotFoundError,
-  IdentityError,
-} = require('../../../utils/errors')
+const { BadRequestError, NotFoundError, IdentityError } = require('../../../utils/errors')
 
 module.exports = {
   getAll: async function () {

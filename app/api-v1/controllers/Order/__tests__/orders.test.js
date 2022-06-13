@@ -7,7 +7,6 @@ const db = require('../../../../db')
 const identifyService = require('../../../services/identityService')
 const { BadRequestError, NotFoundError, IdentityError } = require('../../../../utils/errors')
 const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
-const { idle_in_transaction_session_timeout } = require('pg/lib/defaults')
 
 const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
 const createTransaction = async (req) => {
@@ -89,7 +88,6 @@ describe('Order controller', () => {
           expect(response.message).to.be.equal('Bad Request: missing params')
         })
 
-
         it('does not perform any database queries', () => {
           expect(stubs.insertTransaction.calledOnce).to.equal(false)
           expect(stubs.getOrder.calledOnce).to.equal(false)
@@ -116,7 +114,7 @@ describe('Order controller', () => {
         })
 
         it('does not make request to the idenity service', () => {
-          expect(stubs.getSelf.calledOnce).to.equal(false) 
+          expect(stubs.getSelf.calledOnce).to.equal(false)
         })
 
         it('does not call runProcess', () => {
@@ -127,7 +125,6 @@ describe('Order controller', () => {
         it('does not attempt to insert a order_transaction', () => {
           expect(stubs.insertTransaction.calledOnce).to.equal(false)
         })
-
       })
 
       describe('if for any reason identity fails or selfAddress ir undefined', () => {
@@ -169,7 +166,9 @@ describe('Order controller', () => {
           stubs.insertTransaction.restore()
           stubs.getOrder.restore()
           stubs.getSelf.restore()
-          stubs.getSelf = stub(identifyService, 'getMemberBySelf').resolves('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
+          stubs.getSelf = stub(identifyService, 'getMemberBySelf').resolves(
+            '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty'
+          )
           stubs.insertTransaction = stub(db, 'insertOrderTransaction').resolves({
             id: '50000000-0000-1000-3000-000000000001',
             status: 'Submitted',
