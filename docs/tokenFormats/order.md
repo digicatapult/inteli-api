@@ -105,7 +105,7 @@ The new `Order` token will have the following restrictions:
 }
 ```
 
-For the range of recipe input+output tokens in the order, the following restrictions will need to apply:
+For the range of `Recipe` input+output tokens in the order, the following restrictions will apply:
 
 ```json
 {
@@ -183,7 +183,7 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>`from the `inpu
 
 ### Restrictions
 
-The burning of the old and creation of the new `Order` token will have the following restrictions:
+Burning the old + creating the new `Order` token will have the following restrictions:
 
 ```json
 {
@@ -255,7 +255,7 @@ The burning of the old and creation of the new `Order` token will have the follo
 }
 ```
 
-For the range of recipe input+output tokens in the order, the following restrictions will need to apply:
+For the range of `Recipe` input+output tokens in the order, the following restrictions will apply:
 
 ```json
 {
@@ -373,7 +373,7 @@ A buyer agrees to amend an order following a supplier's rejection.
 
 ## POST /order/{id}/acceptance
 
-A supplier accepts an order.
+A supplier accepts an order, signifying their intent to fulfil the order.
 
 | Inputs | Outputs |
 | :----- | :------ |
