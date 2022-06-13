@@ -22,30 +22,30 @@ The latest token of each recipe in the order is consumed.
 `[RECIPE]`
 So that the recipe is available to be used again, a new token for each recipe in the order is created.
 
-| Roles                | Metadata                 |
-| :------------------- | :----------------------- |
-| Owner: `BAE`         | <Literal> type: `RECIPE` |
-| Buyer: `BAE`         |                          |
-| Supplier:`SupplierX` |                          |
+| Roles                | Metadata                   |
+| :------------------- | :------------------------- |
+| Owner: `BAE`         | `<Literal>` type: `RECIPE` |
+| Buyer: `BAE`         |                            |
+| Supplier:`SupplierX` |                            |
 
-The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inputs`.
+The `ORDER` token. Each `recipeN: `<TokenId>`matches a`<TokenId>``from the`inputs`.
 
-| Roles                | Metadata                                                        |
-| :------------------- | :-------------------------------------------------------------- |
-| Owner: `SupplierX`   | <Literal> type: `ORDER`                                         |
-| Buyer: `BAE`         | <Literal> status: `submitted`                                   |
-| Supplier:`SupplierX` | <Literal> transactionId: `09000000-0000-1000-8000-000000000000` |
-|                      | <Literal> requiredBy: `2023-01-01`                              |
-|                      | <TokenId> recipe0: `100`                                        |
-|                      | <TokenId> recipe1: `112` (optional)                             |
-|                      | <TokenId> recipe2: `163` (optional)                             |
-|                      | <TokenId> recipe3: `141` (optional)                             |
-|                      | <TokenId> recipe4: `95` (optional)                              |
-|                      | <TokenId> recipe5: `156` (optional)                             |
-|                      | <TokenId> recipe6: `47` (optional)                              |
-|                      | <TokenId> recipe7: `108` (optional)                             |
-|                      | <TokenId> recipe8: `34` (optional)                              |
-|                      | <TokenId> recipe9: `12` (optional)                              |
+| Roles                | Metadata                                                          |
+| :------------------- | :---------------------------------------------------------------- |
+| Owner: `SupplierX`   | `<Literal>` type: `ORDER`                                         |
+| Buyer: `BAE`         | `<Literal>` status: `submitted`                                   |
+| Supplier:`SupplierX` | `<Literal>` transactionId: `09000000-0000-1000-8000-000000000000` |
+|                      | `<Literal>` requiredBy: `2023-01-01`                              |
+|                      | `<TokenId>` recipe0: `100`                                        |
+|                      | `<TokenId>` recipe1: `112` (optional)                             |
+|                      | `<TokenId>` recipe2: `163` (optional)                             |
+|                      | `<TokenId>` recipe3: `141` (optional)                             |
+|                      | `<TokenId>` recipe4: `95` (optional)                              |
+|                      | `<TokenId>` recipe5: `156` (optional)                             |
+|                      | `<TokenId>` recipe6: `47` (optional)                              |
+|                      | `<TokenId>` recipe7: `108` (optional)                             |
+|                      | `<TokenId>` recipe8: `34` (optional)                              |
+|                      | `<TokenId>` recipe9: `12` (optional)                              |
 
 ### Restrictions
 
@@ -119,14 +119,14 @@ The following restrictions scale based on `N` number of recipes
     {
       "input_index": 0,
       "input_role_key": "Supplier",
-      "output_index": 0,
+      "output_index": 1,
       "output_role_key": "Supplier"
     },
     // ...
     {
       "input_index": "N-1",
       "input_role_key": "Supplier",
-      "output_index": "N-1",
+      "output_index": "N",
       "output_role_key": "Supplier"
     }
   ],
@@ -147,14 +147,14 @@ The following restrictions scale based on `N` number of recipes
     {
       "input_index": 0,
       "input_metadata_key": "type",
-      "output_index": 0,
+      "output_index": 1,
       "output_metadata_key": "type"
     },
     // ...
     {
       "input_index": "N-1",
       "input_metadata_key": "type",
-      "output_index": "N-1",
+      "output_index": "N",
       "output_metadata_key": "type"
     }
   ],
@@ -182,7 +182,7 @@ A supplier rejects an order, along with amendment suggestions.
 
 #### Inputs
 
-`[/order/{id}/submission]`
+`/order/{id}/submission`
 
 `[RECIPE]`
 The latest token of each recipe in the order is consumed.
@@ -192,29 +192,29 @@ The latest token of each recipe in the order is consumed.
 `[RECIPE]`
 So that the recipe is available to be used again, a new token for each recipe in the order is created.
 
-| Roles                | Metadata                 |
-| :------------------- | :----------------------- |
-| Owner: `BAE`         | <Literal> type: `RECIPE` |
-| Buyer: `BAE`         |                          |
-| Supplier:`SupplierX` |                          |
+| Roles                | Metadata                   |
+| :------------------- | :------------------------- |
+| Owner: `BAE`         | `<Literal>` type: `RECIPE` |
+| Buyer: `BAE`         |                            |
+| Supplier:`SupplierX` |                            |
 
-The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inputs`.
+The `ORDER` token. Each `recipeN: `<TokenId>`matches a`<TokenId>``from the`inputs`.
 
-| Roles                | Metadata                            |
-| :------------------- | :---------------------------------- |
-| Owner: `BAE`         | <Literal> type: `ORDER`             |
-| Buyer: `BAE`         | <Literal> status: `rejected`        |
-| Supplier:`SupplierX` | <Literal> requiredBy: `2023-01-01`  |
-|                      | <TokenId> recipe0: `100`            |
-|                      | <TokenId> recipe1: `112` (optional) |
-|                      | <TokenId> recipe2: `163` (optional) |
-|                      | <TokenId> recipe3: `141` (optional) |
-|                      | <TokenId> recipe4: `95` (optional)  |
-|                      | <TokenId> recipe5: `156` (optional) |
-|                      | <TokenId> recipe6: `47` (optional)  |
-|                      | <TokenId> recipe7: `108` (optional) |
-|                      | <TokenId> recipe8: `34` (optional)  |
-|                      | <TokenId> recipe9: `12` (optional)  |
+| Roles                | Metadata                              |
+| :------------------- | :------------------------------------ |
+| Owner: `BAE`         | `<Literal>` type: `ORDER`             |
+| Buyer: `BAE`         | `<Literal>` status: `rejected`        |
+| Supplier:`SupplierX` | `<Literal>` requiredBy: `2023-01-01`  |
+|                      | `<TokenId>` recipe0: `100`            |
+|                      | `<TokenId>` recipe1: `112` (optional) |
+|                      | `<TokenId>` recipe2: `163` (optional) |
+|                      | `<TokenId>` recipe3: `141` (optional) |
+|                      | `<TokenId>` recipe4: `95` (optional)  |
+|                      | `<TokenId>` recipe5: `156` (optional) |
+|                      | `<TokenId>` recipe6: `47` (optional)  |
+|                      | `<TokenId>` recipe7: `108` (optional) |
+|                      | `<TokenId>` recipe8: `34` (optional)  |
+|                      | `<TokenId>` recipe9: `12` (optional)  |
 
 ### Restrictions
 
@@ -300,15 +300,15 @@ A buyer agrees to amend an order following a supplier's rejection.
 
 #### Inputs
 
-`[/order/{id}/rejection]`
+`/order/{id}/rejection`
 
 #### Outputs
 
-| Roles                | Metadata                    |
-| :------------------- | :-------------------------- |
-| Owner: `SupplierX`   | <Literal> type: `ORDER`     |
-| Buyer: `BAE`         | <Literal> status: `amended` |
-| Supplier:`SupplierX` |                             |
+| Roles                | Metadata                      |
+| :------------------- | :---------------------------- |
+| Owner: `SupplierX`   | `<Literal>` type: `ORDER`     |
+| Buyer: `BAE`         | `<Literal>` status: `amended` |
+| Supplier:`SupplierX` |                               |
 
 ### Restrictions
 
@@ -382,15 +382,15 @@ A supplier accepts an order.
 
 #### Inputs
 
-`[/order/{id}/submission || /order/{id}/amendment]`
+`/order/{id}/submission || /order/{id}/amendment`
 
 #### Outputs
 
-| Roles                | Metadata                     |
-| :------------------- | :--------------------------- |
-| Owner: `BAE`         | <Literal> type: `ORDER`      |
-| Buyer: `BAE`         | <Literal> status: `accepted` |
-| Supplier:`SupplierX` |                              |
+| Roles                | Metadata                       |
+| :------------------- | :----------------------------- |
+| Owner: `BAE`         | `<Literal>` type: `ORDER`      |
+| Buyer: `BAE`         | `<Literal>` status: `accepted` |
+| Supplier:`SupplierX` |                                |
 
 ### Restrictions
 
