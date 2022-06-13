@@ -1,6 +1,6 @@
 const fs = require('fs')
-const { insertAttachment, getAttachmentByIdDb } = require('../../db')
-const { HttpResponseError, NotFoundError } = require('../../utils/errors')
+const { insertAttachment } = require('../../db')
+const { HttpResponseError } = require('../../utils/errors')
 
 const createAttachmentFromFile = async (file) => {
   return new Promise((resolve) => {
