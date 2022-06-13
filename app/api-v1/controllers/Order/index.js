@@ -28,7 +28,7 @@ module.exports = {
       const payload = {
         inputs: [],
         outputs: [{
-          roles: { Owner: 'self-get-from-identity', Supplier: order.supplier },
+          roles: { Owner: 'self-get-from-identity', Buyer: '', Supplier: order.supplier },
           metadata: mapOrderData({ ...order, transaction }),
         }]
       }
