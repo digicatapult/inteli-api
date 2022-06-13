@@ -1,6 +1,9 @@
+const db = require('../../../db')
+const { NoToken } = require('../../../utils/errors')
+
 exports.mapOrderData = async (data) => {
-  // TODO check local db to confirm that all recipes has a token_id
-  // if not return something
+  const tokenIds = await db.getRecipeByIDs(data.items).map(el => el.token_id)
+  if(!tokenIds.every(Boolean)) throw new NoToken('order')
 
   const recipes = data.items.reduce((id, output) => {
     if (id) {
