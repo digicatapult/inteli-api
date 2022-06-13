@@ -1,7 +1,10 @@
 import { parseAccept } from '../../../utils/parseAcceptHeader'
+const logger = require('../../../utils/Logger')
+
 const db = require('../../../db')
 
-const { InternalError, NotFoundError } = require('../../../utils/errors')
+const { createAttachmentFromFile, createAttachment } = require('../Attachment/helpers')
+const { InternalError, NotFoundError, BadRequestError } = require('../../../utils/errors')
 
 module.exports = {
   get: async (req, res) => {
@@ -54,5 +57,27 @@ module.exports = {
       }
     }
   },
-  create: async (req) => {},
+  create: async (req) => {
+    if (req.headers['content-type'] === 'application/json') {
+      logger.info('JSON attachment upload: %j', req.body)
+      const buffer = Buffer.from(JSON.stringify(req.body))
+      const [result] = await createAttachment('json', buffer)
+      return {
+        status: 201,
+        response: { ...result, size: buffer.length },
+      }
+    }
+
+    logger.info('File attachment upload: %s', req.file)
+
+    if (!req.file) {
+      throw new BadRequestError('No file uploaded')
+    }
+
+    const [result] = await createAttachmentFromFile(req.file)
+    return {
+      status: 201,
+      response: { ...result, size: req.file.size },
+    }
+  },
 }
