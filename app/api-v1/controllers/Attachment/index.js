@@ -1,4 +1,4 @@
-const { parseAccept } = '../../../utils/parseAcceptHeader'
+const { parseAccept } = require('../../../utils/parseAcceptHeader')
 const logger = require('../../../utils/Logger')
 
 const db = require('../../../db')
@@ -8,6 +8,9 @@ const { InternalError, NotFoundError, BadRequestError } = require('../../../util
 
 module.exports = {
   get: async (req, res) => {
+    const { id } = req.params
+    if (!id) throw new BadRequestError('missing params')
+
     const [attachment] = await db.getAttachment(req.params.id)
     if (!attachment) throw new NotFoundError('Attachment Not Found')
 
