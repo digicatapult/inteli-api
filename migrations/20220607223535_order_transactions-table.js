@@ -27,6 +27,11 @@ exports.up = async function (knex) {
     def.primary(['id'])
     def.foreign('order_id').references('id').on('orders')
   })
+
+
+  await knex.schema.alterTable('orders', (def) => {
+    def.primary(['id'])
+  })
 }
 
 /**
