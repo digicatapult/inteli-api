@@ -29,19 +29,7 @@ module.exports = {
       if (!selfAddress) throw new IdentityError()
 
       const transaction = await db.insertOrderTransaction(id)
-      const payload = {
-        inputs: [],
-        outputs: [
-          {
-            roles: {
-              Owner: order.supplier,
-              Buyer: selfAddress,
-              Supplier: order.supplier,
-            },
-            metadata: await mapOrderData({ ...order, transaction, ...req.body }),
-          },
-        ],
-      }
+      const payload = await mapOrderData({ ...order, selfAddress, transaction, ...req.body })
 
       runProcess(payload, req.token)
 

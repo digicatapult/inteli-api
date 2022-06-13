@@ -10,6 +10,8 @@ const payload = {
   items: recipesExample.map((el) => el.id),
   status: 'Submitted',
   requiredBy: '2022-06-13T11:20:35.466Z',
+  selfAddress: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+  supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
   transaction: {
     id: '50000000-e000-1000-5500-000000000001',
   },
@@ -63,26 +65,38 @@ describe('map order data helper function', () => {
     stubs.getRecipeIds.resolves([recipesExample[0]])
     output = await mapOrderData(payload)
     expect(output).to.deep.equal({
-      20: {
-        type: 'TOKEN_ID',
-        value: 20,
-      },
-      type: {
-        type: 'LITERAL',
-        value: 'ORDER',
-      },
-      status: {
-        type: 'LITERAL',
-        value: 'Submitted',
-      },
-      requiredBy: {
-        type: 'LITERAL',
-        value: '2022-06-13T11:20:35.466Z',
-      },
-      transactionId: {
-        type: 'LITERAL',
-        value: '50000000-e000-1000-5500-000000000001',
-      },
+      inputs: [20],
+      outputs: [
+        {
+          roles: {
+            Owner: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+            Buyer: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+            Supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+          },
+          metadata: {
+            20: {
+              type: 'TOKEN_ID',
+              value: 20,
+            },
+            type: {
+              type: 'LITERAL',
+              value: 'ORDER',
+            },
+            status: {
+              type: 'LITERAL',
+              value: 'Submitted',
+            },
+            requiredBy: {
+              type: 'LITERAL',
+              value: '2022-06-13T11:20:35.466Z',
+            },
+            transactionId: {
+              type: 'LITERAL',
+              value: '50000000-e000-1000-5500-000000000001',
+            },
+          },
+        },
+      ],
     })
   })
 })

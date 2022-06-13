@@ -19,10 +19,22 @@ exports.mapOrderData = async (data) => {
   }, {})
 
   return {
-    type: { type: 'LITERAL', value: 'ORDER' },
-    status: { type: 'LITERAL', value: data.status },
-    requiredBy: { type: 'LITERAL', value: data.requiredBy },
-    transactionId: { type: 'LITERAL', value: data.transaction.id },
-    ...recipes,
+    inputs: tokenIds,
+    outputs: [
+      {
+        roles: {
+          Owner: data.supplier,
+          Buyer: data.selfAddress,
+          Supplier: data.supplier,
+        },
+        metadata: {
+          type: { type: 'LITERAL', value: 'ORDER' },
+          status: { type: 'LITERAL', value: data.status },
+          requiredBy: { type: 'LITERAL', value: data.requiredBy },
+          transactionId: { type: 'LITERAL', value: data.transaction.id },
+          ...recipes,
+        },
+      },
+    ],
   }
 }
