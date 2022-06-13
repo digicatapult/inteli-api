@@ -6,9 +6,9 @@ Token formats and restrictions for the `Order` type.
 
 A buyer submits an order consisting of 1-10 recipes from a supplier.
 
-| Inputs                      | Outputs                            |
-| :-------------------------- | :--------------------------------- |
-| Recipe0, Recipe1... RecipeN | Recipe0, Recipe1... RecipeN, Order |
+| Inputs             | Outputs                   |
+| :----------------- | :------------------------ |
+| Recipe0... RecipeN | Order, Recipe0... RecipeN |
 
 ### Request body
 
@@ -20,7 +20,7 @@ The latest token of each recipe in the order is consumed.
 #### Outputs
 
 `[RECIPE]`
-So that the recipe is available to be used again, a new token for each recipe in the order is created.
+So that each recipe is available to be used again, a new token for each recipe in the order is created.
 
 | Roles                | Metadata                   |
 | :------------------- | :------------------------- |
@@ -28,7 +28,7 @@ So that the recipe is available to be used again, a new token for each recipe in
 | Buyer: `BAE`         |                            |
 | Supplier:`SupplierX` |                            |
 
-The `ORDER` token. Each `recipeN: `<TokenId>`matches a`<TokenId>``from the`inputs`.
+The `ORDER` token. Each `recipeN: <TokenId>` matches a` <TokenId>` from the `inputs`.
 
 | Roles                | Metadata                                                          |
 | :------------------- | :---------------------------------------------------------------- |
@@ -48,6 +48,8 @@ The `ORDER` token. Each `recipeN: `<TokenId>`matches a`<TokenId>``from the`input
 |                      | `<TokenId>` recipe9: `12` (optional)                              |
 
 ### Restrictions
+
+The contents of the new `Order` token will have the following restrictions:
 
 ```json
 {
@@ -86,77 +88,6 @@ The `ORDER` token. Each `recipeN: `<TokenId>`matches a`<TokenId>``from the`input
       "metadata_key": "transactionId",
       "metadata_value_type": "Literal"
     }
-  ]
-}
-```
-
-The following restrictions scale based on `N` number of recipes
-
-```json
-{
-  "SenderHasInputRole": [
-    {
-      "index": 0,
-      "role_key": "Buyer"
-    },
-    //...
-    {
-      "index": "N-1",
-      "role_key": "Buyer"
-    }
-  ],
-  "FixedNumberOfInputs": [
-    {
-      "num_inputs": "N"
-    }
-  ],
-  "FixedNumberOfOutputs": [
-    {
-      "num_outputs": "N + 1"
-    }
-  ],
-  "MatchInputOutputRole": [
-    {
-      "input_index": 0,
-      "input_role_key": "Supplier",
-      "output_index": 1,
-      "output_role_key": "Supplier"
-    },
-    // ...
-    {
-      "input_index": "N-1",
-      "input_role_key": "Supplier",
-      "output_index": "N",
-      "output_role_key": "Supplier"
-    }
-  ],
-  "FixedInputMetadataValue": [
-    {
-      "index": 0,
-      "metadata_key": "type",
-      "metadata_value": "RECIPE"
-    },
-    // ...
-    {
-      "index": "N-1",
-      "metadata_key": "type",
-      "metadata_value": "RECIPE"
-    }
-  ],
-  "MatchInputOutputMetadataValue": [
-    {
-      "input_index": 0,
-      "input_metadata_key": "type",
-      "output_index": 1,
-      "output_metadata_key": "type"
-    },
-    // ...
-    {
-      "input_index": "N-1",
-      "input_metadata_key": "type",
-      "output_index": "N",
-      "output_metadata_key": "type"
-    }
   ],
   "FixedOutputMetadataValueType": [
     {
@@ -164,11 +95,41 @@ The following restrictions scale based on `N` number of recipes
       "metadata_key": "recipe0",
       "metadata_value_type": "TokenId"
     },
-    // ...
+    // ... for every recipe in the order
     {
       "index": 0,
       "metadata_key": "recipeN",
       "metadata_value_type": "TokenId"
+    }
+  ]
+}
+```
+
+For every recipe token in the order, the following restrictions will need to apply:
+
+```json
+{
+  "SenderHasInputRole": [
+    {
+      "role_key": "Buyer"
+    }
+  ],
+  "MatchInputOutputRole": [
+    {
+      "input_role_key": "Supplier",
+      "output_role_key": "Supplier"
+    }
+  ],
+  "FixedInputMetadataValue": [
+    {
+      "metadata_key": "type",
+      "metadata_value": "RECIPE"
+    }
+  ],
+  "MatchInputOutputMetadataValue": [
+    {
+      "input_metadata_key": "type",
+      "output_metadata_key": "type"
     }
   ]
 }
@@ -190,7 +151,7 @@ The latest token of each recipe in the order is consumed.
 #### Outputs
 
 `[RECIPE]`
-So that the recipe is available to be used again, a new token for each recipe in the order is created.
+So that each recipe is available to be used again, a new token for each recipe in the order is created.
 
 | Roles                | Metadata                   |
 | :------------------- | :------------------------- |
@@ -198,7 +159,7 @@ So that the recipe is available to be used again, a new token for each recipe in
 | Buyer: `BAE`         |                            |
 | Supplier:`SupplierX` |                            |
 
-The `ORDER` token. Each `recipeN: `<TokenId>`matches a`<TokenId>``from the`inputs`.
+The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>`from the `inputs`.
 
 | Roles                | Metadata                              |
 | :------------------- | :------------------------------------ |
