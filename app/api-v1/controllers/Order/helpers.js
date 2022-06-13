@@ -1,12 +1,13 @@
 const db = require('../../../db')
-const { NoToken } = require('../../../utils/errors')
+const { NoTokenError, NothingToProcess } = require('../../../utils/errors')
 
 exports.mapOrderData = async (data) => {
+  if (!data.items || data.items.length < 1) throw new NothingToProcess()
   const records = await db.getRecipeByIDs(data.items)
   const tokenIds = records.map((el) => el.token_id)
-  if (!tokenIds.every(Boolean)) throw new NoToken('recipes')
+  if (!tokenIds.every(Boolean)) throw new NoTokenError('recipes')
 
-  const recipes = data.items.reduce((id, output) => {
+  const recipes = tokenIds.reduce((output, id) => {
     if (id) {
       output[id] = {
         type: 'TOKEN_ID',

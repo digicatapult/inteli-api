@@ -8,7 +8,13 @@ class HttpResponseError extends Error {
   }
 }
 
-class NoToken extends HttpResponseError {
+class NothingToProcess extends HttpResponseError {
+  constructor() {
+    super({ code: 400, message: `This request requires tokens to be burned.` })
+  }
+}
+
+class NoTokenError extends HttpResponseError {
   constructor(msg = 'unknown') {
     super({ code: 500, message: `Token for ${msg} has not been created yet.` })
   }
@@ -93,7 +99,8 @@ const handleErrors = (err, req, res, next) => {
 module.exports = {
   handleErrors,
   BadRequestError,
-  NoToken,
+  NoTokenError,
+  NothingToProcess,
   HttpResponseError,
   UnauthorizedError,
   NotFoundError,

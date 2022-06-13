@@ -5,7 +5,7 @@ const { stub } = require('sinon')
 const orderController = require('../index')
 const db = require('../../../../db')
 const identifyService = require('../../../services/identityService')
-const { BadRequestError, NotFoundError, IdentityError, NoToken } = require('../../../../utils/errors')
+const { BadRequestError, NotFoundError, IdentityError, NoTokenError } = require('../../../../utils/errors')
 const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
 
 const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
@@ -179,11 +179,16 @@ describe('Order controller', () => {
               requiredBy: '2022-06-11T08:47:23.397Z',
             },
           ])
-          response = await createTransaction({ params: { id: '00000000-0000-1000-3000-000000000001' } })
+          response = await createTransaction({
+            params: {
+              id: '00000000-0000-1000-3000-000000000001',
+            },
+            body: { items: [20] },
+          })
         })
 
-        it('returns 500 along with instance of NoToken', () => {
-          expect(response).to.be.an.instanceOf(NoToken)
+        it('returns 500 along with instance of NoTokenError', () => {
+          expect(response).to.be.an.instanceOf(NoTokenError)
           expect(response.code).to.equal(500)
           expect(response.message).to.equal('Token for recipes has not been created yet.')
         })
