@@ -8,6 +8,12 @@ class HttpResponseError extends Error {
   }
 }
 
+class IdentityError extends HttpResponseError {
+  constructor(msg = undefined) {
+    super({ code: 400, message: 'Unable to retrieve an identity address', msg })
+  }
+}
+
 class NotFoundError extends HttpResponseError {
   constructor(msg) {
     super({ code: 404, message: `Not Found: ${msg}` })
@@ -84,6 +90,7 @@ module.exports = {
   HttpResponseError,
   UnauthorizedError,
   NotFoundError,
+  IdentityError,
   IncorrectSupplierError,
   InternalError,
   RecipeDoesNotExistError,

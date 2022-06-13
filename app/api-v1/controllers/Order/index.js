@@ -1,7 +1,12 @@
 const { runProcess } = require('../../../utils/dscp-api')
 const db = require('../../../db')
-const { BadRequestError, NotFoundError } = require('../../../utils/errors')
 const { mapOrderData } = require('./helpers')
+const idenity = require('../../services/identityService')
+const {
+  BadRequestError,
+  NotFoundError,
+  IdentityError,
+} = require('../../../utils/errors')
 
 module.exports = {
   getAll: async function () {
@@ -24,8 +29,8 @@ module.exports = {
       const [order] = await db.getOrder(id)
       if (!order) throw new NotFoundError('order')
 
-      // TODO identify for self addr
-      // and handling
+      const selfAddress = await idenity.getMemberBySelf()
+      if (!selfAddress) throw new IdentityError()
 
       const transaction = await db.insertOrderTransaction(id)
       const payload = {
@@ -33,8 +38,8 @@ module.exports = {
         outputs: [
           {
             roles: {
-              Owner: 'self',
-              Buyer: 'self',
+              Owner: selfAddress,
+              Buyer: selfAddress,
               Supplier: order.supplier,
             },
             metadata: mapOrderData({ ...order, transaction }),
