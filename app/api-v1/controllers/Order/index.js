@@ -34,7 +34,7 @@ module.exports = {
         outputs: [
           {
             roles: {
-              Owner: selfAddress,
+              Owner: order.supplier,
               Buyer: selfAddress,
               Supplier: order.supplier,
             },
