@@ -6,7 +6,7 @@ describe('map order data helper function', () => {
   describe('if data does not contain any recipe items', () => {
     it('should throw an invalid data error', () => {})
   })
-  
+
   // not testing for types and etc as we have a schema validation
   it('maps and formats data', () => {})
 })

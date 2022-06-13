@@ -3,10 +3,16 @@ exports.mapOrderData = async (data) => {
   // if not return something
 
   const recipes = data.items.reduce((id, output) => {
-    if (!id) return output
-    return output[id] = { type: 'TOKEN_ID', value: id }
+    if (id) {
+      output[id] = {
+        type: 'TOKEN_ID',
+        value: id,
+      }
+    }
+
+    return output
   }, {})
-  
+
   return {
     type: { type: 'LITERAL', value: 'ORDER' },
     status: { type: 'LITERAL', value: data.status },

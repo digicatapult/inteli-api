@@ -24,20 +24,29 @@ module.exports = {
       const [order] = await db.getOrder(id)
       if (!order) throw new NotFoundError('order')
 
+      // TODO identify for self addr
+      // and handling
+
       const transaction = await db.insertOrderTransaction(id)
       const payload = {
         inputs: [],
-        outputs: [{
-          roles: { Owner: 'self-get-from-identity', Buyer: '', Supplier: order.supplier },
-          metadata: mapOrderData({ ...order, transaction }),
-        }]
+        outputs: [
+          {
+            roles: {
+              Owner: 'self',
+              Buyer: 'self',
+              Supplier: order.supplier,
+            },
+            metadata: mapOrderData({ ...order, transaction }),
+          },
+        ],
       }
 
       runProcess(payload, req.token)
 
       return {
         status: 201,
-        ...transaction,
+        transaction,
       }
     },
   },
