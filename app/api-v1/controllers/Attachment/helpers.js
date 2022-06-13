@@ -17,15 +17,7 @@ const createAttachment = async (name, buffer) => {
   return attachment
 }
 
-async function getAttachmentByID(id) {
-  const [attachmentResult] = await getAttachmentByIdDb(id)
-  if (!attachmentResult) {
-    throw new NotFoundError({ message: 'Attachment not found' })
-  } else return attachmentResult
-}
-
 module.exports = {
   createAttachment,
   createAttachmentFromFile,
-  getAttachmentByID,
 }
