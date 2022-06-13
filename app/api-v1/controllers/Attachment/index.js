@@ -1,4 +1,4 @@
-import { parseAccept } from '../../../utils/parseAcceptHeader'
+const { parseAccept } = '../../../utils/parseAcceptHeader'
 const logger = require('../../../utils/Logger')
 
 const db = require('../../../db')
