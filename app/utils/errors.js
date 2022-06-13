@@ -10,7 +10,7 @@ class HttpResponseError extends Error {
 
 class NoToken extends HttpResponseError {
   constructor(msg = 'unknown') {
-    super({ code: 500, message: 'Token for ${msg} has not been created yet.' })
+    super({ code: 500, message: `Token for ${msg} has not been created yet.` })
   }
 }
 

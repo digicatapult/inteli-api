@@ -2,8 +2,9 @@ const db = require('../../../db')
 const { NoToken } = require('../../../utils/errors')
 
 exports.mapOrderData = async (data) => {
-  const tokenIds = await db.getRecipeByIDs(data.items).map(el => el.token_id)
-  if(!tokenIds.every(Boolean)) throw new NoToken('order')
+  const records = await db.getRecipeByIDs(data.items)
+  const tokenIds = records.map((el) => el.token_id)
+  if (!tokenIds.every(Boolean)) throw new NoToken('recipes')
 
   const recipes = data.items.reduce((id, output) => {
     if (id) {

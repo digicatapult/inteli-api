@@ -38,7 +38,7 @@ module.exports = {
               Buyer: selfAddress,
               Supplier: order.supplier,
             },
-            metadata: mapOrderData({ ...order, transaction }),
+            metadata: await mapOrderData({ ...order, transaction, ...req.body }),
           },
         ],
       }
