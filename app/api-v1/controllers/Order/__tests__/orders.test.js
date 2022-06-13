@@ -80,7 +80,7 @@ describe('Order controller', () => {
       })
     })
 
-    describe.only('transactions /create', () => {
+    describe('transactions /create', () => {
       beforeEach(async () => {
         stubs.insertTransaction = stub(db, 'insertOrderTransaction').resolves([])
         stubs.getRecipeIds = stub(db, 'getRecipeByIDs').resolves(recipeExamples)
@@ -143,7 +143,7 @@ describe('Order controller', () => {
         })
       })
 
-      describe('if for any reason identity fails or selfAddress ir undefined', () => {
+      describe('if for any reason identity service fails or selfAddress ir undefined', () => {
         beforeEach(async () => {
           stubs.getOrder.resolves([
             {
@@ -226,7 +226,7 @@ describe('Order controller', () => {
           expect(stubs.getRecipeIds.getCall(0).args[0]).to.deep.equal(['50000000-0000-1000-5500-000000000001'])
         })
 
-        it('calls run process with formatted boody', () => {
+        it('calls run process with formatted body', () => {
           expect(runProcessReq.isDone()).to.equal(true)
           expect(runProcessBody).to.be.undefined
         })
