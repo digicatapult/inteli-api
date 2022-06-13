@@ -37,19 +37,19 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a` <TokenId>` from the `inp
 | Supplier:`SupplierX` | `<Literal>` transactionId: `09000000-0000-1000-8000-000000000000` |
 |                      | `<Literal>` requiredBy: `2023-01-01`                              |
 |                      | `<TokenId>` recipe0: `100`                                        |
-|                      | `<TokenId>` recipe1: `112` (optional)                             |
-|                      | `<TokenId>` recipe2: `163` (optional)                             |
-|                      | `<TokenId>` recipe3: `141` (optional)                             |
-|                      | `<TokenId>` recipe4: `95` (optional)                              |
-|                      | `<TokenId>` recipe5: `156` (optional)                             |
-|                      | `<TokenId>` recipe6: `47` (optional)                              |
-|                      | `<TokenId>` recipe7: `108` (optional)                             |
-|                      | `<TokenId>` recipe8: `34` (optional)                              |
-|                      | `<TokenId>` recipe9: `12` (optional)                              |
+|                      | `<TokenId>` recipe1: `112`                                        |
+|                      | `<TokenId>` recipe2: `163`                                        |
+|                      | `<TokenId>` recipe3: `141`                                        |
+|                      | `<TokenId>` recipe4: `95`                                         |
+|                      | `<TokenId>` recipe5: `156`                                        |
+|                      | `<TokenId>` recipe6: `47`                                         |
+|                      | `<TokenId>` recipe7: `108`                                        |
+|                      | `<TokenId>` recipe8: `34`                                         |
+|                      | `<TokenId>` recipe9: `12`                                         |
 
 ### Restrictions
 
-The contents of the new `Order` token will have the following restrictions:
+The new `Order` token will have the following restrictions:
 
 ```json
 {
@@ -105,7 +105,7 @@ The contents of the new `Order` token will have the following restrictions:
 }
 ```
 
-For every recipe token in the order, the following restrictions will need to apply:
+For the range of recipe input+output tokens in the order, the following restrictions will need to apply:
 
 ```json
 {
@@ -137,7 +137,11 @@ For every recipe token in the order, the following restrictions will need to app
 
 ## POST /order/{id}/rejection
 
-A supplier rejects an order, along with amendment suggestions.
+A supplier rejects an order, along with amendment suggestions - a new list of recipes and `requiredBy` date.
+
+| Inputs                    | Outputs                   |
+| :------------------------ | :------------------------ |
+| Order, Recipe0... RecipeN | Order, Recipe0... RecipeN |
 
 ### Request body
 
@@ -161,41 +165,32 @@ So that each recipe is available to be used again, a new token for each recipe i
 
 The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>`from the `inputs`.
 
-| Roles                | Metadata                              |
-| :------------------- | :------------------------------------ |
-| Owner: `BAE`         | `<Literal>` type: `ORDER`             |
-| Buyer: `BAE`         | `<Literal>` status: `rejected`        |
-| Supplier:`SupplierX` | `<Literal>` requiredBy: `2023-01-01`  |
-|                      | `<TokenId>` recipe0: `100`            |
-|                      | `<TokenId>` recipe1: `112` (optional) |
-|                      | `<TokenId>` recipe2: `163` (optional) |
-|                      | `<TokenId>` recipe3: `141` (optional) |
-|                      | `<TokenId>` recipe4: `95` (optional)  |
-|                      | `<TokenId>` recipe5: `156` (optional) |
-|                      | `<TokenId>` recipe6: `47` (optional)  |
-|                      | `<TokenId>` recipe7: `108` (optional) |
-|                      | `<TokenId>` recipe8: `34` (optional)  |
-|                      | `<TokenId>` recipe9: `12` (optional)  |
+| Roles                | Metadata                             |
+| :------------------- | :----------------------------------- |
+| Owner: `BAE`         | `<Literal>` type: `ORDER`            |
+| Buyer: `BAE`         | `<Literal>` status: `rejected`       |
+| Supplier:`SupplierX` | `<Literal>` requiredBy: `2023-01-01` |
+|                      | `<TokenId>` recipe0: `100`           |
+|                      | `<TokenId>` recipe1: `112`           |
+|                      | `<TokenId>` recipe2: `163`           |
+|                      | `<TokenId>` recipe3: `141`           |
+|                      | `<TokenId>` recipe4: `95`            |
+|                      | `<TokenId>` recipe5: `156`           |
+|                      | `<TokenId>` recipe6: `47`            |
+|                      | `<TokenId>` recipe7: `108`           |
+|                      | `<TokenId>` recipe8: `34`            |
+|                      | `<TokenId>` recipe9: `12`            |
 
 ### Restrictions
 
+The burning of the old and creation of the new `Order` token will have the following restrictions:
+
 ```json
 {
-  "FixedNumberOfInputs": [
-    {
-      "num_inputs": 1
-    }
-  ],
-  "FixedInputMetadataValue": [
+  "SenderHasOutputRole": [
     {
       "index": 0,
-      "metadata_key": "type",
-      "metadata_value": "ORDER"
-    },
-    {
-      "index": 0,
-      "metadata_key": "status",
-      "metadata_value": "submitted"
+      "role_key": "Supplier"
     }
   ],
   "MatchInputOutputRole": [
@@ -212,23 +207,24 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>`from the `inpu
       "output_role_key": "Supplier"
     }
   ],
+  "FixedInputMetadataValue": [
+    {
+      "index": 0,
+      "metadata_key": "type",
+      "metadata_value": "ORDER"
+    },
+    {
+      "index": 0,
+      "metadata_key": "status",
+      "metadata_value": "submitted"
+    }
+  ],
   "MatchInputOutputMetadataValue": [
     {
       "input_index": 0,
       "input_metadata_key": "type",
       "output_index": 0,
       "output_metadata_key": "type"
-    }
-  ],
-  "FixedNumberOfOutputs": [
-    {
-      "num_outputs": 1
-    }
-  ],
-  "SenderHasOutputRole": [
-    {
-      "index": 0,
-      "role_key": "Supplier"
     }
   ],
   "FixedOutputMetadataValue": [
@@ -248,6 +244,42 @@ The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>`from the `inpu
       "index": 0,
       "metadata_key": "recipe0",
       "metadata_value_type": "TokenId"
+    },
+    // ... for every recipe in the order
+    {
+      "index": 0,
+      "metadata_key": "recipeN",
+      "metadata_value_type": "TokenId"
+    }
+  ]
+}
+```
+
+For the range of recipe input+output tokens in the order, the following restrictions will need to apply:
+
+```json
+{
+  "SenderHasInputRole": [
+    {
+      "role_key": "Supplier"
+    }
+  ],
+  "MatchInputOutputRole": [
+    {
+      "input_role_key": "Buyer",
+      "output_role_key": "Buyer"
+    }
+  ],
+  "FixedInputMetadataValue": [
+    {
+      "metadata_key": "type",
+      "metadata_value": "RECIPE"
+    }
+  ],
+  "MatchInputOutputMetadataValue": [
+    {
+      "input_metadata_key": "type",
+      "output_metadata_key": "type"
     }
   ]
 }
@@ -262,6 +294,10 @@ A buyer agrees to amend an order following a supplier's rejection.
 #### Inputs
 
 `/order/{id}/rejection`
+
+| Inputs | Outputs |
+| :----- | :------ |
+| Order  | Order   |
 
 #### Outputs
 
@@ -280,16 +316,15 @@ A buyer agrees to amend an order following a supplier's rejection.
       "num_inputs": 1
     }
   ],
-  "FixedInputMetadataValue": [
+  "FixedNumberOfOutputs": [
+    {
+      "num_outputs": 1
+    }
+  ],
+  "SenderHasOutputRole": [
     {
       "index": 0,
-      "metadata_key": "type",
-      "metadata_value": "ORDER"
-    },
-    {
-      "index": 0,
-      "metadata_key": "status",
-      "metadata_value": "amended"
+      "role_key": "Buyer"
     }
   ],
   "MatchInputOutputRole": [
@@ -306,23 +341,24 @@ A buyer agrees to amend an order following a supplier's rejection.
       "output_role_key": "Supplier"
     }
   ],
+  "FixedInputMetadataValue": [
+    {
+      "index": 0,
+      "metadata_key": "type",
+      "metadata_value": "ORDER"
+    },
+    {
+      "index": 0,
+      "metadata_key": "status",
+      "metadata_value": "amended"
+    }
+  ],
   "MatchInputOutputMetadataValue": [
     {
       "input_index": 0,
       "input_metadata_key": "type",
       "output_index": 0,
       "output_metadata_key": "type"
-    }
-  ],
-  "FixedNumberOfOutputs": [
-    {
-      "num_outputs": 1
-    }
-  ],
-  "SenderHasOutputRole": [
-    {
-      "index": 0,
-      "role_key": "Buyer"
     }
   ],
   "FixedOutputMetadataValue": [
@@ -338,6 +374,10 @@ A buyer agrees to amend an order following a supplier's rejection.
 ## POST /order/{id}/acceptance
 
 A supplier accepts an order.
+
+| Inputs | Outputs |
+| :----- | :------ |
+| Order  | Order   |
 
 ### Request body
 
@@ -360,6 +400,17 @@ A supplier accepts an order.
   "FixedNumberOfInputs": [
     {
       "num_inputs": 1
+    }
+  ],
+  "FixedNumberOfOutputs": [
+    {
+      "num_outputs": 1
+    }
+  ],
+  "SenderHasOutputRole": [
+    {
+      "index": 0,
+      "role_key": "Supplier"
     }
   ],
   "BinaryBoolean": [
@@ -408,17 +459,6 @@ A supplier accepts an order.
       "input_metadata_key": "type",
       "output_index": 0,
       "output_metadata_key": "type"
-    }
-  ],
-  "FixedNumberOfOutputs": [
-    {
-      "num_outputs": 1
-    }
-  ],
-  "SenderHasOutputRole": [
-    {
-      "index": 0,
-      "role_key": "Supplier"
     }
   ],
   "FixedOutputMetadataValue": [

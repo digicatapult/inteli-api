@@ -6,11 +6,15 @@ Token formats and restrictions for the `Recipe` type
 
 A buyer submitted a recipe that describes how a part will be built by a supplier.
 
+| Inputs | Outputs |
+| :----: | :------ |
+|   -    | Recipe  |
+
 ### Request body
 
 #### Inputs
 
-`[]`
+`-`
 
 #### Outputs
 
