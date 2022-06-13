@@ -6,6 +6,10 @@ exports.up = async function (knex) {
   const uuidGenerateV4 = () => knex.raw('uuid_generate_v4()')
   const now = () => knex.fn.now()
 
+  await knex.schema.alterTable('orders', (def) => {
+    def.primary(['id'])
+  })
+
   await knex.schema.createTable('order_transactions', (def) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
     def.integer('token_id')
@@ -26,11 +30,6 @@ exports.up = async function (knex) {
 
     def.primary(['id'])
     def.foreign('order_id').references('id').on('orders')
-  })
-
-
-  await knex.schema.alterTable('orders', (def) => {
-    def.primary(['id'])
   })
 }
 
