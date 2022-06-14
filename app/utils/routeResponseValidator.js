@@ -36,7 +36,8 @@ const buildValidatedJsonHandler = (controller, apiDoc) => {
     components: commonApiDoc.components,
   })
   const handler = async function (req, res) {
-    const { status, response } = await controller(req)
+    const { status, response, headers } = await controller(req)
+    if (headers) res.set(headers)
     const validationErrors = responseValidator.validateResponse(status, response)
     if (validationErrors) {
       logger.warn('API response validation error for handler "%s". Errors were: %j', apiDoc.summary, validationErrors)

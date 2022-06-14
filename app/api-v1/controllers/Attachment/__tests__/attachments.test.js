@@ -4,7 +4,7 @@ const { stub } = require('sinon')
 
 const attachmentController = require('../index')
 const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
-const { jsonAttachment } = require('../__tests__/attachments_fixtures')
+const { jsonAttachment, fileAttachment } = require('../__tests__/attachments_fixtures')
 const db = require('../../../../db')
 
 const getAttachment = async (req) => {
@@ -18,15 +18,20 @@ const getAttachment = async (req) => {
 describe.only('Attachment controller', () => {
   let stubs = {}
   let response
+  beforeEach(() => {
+    stubs.insertAttachment = stub(db, 'insertAttachment').resolves({
+      id: jsonAttachment.id,
+      name: jsonAttachment.filename,
+    })
+    stubs.getAttachment = stub(db, 'getAttachment').resolves([])
+  })
+
+  afterEach(() => {
+    stubs.getAttachment.restore()
+    stubs.insertAttachment.restore()
+  })
 
   describe('Attachment /GET', () => {
-    beforeEach(async () => {
-      stubs.getAttachment = stub(db, 'getAttachment').resolves([])
-    })
-    afterEach(() => {
-      stubs.getAttachment.restore()
-    })
-
     describe('if req.params.id is not provided', () => {
       beforeEach(async () => {
         response = await getAttachment({ params: {} })
@@ -54,24 +59,21 @@ describe.only('Attachment controller', () => {
       })
     })
 
-    //NOT WORKING BELOW
-
     describe.only('happy path', () => {
       beforeEach(async () => {
-        stubs.getAttachment.restore()
-        stubs.insertAttachment = stub(db, 'insertAttachment').resolves({
-          id: jsonAttachment.id,
-          name: jsonAttachment.filename,
+        stubs.getAttachment.resolves([fileAttachment])
+        response = await getAttachment({
+          params: { id: fileAttachment.id },
+          headers: { accept: 'application/octet-stream' },
+          res: { status: 100 },
         })
-        stubs.getAttachment = stub(db, 'getAttachment').resolves([jsonAttachment])
-        response = await getAttachment({ params: { id: jsonAttachment.id, accept: 'application/json' } })
       })
 
       it('returns an attachment', () => {
         const { status, response: body } = response
         console.log(response)
         expect(status).to.be.equal(200)
-        expect(body).to.deep.equal(jsonAttachment)
+        expect(body).to.deep.equal(fileAttachment)
       })
     })
   })
