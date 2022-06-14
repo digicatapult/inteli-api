@@ -21,7 +21,7 @@ const buildOrderOutput = (data, recipes) => ({
     type: { type: 'LITERAL', value: 'ORDER' },
     status: { type: 'LITERAL', value: data.status },
     requiredBy: { type: 'LITERAL', value: data.requiredBy },
-    transactionId: { type: 'LITERAL', value: data.transaction.id },
+    transactionId: { type: 'LITERAL', value: data.transaction.id.replace(/[-]/g, '') },
     ...recipes,
     },
 })

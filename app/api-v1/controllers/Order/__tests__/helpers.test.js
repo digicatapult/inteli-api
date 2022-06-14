@@ -92,7 +92,7 @@ describe('map order data helper function', () => {
             },
             transactionId: {
               type: 'LITERAL',
-              value: '50000000-e000-1000-5500-000000000001',
+              value: '50000000e00010005500000000000001',
             },
           },
         },
