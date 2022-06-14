@@ -96,6 +96,19 @@ describe('map order data helper function', () => {
             },
           },
         },
+        {
+          roles: {
+            Owner: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+            Buyer: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+            Supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+          },
+          metadata: {
+            type: {
+              type: 'LITERAL',
+              value: 'RECIPE',
+            },
+          },
+        },
       ],
     })
   })
