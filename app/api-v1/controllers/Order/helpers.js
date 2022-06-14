@@ -2,14 +2,15 @@ const db = require('../../../db')
 const { NoTokenError, NothingToProcess } = require('../../../utils/errors')
 
 /*eslint-disable */
-const buildRecipeOutputs = (data, n) => new Array(n).fill({
+const buildRecipeOutputs = (data, recipeTokenIds) => recipeTokenIds.map((id) => ({
   roles: {
     Owner: data.selfAddress,
     Buyer: data.selfAddress,
     Supplier: data.supplier,
   },
   metadata: { type: { type: 'LITERAL', value: 'RECIPE' } },
-})
+  parent_index: id,
+}))
 
 const buildOrderOutput = (data, recipes) => ({
   roles: {
@@ -46,6 +47,6 @@ exports.mapOrderData = async (data) => {
 
   return {
     inputs: tokenIds,
-    outputs: [buildOrderOutput(data, recipes), ...buildRecipeOutputs(data, tokenIds.length)],
+    outputs: [buildOrderOutput(data, recipes), ...buildRecipeOutputs(data, tokenIds)],
   }
 }

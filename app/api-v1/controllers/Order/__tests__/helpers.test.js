@@ -108,6 +108,7 @@ describe('map order data helper function', () => {
               value: 'RECIPE',
             },
           },
+          parent_index: 20,
         },
       ],
     })
