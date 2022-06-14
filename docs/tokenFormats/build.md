@@ -4,41 +4,25 @@ Token formats and restrictions for the `Build` type.
 
 ## POST /build/{id}/schedule
 
-A supplier schedules a build of 1-10 parts, each of which is optionally tied to an order.
+A supplier schedules a build of 1-10 parts. Happens as two separate processes, first create the `build` token then create the `parts` tokens as children of the `build` token.
 
-| Inputs                               | Outputs                                                     |
-| :----------------------------------- | :---------------------------------------------------------- |
-| Recipe0... RecipeN, Order0... OrderN | Build, Part0... PartN, Recipe0... RecipeN, Order0... OrderN |
+| Inputs | Outputs |
+| :----: | :------ |
+|   -    | Build   |
 
-### Request body
+| Inputs                    | Outputs                                   |
+| :------------------------ | :---------------------------------------- |
+| Build, Recipe0... RecipeN | Build, Recipe0... RecipeN, Part0... PartN |
+
+### Request body 1
+
+Create the `build`.
 
 #### Inputs
 
-`[RECIPE]`
-The latest token of each recipe in the build is consumed.
-
-`[ORDER]`
-The latest token of each order in the build is consumed. Optional.
+`-`
 
 #### Outputs
-
-`[RECIPE]`
-So that each recipe is available to be used again, a new token for each recipe in the build is created.
-
-| Roles                | Metadata                   |
-| :------------------- | :------------------------- |
-| Buyer: `BAE`         | `<Literal>` type: `RECIPE` |
-| Supplier:`SupplierX` |                            |
-
-`[ORDER]`
-So that each order is available to be used again, a new token for each order in the build is created.
-
-| Roles                | Metadata                  |
-| :------------------- | :------------------------ |
-| Buyer: `BAE`         | `<Literal>` type: `ORDER` |
-| Supplier:`SupplierX` |                           |
-
-The `Build` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inputs`. Each `orderN: <TokenId>` matches a `<TokenId>` from the `inputs`.
 
 | Roles                | Metadata                                                          |
 | :------------------- | :---------------------------------------------------------------- |
@@ -47,36 +31,6 @@ The `Build` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inp
 | Supplier:`SupplierX` | `<Literal>` transactionId: `09000000-0000-1000-8000-000000000000` |
 |                      | `<Literal>` completionEstimate: `2023-01-01`                      |
 |                      | `<Literal>` externalId: `34-396589-2`                             |
-|                      | `<TokenId>` recipe0: `100`                                        |
-|                      | `<TokenId>` recipe1: `112`                                        |
-|                      | `<TokenId>` recipe2: `163`                                        |
-|                      | `<TokenId>` recipe3: `141`                                        |
-|                      | `<TokenId>` recipe4: `95`                                         |
-|                      | `<TokenId>` recipe5: `156`                                        |
-|                      | `<TokenId>` recipe6: `47`                                         |
-|                      | `<TokenId>` recipe7: `108`                                        |
-|                      | `<TokenId>` recipe8: `34`                                         |
-|                      | `<TokenId>` recipe9: `12`                                         |
-|                      | `<TokenId>` order0: `350`                                         |
-|                      | `<TokenId>` order1: `350`                                         |
-|                      | `<TokenId>` order2: `350`                                         |
-|                      | `<TokenId>` order3: `350`                                         |
-|                      | `<TokenId>` order4: `355`                                         |
-|                      | `<TokenId>` order5: `355`                                         |
-|                      | `<TokenId>` order6: `421`                                         |
-|                      | `<TokenId>` order7: `421`                                         |
-|                      | `<TokenId>` order8: `421`                                         |
-|                      | `<TokenId>` order9: `421`                                         |
-
-The `Part` token. One for each `recipeN: <TokenId>` in the build.
-
-| Roles                | Metadata                                     |
-| :------------------- | :------------------------------------------- |
-| Owner: `SupplierX`   | `<Literal>` type: `PART`                     |
-| Supplier:`SupplierX` | `<TokenId>` orderId: `180` (optional)        |
-|                      | `<TokenId>` recipeId: `125`                  |
-|                      | `<TokenId>` buildId: `205`                   |
-|                      | `<File>` requiredCerts: `requiredCerts.json` |
 
 ### Restrictions
 
@@ -124,18 +78,93 @@ The new `Build` token will have the following restrictions:
       "metadata_key": "externalId",
       "metadata_value_type": "Literal"
     }
+  ]
+}
+```
+
+### Request body 2
+
+Create the `parts`.
+
+#### Inputs
+
+`ORDER`
+
+`[RECIPE]`
+The latest token of each recipe in the build is consumed.
+
+#### Outputs
+
+`[RECIPE]`
+So that each recipe is available to be used again, a new token for each recipe in the build is created.
+
+| Roles                | Metadata                   |
+| :------------------- | :------------------------- |
+| Buyer: `BAE`         | `<Literal>` type: `RECIPE` |
+| Supplier:`SupplierX` |                            |
+
+So that the build is available to be used again, a new token for the build is created.
+
+| Roles                | Metadata                  |
+| :------------------- | :------------------------ |
+| Owner: `SupplierX`   | `<Literal>` type: `BUILD` |
+| Buyer: `BAE`         |                           |
+| Supplier:`SupplierX` |                           |
+|                      |                           |
+|                      |                           |
+
+The `Part` token. One for each recipe in the build. `recipeId: <TokenId>` matches a recipe `<TokenId>` from the `inputs`. `buildId: <TokenId>` matches the build `<TokenId>` from the `inputs`.
+
+| Roles                | Metadata                    |
+| :------------------- | :-------------------------- |
+| Owner: `SupplierX`   | `<Literal>` type: `PART`    |
+| Buyer: `BAE`         | `<TokenId>` recipeId: `125` |
+| Supplier:`SupplierX` | `<TokenId>` buildId: `205`  |
+
+### Restrictions
+
+Burning the old + creating the new `Build` token will have the following restrictions:
+
+```json
+{
+  "SenderHasOutputRole": [
+    {
+      "index": 0,
+      "role_key": "Supplier"
+    }
   ],
-  "FixedOutputMetadataValueType": [
+  "MatchInputOutputRole": [
     {
-      "index": 0,
-      "metadata_key": "recipe0",
-      "metadata_value_type": "TokenId"
+      "input_index": 0,
+      "input_role_key": "Buyer",
+      "output_index": 0,
+      "output_role_key": "Buyer"
     },
-    // ... for every recipe in the build
+    {
+      "input_index": 0,
+      "input_role_key": "Supplier",
+      "output_index": 0,
+      "output_role_key": "Supplier"
+    }
+  ],
+  "FixedInputMetadataValue": [
     {
       "index": 0,
-      "metadata_key": "recipeN",
-      "metadata_value_type": "TokenId"
+      "metadata_key": "type",
+      "metadata_value": "BUILD"
+    },
+    {
+      "index": 0,
+      "metadata_key": "status",
+      "metadata_value": "scheduled"
+    }
+  ],
+  "MatchInputOutputMetadataValue": [
+    {
+      "input_index": 0,
+      "input_metadata_key": "type",
+      "output_index": 0,
+      "output_metadata_key": "type"
     }
   ]
 }
@@ -171,43 +200,19 @@ For the range of `Recipe` input+output tokens in the build, the following restri
 }
 ```
 
-For the range of `Order` input+output tokens in the build, the following restrictions will apply:
-
-```json
-{
-  "SenderHasInputRole": [
-    {
-      "role_key": "Supplier"
-    }
-  ],
-  "MatchInputOutputRole": [
-    {
-      "input_role_key": "Buyer",
-      "output_role_key": "Buyer"
-    }
-  ],
-  "FixedInputMetadataValue": [
-    {
-      "metadata_key": "type",
-      "metadata_value": "ORDER"
-    }
-  ],
-  "MatchInputOutputMetadataValue": [
-    {
-      "input_metadata_key": "type",
-      "output_metadata_key": "type"
-    }
-  ]
-}
-```
-
-For the each `Part` in the build, the following restrictions will apply:
+For each `Part`, the following restrictions will apply:
 
 ```json
 {
   "SenderHasOutputRole": [
     {
       "role_key": "Supplier"
+    }
+  ],
+  "OutputHasRole": [
+    {
+      "index": 0,
+      "role_key": "Buyer"
     }
   ],
   "FixedOutputMetadataValueType": [
