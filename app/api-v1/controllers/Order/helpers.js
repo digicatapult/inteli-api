@@ -2,14 +2,14 @@ const db = require('../../../db')
 const { NoTokenError, NothingToProcess } = require('../../../utils/errors')
 
 /*eslint-disable */
-const buildRecipeOutputs = (data, recipeTokenIds) => recipeTokenIds.map((id) => ({
+const buildRecipeOutputs = (data, recipes) => recipes.map((_, i) => ({
   roles: {
     Owner: data.selfAddress,
     Buyer: data.selfAddress,
     Supplier: data.supplier,
   },
   metadata: { type: { type: 'LITERAL', value: 'RECIPE' } },
-  parent_index: id,
+  parent_index: i,
 }))
 
 const buildOrderOutput = (data, recipes) => ({
