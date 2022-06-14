@@ -1,4 +1,3 @@
-const nock = require('nock')
 const { expect } = require('chai')
 const { stub } = require('sinon')
 
@@ -59,11 +58,7 @@ describe.only('Attachment controller', () => {
       })
     })
 
-    /******* These tests require a res object being sent so currently do not return
-     * as errors such as 'TypeError: Cannot read property 'status' of undefined' appear
-     */
-
-    describe.only('happy path - file attachment', () => {
+    describe('happy path - file attachment', () => {
       beforeEach(async () => {
         stubs.getAttachment.resolves([fileAttachment])
         response = await getAttachment({
@@ -72,15 +67,18 @@ describe.only('Attachment controller', () => {
         })
       })
 
-      it('returns an attachment', () => {
+      it('returns a file attachment', () => {
         const { status, response: body } = response
-        console.log(response)
-        expect(status).to.be.equal(200)
-        expect(body).to.deep.equal(fileAttachment)
+        expect(status).to.be.equal(201)
+        expect(body.file).to.deep.equal(fileAttachment)
       })
     })
 
-    describe.only('happy path - json attachment', () => {
+    afterEach(() => {
+      stubs.getAttachment.restore()
+    })
+
+    describe('happy path - json attachment', () => {
       beforeEach(async () => {
         stubs.getAttachment.resolves([jsonAttachment])
         response = await getAttachment({
@@ -88,14 +86,15 @@ describe.only('Attachment controller', () => {
           headers: { accept: 'application/json' },
         })
       })
+      afterEach(() => {
+        stubs.getAttachment.restore()
+      })
 
-      it('returns an attachment', () => {
+      it('returns a json attachment', () => {
         const { status, response: body } = response
-        console.log(response)
-        expect(status).to.be.equal(200)
+        expect(status).to.be.equal(201)
         expect(body).to.deep.equal(jsonAttachment)
       })
     })
-    /********************************* */
   })
 })
