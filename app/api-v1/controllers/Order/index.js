@@ -25,7 +25,7 @@ module.exports = {
       const [order] = await db.getOrder(id)
       if (!order) throw new NotFoundError('order')
 
-      const selfAddress = await identity.getMemberBySelf({ token: {} })
+      const selfAddress = await identity.getMemberBySelf(req)
       if (!selfAddress) throw new IdentityError()
 
       const transaction = await db.insertOrderTransaction(id)

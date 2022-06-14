@@ -195,7 +195,7 @@ describe('recipe controller', () => {
         expect(dataHeader).to.equal('Content-Disposition: form-data; name="request"\r')
         expect(inputs).to.deep.equal([])
         expect(roles).to.deep.contain({
-          Owner: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+          Owner: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
         })
         expect(metadata).to.deep.contain({
           externalId: { type: 'LITERAL', value: 'TEST-externalId' },
@@ -238,7 +238,7 @@ describe('recipe controller', () => {
         expect(stubs.insertTransaction.getCall(0).args).to.be.deep.equal(['recipe-id'])
       })
 
-      it.only('returns 200 along with the transaction id', () => {
+      it('returns 200 along with the transaction id', () => {
         const { status, response: body } = response
         expect(status).to.be.equal(200)
         expect(body).to.deep.equal({

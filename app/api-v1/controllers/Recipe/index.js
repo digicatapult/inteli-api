@@ -1,8 +1,7 @@
 const { runProcess } = require('../../../utils/dscp-api')
 const db = require('../../../db')
 const { mapRecipeData } = require('./helpers')
-const identity = require('../../services/identityService')
-const { BadRequestError, NotFoundError, IdentityError } = require('../../../utils/errors')
+const { BadRequestError, NotFoundError } = require('../../../utils/errors')
 
 module.exports = {
   // TODO abstranct to transactions controller and first path e.g. /recipe /order is database model
@@ -41,9 +40,6 @@ module.exports = {
       const [recipe] = await db.getRecipe(id)
       if (!recipe) throw new NotFoundError('recipes')
 
-      const selfAddress = await identity.getMemberBySelf({ token: {} })
-      if (!selfAddress) throw new IdentityError()
-
       const transaction = await db.insertRecipeTransaction(id)
       const payload = {
         image: recipe.binary_blob,
@@ -51,7 +47,7 @@ module.exports = {
         inputs: [],
         outputs: [
           {
-            roles: { Owner: selfAddress, Buyer: selfAddress, Supplier: recipe.supplier },
+            roles: { Owner: recipe.owner, Buyer: recipe.owner, Supplier: recipe.supplier },
             metadata: mapRecipeData({ ...recipe, transaction }),
           },
         ],
@@ -59,6 +55,7 @@ module.exports = {
       runProcess(payload, req.token)
       return {
         status: 200,
+        message: `transaction ${transaction.id} has been created`,
         response: {
           id: transaction.id,
           submittedAt: new Date(transaction.created_at).toISOString(),
