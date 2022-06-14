@@ -110,8 +110,6 @@ So that the build is available to be used again, a new token for the build is cr
 | Owner: `SupplierX`   | `<Literal>` type: `BUILD` |
 | Buyer: `BAE`         |                           |
 | Supplier:`SupplierX` |                           |
-|                      |                           |
-|                      |                           |
 
 The `Part` token. One for each recipe in the build. `recipeId: <TokenId>` matches a recipe `<TokenId>` from the `inputs`. `buildId: <TokenId>` matches the build `<TokenId>` from the `inputs`.
 
@@ -361,6 +359,12 @@ Burning the old + creating the new `Build` token will have the following restric
       "num_outputs": 1
     }
   ],
+  "SenderHasOutputRole": [
+    {
+      "index": 0,
+      "role_key": "Supplier"
+    }
+  ],
   "FixedInputMetadataValue": [
     {
       "index": 0,
@@ -401,10 +405,11 @@ Burning the old + creating the new `Build` token will have the following restric
       "output_metadata_key": "status"
     }
   ],
-  "SenderHasOutputRole": [
+  "FixedOutputMetadataValueType": [
     {
       "index": 0,
-      "role_key": "Supplier"
+      "metadata_key": "completionEstimate",
+      "metadata_value_type": "Literal"
     }
   ]
 }
@@ -494,6 +499,13 @@ Burning the old + creating the new `Build` token will have the following restric
       "index": 0,
       "metadata_key": "status",
       "metadata_value": "completed"
+    }
+  ],
+  "FixedOutputMetadataValueType": [
+    {
+      "index": 0,
+      "metadata_key": "completedAt",
+      "metadata_value_type": "Literal"
     }
   ]
 }
