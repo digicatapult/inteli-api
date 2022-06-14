@@ -87,7 +87,7 @@ services:
       - API_HOST=dscp-node
       - API_PORT=9944
       - USER_URI=//Alice
-      - IPFS_HOST=dscp-ipfs
+      - IPFS_HOST=ipfs
       - IPFS_PORT=5001
       - LOG_LEVEL=trace
       - AUTH_JWKS_URI=https://inteli.eu.auth0.com/.well-known/jwks.json

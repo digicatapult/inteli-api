@@ -116,7 +116,11 @@ describe('recipe controller', () => {
   describe('transactions /create', () => {
     beforeEach(async () => {
       stubs.getRecipe = stub(db, 'getRecipe').resolves([])
-      stubs.insertTransaction = stub(db, 'insertRecipeTransaction').resolves({ id: 'transaction-uuid' })
+      stubs.insertTransaction = stub(db, 'insertRecipeTransaction').resolves({
+        id: '50000000-0000-1000-3000-000000000001',
+        status: 'Submitted',
+        created_at: '2022-06-11T08:47:23.397Z',
+      })
     })
     afterEach(() => {
       stubs.insertTransaction.restore()
@@ -165,7 +169,11 @@ describe('recipe controller', () => {
         stubs.getRecipe.restore()
         stubs.insertTransaction.restore()
         stubs.getRecipe = stub(db, 'getRecipe').resolves([recipeExample])
-        stubs.insertTransaction = stub(db, 'insertRecipeTransaction').resolves({ id: 'transaction-uuid' })
+        stubs.insertTransaction = stub(db, 'insertRecipeTransaction').resolves({
+          id: '50000000-0000-1000-3000-000000000001',
+          status: 'Submitted',
+          created_at: '2022-06-11T08:47:23.397Z',
+        })
         response = await submitTransaction(postPayload)
       })
 
@@ -197,7 +205,7 @@ describe('recipe controller', () => {
           requiredCerts: { type: 'FILE', value: 'required_certs.json' },
           type: { type: 'LITERAL', value: 'RECIPE' },
           image: { type: 'FILE', value: 'foo.jpg' },
-          transactionId: { type: 'LITERAL', value: 'transaction-uuid' },
+          transactionId: { type: 'LITERAL', value: '50000000000010003000000000000001' },
         })
       })
 
@@ -230,11 +238,13 @@ describe('recipe controller', () => {
         expect(stubs.insertTransaction.getCall(0).args).to.be.deep.equal(['recipe-id'])
       })
 
-      it('returns 200 along with the transaction id', () => {
-        expect(response).to.deep.equal({
-          status: 200,
-          message: 'transaction transaction-uuid has been created',
-          transactionId: 'transaction-uuid',
+      it.only('returns 200 along with the transaction id', () => {
+        const { status, response: body } = response
+        expect(status).to.be.equal(200)
+        expect(body).to.deep.equal({
+          id: '50000000-0000-1000-3000-000000000001',
+          status: 'Submitted',
+          submittedAt: '2022-06-11T08:47:23.397Z',
         })
       })
     })
