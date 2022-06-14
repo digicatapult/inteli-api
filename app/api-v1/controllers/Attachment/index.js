@@ -28,12 +28,8 @@ module.exports = {
 
     for (const mimeType of orderedAccept) {
       if (mimeType === 'application/json' || mimeType === 'application/*' || mimeType === '*/*') {
-        try {
-          const json = JSON.parse(JSON.stringify(attachment.binary_blob))
-          return { status: 201, response: { binary_blob: json, filename: attachment.filename, id: attachment.id } }
-        } catch (error) {
-          throw new InternalError({ message: error })
-        }
+        const json = JSON.parse(JSON.stringify(attachment.binary_blob))
+        return { status: 201, response: { binary_blob: json, filename: attachment.filename, id: attachment.id } }
       }
       if (mimeType === 'application/octet-stream') {
         return {
