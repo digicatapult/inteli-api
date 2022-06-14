@@ -59,13 +59,16 @@ describe.only('Attachment controller', () => {
       })
     })
 
-    describe.only('happy path', () => {
+    /******* These tests require a res object being sent so currently do not return
+     * as errors such as 'TypeError: Cannot read property 'status' of undefined' appear
+     */
+
+    describe.only('happy path - file attachment', () => {
       beforeEach(async () => {
         stubs.getAttachment.resolves([fileAttachment])
         response = await getAttachment({
           params: { id: fileAttachment.id },
           headers: { accept: 'application/octet-stream' },
-          res: { status: 100 },
         })
       })
 
@@ -76,5 +79,23 @@ describe.only('Attachment controller', () => {
         expect(body).to.deep.equal(fileAttachment)
       })
     })
+
+    describe.only('happy path - json attachment', () => {
+      beforeEach(async () => {
+        stubs.getAttachment.resolves([jsonAttachment])
+        response = await getAttachment({
+          params: { id: jsonAttachment.id },
+          headers: { accept: 'application/json' },
+        })
+      })
+
+      it('returns an attachment', () => {
+        const { status, response: body } = response
+        console.log(response)
+        expect(status).to.be.equal(200)
+        expect(body).to.deep.equal(jsonAttachment)
+      })
+    })
+    /********************************* */
   })
 })
