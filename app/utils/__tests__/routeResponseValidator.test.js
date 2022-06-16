@@ -114,6 +114,10 @@ describe('buildValidatedJsonHandler.handler', () => {
     })
   })
 
+  describe('with custom headers', () => {
+    
+  })
+
   describe('with validation errors', () => {
     let context = mkContext()
     withMockedValidator(context, 'error')

@@ -28,6 +28,7 @@ module.exports = function (attachmentService) {
       tags: ['attachment'],
     }),
     POST: buildValidatedJsonHandler(
+      // TODO update route to use new controller`
       async function (req) {
         if (req.headers['content-type'] === 'application/json') {
           logger.info('JSON attachment upload: %j', req.body)

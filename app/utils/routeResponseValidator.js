@@ -37,13 +37,13 @@ const buildValidatedJsonHandler = (controller, apiDoc) => {
   })
   const handler = async function (req, res) {
     const { status, response, headers } = await controller(req)
-    if (headers) res.set(headers)
     const validationErrors = responseValidator.validateResponse(status, response)
     if (validationErrors) {
       logger.warn('API response validation error for handler "%s". Errors were: %j', apiDoc.summary, validationErrors)
-      res.status(500).json({ message: 'Internal server error' })
+      res.status(500).send({ message: 'Internal server error' })
     } else {
-      res.status(status).json(response)
+      if (headers) res.set(headers)
+      res.status(status).send(response)
     }
   }
   handler.apiDoc = {
