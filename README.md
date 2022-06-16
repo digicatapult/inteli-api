@@ -82,3 +82,62 @@ Run tests:
 ```
 npm run test:jwt
 ```
+
+## API design
+
+`inteli-api` provides a RESTful OpenAPI-based interface for third parties and frontends to interact with the `DSCP` system. In this sense the design prioritises:
+
+1. RESTful design principles. This includes:
+   - all endpoints describing discrete operations on path derived entities.
+   - use of HTTP verbs to describe whether state is modified, whether the action is idempotent etc.
+   - HTTP response codes indicating the correct status of the request.
+   - HTTP response bodies including the details of a query response or details about the entity being created/modified.
+2. Simplicity of structure. The API should be easily understood by a third party and traversable
+3. Simplicity of usage. This includes:
+   - all APIs that take request bodies taking a JSON structured request with the exception of attachment upload (which is idiomatically represented as a multipart form).
+   - all APIs which return a body returning a JSON structured response (again with the exception of attachments.
+4. Abstraction of the underlying DLT components. This means no token Ids, no block numbers etc.
+5. Conflict free identifiers. All identifiers must be conflict free as updates can come from third party organisations
+
+### Fundamental entities
+
+These are the top level physical concepts in the system. They will be the top level RESTful path segments. Note that different states of an entity will **NOT** be represented as different top level entities.
+
+- `recipe`
+- `orders`
+- `build`
+- `part`
+
+Additionally there is one more top level entity `attachment` which accepts a `multipart/form-data` payload for uploading a file to IPFS. This returns an `attachmentId` that can then be used when preparing entity updates to attach files.
+
+### Entity queries
+
+Entity queries allow the API user to list those entities including a query and to get a specific entity. For `order` for example:
+
+- `GET /order` - list orders
+- `GET /order/{orderId}` - get order
+
+### Entity creation
+
+Allows the creation of an initial local state for an entity. Note this is essentially just to establish an internal identifier for the entity and **the state is not shared across the blockchain network at this point**.
+
+- `POST /order`
+
+### Entity updates
+
+Allows different kind of updates to be prepared and applied to an entity. For example, an `order` must be submitted via a `submission` action. Each update can have specific files attached along with other specific metadata.
+
+- `POST /order/{orderId}/submission` - create an order `submission` action and send it to the blockchain
+- `GET /order/{orderId}/submission` - list order `submissions` and their status
+- `GET /order/{orderId}/submission/{submissiond}` - get the details of an order `submission`
+
+### Attachment API
+
+The last top level entity `attachment` which accepts a `multipart/form-data` payload for uploading a file to IPFS. This will return a attachmentId that can then be used when preparing entity updates to attach files.
+
+- `POST /attachment`
+- `GET /attachment/{attachmentId}`
+
+## Demo scenarios
+
+Demoing the routes in `inteli-api` involves two personas.
