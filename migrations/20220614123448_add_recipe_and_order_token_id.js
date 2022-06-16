@@ -4,11 +4,13 @@
  */
 exports.up = async (knex) => {
   await knex.schema.alterTable('recipes', (def) => {
-    def.integer('token_id')
+    def.integer('latest_token_id')
+    def.integer('original_token_id')
   })
 
   await knex.schema.alterTable('orders', (def) => {
-    def.integer('token_id')
+    def.integer('latest_token_id')
+    def.integer('original_token_id')
   })
 }
 
@@ -18,10 +20,12 @@ exports.up = async (knex) => {
  */
 exports.down = async (knex) => {
   await knex.schema.alterTable('recipes', (def) => {
-    def.dropColumn('token_id')
+    def.dropColumn('latest_token_id')
+    def.dropColumn('original_token_id')
   })
 
   await knex.schema.alterTable('orders', (def) => {
-    def.dropColumn('token_id')
+    def.dropColumn('latest_token_id')
+    def.dropColumn('original_token_id')
   })
 }

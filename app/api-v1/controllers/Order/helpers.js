@@ -32,7 +32,7 @@ const buildOrderOutput = (data, recipes) => ({
 exports.mapOrderData = async (data) => {
   if (!data.items || data.items.length < 1) throw new NothingToProcess()
   const records = await db.getRecipeByIDs(data.items)
-  const tokenIds = records.map((el) => el.token_id)
+  const tokenIds = records.map((el) => el.latest_token_id)
   if (!tokenIds.every(Boolean)) throw new NoTokenError('recipes')
 
   const recipes = tokenIds.reduce((output, id) => {

@@ -12,15 +12,15 @@ const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
 const recipeExamples = [
   {
     id: '50000000-0000-1000-5500-000000000001',
-    token_id: 20,
+    latest_token_id: 20,
   },
   {
     id: '50000000-0000-1000-5600-000000000001',
-    token_id: null,
+    latest_token_id: null,
   },
   {
     id: '50000000-0000-1000-5700-000000000001',
-    token_id: 2,
+    latest_token_id: 2,
   },
 ]
 const createTransaction = async (req) => {
