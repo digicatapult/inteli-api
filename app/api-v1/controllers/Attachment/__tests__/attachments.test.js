@@ -70,7 +70,7 @@ describe.only('Attachment controller', () => {
       it('returns a file attachment', () => {
         const { status, response: body } = response
         expect(status).to.be.equal(201)
-        expect(body.file).to.deep.equal(fileAttachment)
+        expect(body).to.deep.equal(fileAttachment)
       })
     })
 

@@ -11,6 +11,11 @@ const mkContext = () => ({ stubs: {} })
 const mkExampleController = (context) => {
   context.stubs.controller = sinon.stub().resolves({ status: 200, response: { foo: 'bar' } })
 }
+const mkControllerResponseWithHeaders = (context) => {
+  context.stubs.controller = sinon
+    .stub()
+    .resolves({ status: 200, response: { foo: 'bar' }, headers: { 'content-type': 'application/json' } })
+}
 
 const withMockedValidator = (context, validateRes) => {
   before(() => {
@@ -33,6 +38,20 @@ const mkResponseMock = (context) => {
   Object.assign(context.stubs, {
     resJson,
     resStatus,
+  })
+  return {
+    status: resStatus,
+  }
+}
+
+const mkHeeaderResponseMock = (context) => {
+  const resJson = sinon.stub()
+  const resStatus = sinon.stub().returns({ json: resJson })
+  const resHeader = sinon.stub()
+  Object.assign(context.stubs, {
+    resJson,
+    resStatus,
+    resHeader,
   })
   return {
     status: resStatus,
@@ -114,8 +133,37 @@ describe('buildValidatedJsonHandler.handler', () => {
     })
   })
 
-  describe('with custom headers', () => {
-    
+  describe.only('with custom headers', () => {
+    let context = mkContext()
+    withMockedValidator(context, 'error')
+
+    before(() => {
+      mkControllerResponseWithHeaders(context)
+      context.handler = buildValidatedJsonHandler(context.stubs.controller, exampleDoc)
+      context.req = {}
+      context.res = mkHeeaderResponseMock(context)
+      console.log(context.res)
+      context.handler(context.req, context.res)
+    })
+
+    it('should call controller', () => {
+      const stub = context.stubs.controller
+      expect(stub.calledOnce).to.equal(true)
+      expect(stub.firstCall.args[0]).to.equal(context.req)
+    })
+
+    it('should respond with returned status', () => {
+      const stub = context.stubs.resStatus
+      expect(stub.calledOnce).to.equal(true)
+      expect(stub.firstCall.args[0]).to.equal(200)
+    })
+
+    it('should respond with json', () => {
+      const stub = context.stubs.resJson
+      console.log(stub)
+      expect(stub.calledOnce).to.equal(true)
+      expect(stub.firstCall.args[0]).to.deep.equal({ foo: 'bar' })
+    })
   })
 
   describe('with validation errors', () => {

@@ -8,16 +8,6 @@ const { InternalError, NotFoundError, BadRequestError } = require('../../../util
 
 module.exports = {
   get: async (req) => {
-    /*
-    if (orderedAccept.includes(jsonMimeTypes) && filename === 'json') {
-        return {
-          status: 200,
-          response: JSON.parse(JSON.stringify(attachment)),
-        }
-      }
-
-      return returnWithFile(attachment)
-  */
     const { id } = req.params
     if (!id) throw new BadRequestError('missing params')
 
@@ -34,15 +24,17 @@ module.exports = {
       if (mimeType === 'application/octet-stream') {
         return {
           status: 201,
+          headers: {
+            immutable: true,
+            maxAge: 365 * 24 * 60 * 60 * 1000,
+            'content-disposition': `attachment; filename="${attachment.filename}"`,
+            'access-control-expose-headers': 'content-disposition',
+            'content-type': 'application/octet-stream',
+          },
           response: {
-            headers: {
-              immutable: true,
-              maxAge: 365 * 24 * 60 * 60 * 1000,
-              'content-disposition': `attachment; filename="${attachment.filename}"`,
-              'access-control-expose-headers': 'content-disposition',
-              'content-type': 'application/octet-stream',
-            },
-            file: { binary_blob: attachment.binary_blob, filename: attachment.filename, id: attachment.id },
+            binary_blob: attachment.binary_blob,
+            filename: attachment.filename,
+            id: attachment.id,
           },
         }
       }
