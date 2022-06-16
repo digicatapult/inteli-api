@@ -13,7 +13,7 @@ const describeNoAuthOnly = AUTH_TYPE === 'NONE' ? describe : describe.skip
 
 describeAuthOnly('order - authenticated', function () {
   describe('valid order', function () {
-    this.timeout(3000)
+    this.timeout(5000)
     let app
     let authToken
     let jwksMock
@@ -36,13 +36,14 @@ describeAuthOnly('order - authenticated', function () {
 
     setupIdentityMock()
 
-    test('POST Order with existing supplier - 201', async function () {
+    test.only('POST Order with existing supplier - 201', async function () {
       const newOrder = {
         supplier: 'valid-1',
         requiredBy: new Date().toISOString(),
         items: ['10000000-0000-1000-8000-000000000000'],
       }
       const response = await postOrderRoute(newOrder, app, authToken)
+      console.log({ response })
 
       expect(response.status).to.equal(201)
       expect(response.body.supplier).deep.equal(newOrder.supplier)

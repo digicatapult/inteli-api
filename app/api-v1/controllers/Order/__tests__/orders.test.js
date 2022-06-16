@@ -51,6 +51,17 @@ describe('Order controller', () => {
     nock.cleanAll()
   })
 
+  describe('order.post', () => {
+    beforeEach(() => {
+      stubs.identityByAlias = stubs(identifyService, 'getMemberByAlias')
+      stubs.identitySelf = stubs(identifyService, 'getMemberBySelf')
+    })
+
+    afterEach(() => {
+
+    })
+  })
+
   describe('order.getAll', () => {
     it('should resolve 500 error', async () => {
       const result = await orderController.getAll()
