@@ -212,7 +212,6 @@ describe('Order controller', () => {
       })
 
       it('returns insert error and allows middleware to handle the response', () => {
-        expect(response).to.be.an.instanceOf(Error)
         expect(response.toString()).to.be.equal('some error - insert order')
       })
     })
