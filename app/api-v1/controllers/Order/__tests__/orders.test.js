@@ -62,23 +62,26 @@ describe('Order controller', () => {
     nock.cleanAll()
   })
 
-  describe.only('order.post', () => {
+  describe('order.post', () => {
     beforeEach(async () => {
       stubs.getRecipeIds = stub(db, 'getRecipeByIDs').resolves(recipeExamples)
       stubs.identityByAlias = stub(identifyService, 'getMemberByAlias')
         .onFirstCall()
         .resolves({ address: 'supplier-address' })
         .onSecondCall()
-        .resolves({ address: 'self-address' })
+        .resolves({ alias: 'self-address' })
       stubs.identitySelf = stub(identifyService, 'getMemberBySelf').resolves('self-address')
-      stubs.insertOder = stub(db, 'postOrderDb').resolves({ a: 'a' })
+      stubs.insertOrder = stub(db, 'postOrderDb').resolves([{
+        id: 'order-id',
+        Items: recipeExamples.map((el) => el.id),
+      }])
     })
 
     afterEach(() => {
       stubs.getRecipeIds.restore()
       stubs.identityByAlias.restore()
       stubs.identitySelf.restore()
-      stubs.insertOder.restore()
+      stubs.insertOrder.restore()
     })
 
     describe('if req.body is missing', () => {
@@ -97,7 +100,7 @@ describe('Order controller', () => {
       })
 
       it('and does not attempt to persist order', () => {
-        expect(stubs.insertOder.calledOnce).to.equal(false)
+        expect(stubs.insertOrder.calledOnce).to.equal(false)
       })
     })
 
@@ -106,12 +109,14 @@ describe('Order controller', () => {
         stubs.identityByAlias.restore()
         stubs.identitySelf.throws('some error - identity self')
         stubs.identityByAlias.rejects('some error - identity alias')
-        response = await postOrder({ body: { 
-          supplier: 'supplier-address-req',
-          description: 'some description - test',
-          requiredBy: '2022-06-17T07:31:37.602Z',
-          items: recipeExamples.map((el) => el.id),
-        }})
+        response = await postOrder({
+          body: {
+            supplier: 'supplier-address-req',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: recipeExamples.map((el) => el.id),
+          }
+        })
       })
 
       it('throws and allows middleware to step in', () => {
@@ -120,23 +125,25 @@ describe('Order controller', () => {
       })
 
       it('and does not call insert order db method', () => {
-        expect(stubs.insertOder.calledOnce).to.equal(false)
+        expect(stubs.insertOrder.calledOnce).to.equal(false)
       })
     })
 
     describe('when payload validation fails', () => {
       describe('due to recipes not found', () => {
         beforeEach(async () => {
-          stubs.insertOder.restore()
+          stubs.insertOrder.restore()
           stubs.getRecipeIds.resolves([])
-          response = await postOrder({ body: { 
-            supplier: 'supplier-address-req',
-            description: 'some description - test',
-            requiredBy: '2022-06-17T07:31:37.602Z',
-            items: recipeExamples.map((el) => el.id),
-          }})
+          response = await postOrder({
+            body: {
+              supplier: 'supplier-address-req',
+              description: 'some description - test',
+              requiredBy: '2022-06-17T07:31:37.602Z',
+              items: recipeExamples.map((el) => el.id),
+            }
+          })
         })
-        
+
         afterEach(() => {
           stubs.getRecipeIds.restore()
         })
@@ -145,23 +152,25 @@ describe('Order controller', () => {
           expect(response).to.be.an.instanceOf(NotFoundError)
           expect(response.message).to.be.equal('Not Found: recipe')
         })
-        
+
         it('does not attempt to insert order', () => {
-          expect(stubs.insertOder.calledOnce).to.equal(false)
+          expect(stubs.insertOrder.calledOnce).to.equal(false)
         })
       })
-      
+
       describe('due to mismatch of supplier that is in req.body', () => {
         beforeEach(async () => {
           stubs.getRecipeIds.resolves([{ supplier: 'a' }, { supplier: 'a' }, { supplier: 'a' }])
           stubs.identityByAlias.returns('a-missmatched-alias')
-          
-          response = await postOrder({ body: { 
-            supplier: 'supplier-address-req-mismatch',
-            description: 'some description - test',
-            requiredBy: '2022-06-17T07:31:37.602Z',
-            items: recipeExamples.map((el) => el.id),
-          }})
+
+          response = await postOrder({
+            body: {
+              supplier: 'supplier-address-req-mismatch',
+              description: 'some description - test',
+              requiredBy: '2022-06-17T07:31:37.602Z',
+              items: recipeExamples.map((el) => el.id),
+            }
+          })
         })
 
         afterEach(() => {
@@ -174,58 +183,128 @@ describe('Order controller', () => {
         })
 
         it('does not attempt to insert order', () => {
-          expect(stubs.insertOder.calledOnce).to.equal(false)
+          expect(stubs.insertOrder.calledOnce).to.equal(false)
         })
       })
     })
 
     describe('if persisting order fails', () => {
       beforeEach(async () => {
-        stubs.insertOder.restore()
-        stubs.insertOder.rejects('some error - insert order')
-        response = await postOrder({ body: { 
-          supplier: 'supplier-address-req',
-          description: 'some description - test',
-          requiredBy: '2022-06-17T07:31:37.602Z',
-          items: recipeExamples.map((el) => el.id),
-        }})
+        stubs.getRecipeIds.resolves(recipeExamples)
+        stubs.insertOrder.rejects('some error - insert order')
+
+        response = await postOrder({
+          body: {
+            supplier: 'supplier-address-req',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: recipeExamples.map((el) => el.id),
+          }
+        })
       })
 
       it('returns insert error and allows middleware to handle the response', () => {
         expect(response).to.be.an.instanceOf(Error)
-        expect(response.code).to.be.equal('23502')
-        expect(response.severity).to.be.equal('ERROR')
+        expect(response.toString()).to.be.equal('some error - insert order')
       })
-
     })
 
     describe('happy path', () => {
       beforeEach(async () => {
-        stubs.getRecipeIds.resolves(recipeExamples)
+        stubs.getRecipeIds.resolves([...recipeExamples])
 
-        response = await postOrder({ body: { 
-          supplier: 'supplier-address-req-mismatch',
-          description: 'some description - test',
-          requiredBy: '2022-06-17T07:31:37.602Z',
-          items: recipeExamples.map((el) => el.id),
-        }})
+        response = await postOrder({
+          body: {
+            supplier: 'supplier-address-req-mismatch',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: recipeExamples.map((el) => el.id),
+          }
+        })
+      })
+
+      afterEach(() => {
+        stubs.getRecipeIds.restore()
       })
 
       it('gets aliases from identity service', () => {
-        expect(stubs.identityByAlias.getCall(0).args[0]).to.deep.equal('')
-        expect(stubs.identityByAlias.getCall(1).args[0]).to.deep.equal('')
+        expect(stubs.identityByAlias.getCall(0).args[0]).to.deep.equal({
+          body: {
+            supplier: 'supplier-address-req-mismatch',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: [
+              '50000000-0000-1000-5500-000000000001',
+              '50000000-0000-1000-5600-000000000001',
+              '50000000-0000-1000-5700-000000000001'
+            ]
+          }
+        })
+        expect(stubs.identityByAlias.getCall(1).args[0]).to.deep.equal({
+          body: {
+            supplier: 'supplier-address-req-mismatch',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: [
+              '50000000-0000-1000-5500-000000000001',
+              '50000000-0000-1000-5600-000000000001',
+              '50000000-0000-1000-5700-000000000001'
+            ]
+          }
+        })
       })
 
       it('retrieves self address', () => {
-        expect(stubs.identitySelf.getCall(0).args[0]).to.deep.equal('')
+        expect(stubs.identitySelf.getCall(0).args[0]).to.deep.equal({
+          body: {
+            supplier: 'supplier-address-req-mismatch',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: [
+              '50000000-0000-1000-5500-000000000001',
+              '50000000-0000-1000-5600-000000000001',
+              '50000000-0000-1000-5700-000000000001'
+            ]
+          }
+        })
       })
 
       it('validates properties by calling a helper method \'validate\'', () => {
-        expect(stubs.insertOder.getCall(0).args[0]).to.deep.equal('')
+        expect(stubs.insertOrder.getCall(0).args[0]).to.deep.equal({
+          supplier: 'supplier-address',
+          description: 'some description - test',
+          requiredBy: '2022-06-17T07:31:37.602Z',
+          items: [
+            '50000000-0000-1000-5500-000000000001',
+            '50000000-0000-1000-5600-000000000001',
+            '50000000-0000-1000-5700-000000000001'
+          ],
+          purchaserAddress: 'self-address',
+          status: 'Created',
+          purchaser: 'self-address'
+        })
       })
 
       it('persist order and returns 201 along with other details', () => {
-        expect(response).to.deep.equal('')
+        expect(response.status).to.equal(201)
+        expect(response.response).to.deep.equal(
+          {
+            id: 'order-id',
+            Items: [
+              '50000000-0000-1000-5500-000000000001',
+              '50000000-0000-1000-5600-000000000001',
+              '50000000-0000-1000-5700-000000000001'
+            ],
+            supplier: 'supplier-address-req-mismatch',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: [
+              '50000000-0000-1000-5500-000000000001',
+              '50000000-0000-1000-5600-000000000001',
+              '50000000-0000-1000-5700-000000000001'
+            ]
+          }
+        )
       })
     })
   })

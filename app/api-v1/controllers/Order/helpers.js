@@ -10,7 +10,7 @@ exports.validate = async (body) => {
   if (recipes.length != uniqueRecipeIDs.length) {
     throw new NotFoundError('recipe')
   } else {
-    recipes.forEach((recipeItem) => {
+    recipes.map((recipeItem) => {
       if (recipeItem.supplier != body.supplier) {
         throw new BadRequestError('Supplier does not match')
       }

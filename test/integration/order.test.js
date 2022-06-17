@@ -43,7 +43,6 @@ describeAuthOnly('order - authenticated', function () {
         items: ['10000000-0000-1000-8000-000000000000'],
       }
       const response = await postOrderRoute(newOrder, app, authToken)
-      console.log({ response })
 
       expect(response.status).to.equal(201)
       expect(response.body.supplier).deep.equal(newOrder.supplier)
