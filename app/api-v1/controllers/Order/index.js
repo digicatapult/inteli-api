@@ -12,9 +12,9 @@ module.exports = {
       throw new BadRequestError('missing req.body')
     }
 
-    const { address: supplierAddress } = await idenity.getMemberByAlias(req, req.body.supplier)
-    const selfAddress = await idenity.getMemberBySelf(req)
-    const { alias: selfAlias } = await idenity.getMemberByAlias(req, selfAddress)
+    const { address: supplierAddress } = await identity.getMemberByAlias(req, req.body.supplier)
+    const selfAddress = await identity.getMemberBySelf(req)
+    const { alias: selfAlias } = await identity.getMemberByAlias(req, selfAddress)
 
     const validated = await validate({
       ...req.body,

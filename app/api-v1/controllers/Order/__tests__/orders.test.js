@@ -485,7 +485,7 @@ describe('Order controller', () => {
           expect(stubs.insertTransaction.getCall(0).args[0]).to.deep.equal('00000000-0000-1000-3000-000000000001')
         })
 
-        it('returns 201 along with other details as per api-doc', () => {
+        it.only('returns 201 along with other details as per api-doc', () => {
           const { status, response: body } = response
           expect(status).to.equal(201)
           expect(body).to.deep.equal({
