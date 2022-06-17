@@ -19,9 +19,9 @@ module.exports = {
     const validated = await validate({
       ...req.body,
       supplier: supplierAddress,
-      purchaserAddress: selfAddress,
+      purchaserAddress: selfAlias,
       status: 'Created',
-      purchaser: selfAlias,
+      purchaser: selfAddress,
     })
     const [result] = await db.postOrderDb(validated)
 

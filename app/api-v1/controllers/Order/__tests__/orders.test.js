@@ -150,9 +150,9 @@ describe('Order controller', () => {
           stubs.getRecipeIds.restore()
         })
 
-        it('throws NotFoundError and returns 404 with the message', () => {
-          expect(response).to.be.an.instanceOf(NotFoundError)
-          expect(response.message).to.be.equal('Not Found: recipe')
+        it('throws NotFoundError and returns 400 with the message', () => {
+          expect(response).to.be.an.instanceOf(BadRequestError)
+          expect(response.message).to.be.equal('Bad Request: recipe not found')
         })
 
         it('does not attempt to insert order', () => {
@@ -181,7 +181,7 @@ describe('Order controller', () => {
 
         it('throws BadRequestError and returns 400 with the message', () => {
           expect(response).to.be.an.instanceOf(BadRequestError)
-          expect(response.message).to.be.equal('Bad Request: Supplier does not match')
+          expect(response.message).to.be.equal('Bad Request: invalid supplier')
         })
 
         it('does not attempt to insert order', () => {

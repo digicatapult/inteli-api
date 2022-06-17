@@ -8,11 +8,11 @@ exports.validate = async (body) => {
 
   const recipes = await db.getRecipeByIDs(uniqueRecipeIDs)
   if (recipes.length != uniqueRecipeIDs.length) {
-    throw new NotFoundError('recipe')
+    throw new BadRequestError('recipe not found')
   } else {
     recipes.map((recipeItem) => {
       if (recipeItem.supplier != body.supplier) {
-        throw new BadRequestError('Supplier does not match')
+        throw new BadRequestError('invalid supplier')
       }
     })
   }
