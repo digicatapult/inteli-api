@@ -36,6 +36,7 @@ const buildValidatedJsonHandler = (controller, apiDoc) => {
     components: commonApiDoc.components,
   })
   const handler = async function (req, res) {
+    console.log('asd')
     const { status, response } = await controller(req)
     const validationErrors = responseValidator.validateResponse(status, response)
     if (validationErrors) {

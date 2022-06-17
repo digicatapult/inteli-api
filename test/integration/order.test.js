@@ -36,7 +36,7 @@ describeAuthOnly('order - authenticated', function () {
 
     setupIdentityMock()
 
-    test.only('POST Order with existing supplier - 201', async function () {
+    test('POST Order with existing supplier - 201', async function () {
       const newOrder = {
         supplier: 'valid-1',
         requiredBy: new Date().toISOString(),

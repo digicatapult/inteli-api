@@ -1,7 +1,7 @@
 const db = require('../../../db')
 const { NotFoundError, NoTokenError, NothingToProcess, BadRequestError } = require('../../../utils/errors')
 
-exports.validateRecipes = async (body) => {
+exports.validate = async (body) => {
   // Will add a get function at a later date to check for duplication
   // This section checks if the order supplier does not match the supplier
   const uniqueRecipeIDs = [...new Set(body.items)]
@@ -16,6 +16,8 @@ exports.validateRecipes = async (body) => {
       }
     })
   }
+
+  return body
 }
 
 /*eslint-disable */
