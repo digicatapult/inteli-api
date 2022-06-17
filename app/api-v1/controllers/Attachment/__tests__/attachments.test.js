@@ -69,7 +69,7 @@ describe('Attachment controller', () => {
 
       it('returns a file attachment', () => {
         const { status, response: body } = response
-        expect(status).to.be.equal(201)
+        expect(status).to.be.equal(200)
         expect(body).to.deep.equal(fileAttachment.binary_blob.toString())
       })
     })
@@ -95,6 +95,13 @@ describe('Attachment controller', () => {
         const { status, response: body } = response
         expect(status).to.be.equal(200)
         expect(body).to.deep.equal({ 'First Item': 'Test Data' })
+      })
+    })
+
+    describe('attachment.getAll', () => {
+      it('should resolve 500 error', async () => {
+        const result = await attachmentController.getAll()
+        expect(result.status).to.equal(500)
       })
     })
   })

@@ -23,7 +23,6 @@ module.exports = {
         }
       if (mimeType === 'application/json' || mimeType === 'application/*' || mimeType === '*/*') {
         const json = JSON.parse(attachment.binary_blob)
-        //It looks like the validator is still the issue, I get a status f 200 befre validatioo
         return {
           status: 200,
           response: json,
@@ -31,7 +30,7 @@ module.exports = {
       }
       if (mimeType === 'application/octet-stream') {
         return {
-          status: 201,
+          status: 200,
           headers: {
             immutable: true,
             maxAge: 365 * 24 * 60 * 60 * 1000,
@@ -45,6 +44,9 @@ module.exports = {
     }
 
     throw new InternalError({ message: 'Client file request not supported' })
+  },
+  getAll: async function () {
+    return { status: 500, response: { message: 'Not Implemented' } }
   },
   create: async (req) => {
     if (req.headers['content-type'] === 'application/json') {

@@ -99,7 +99,7 @@ describeAuthOnly('attachments - authenticated', function () {
   it('should return from the octet route', async function () {
     const attachment = '00000000-0000-1000-8000-000000000001'
     const response = await getAttachmentRouteOctet(attachment, app, authToken)
-    expect(response.status).to.equal(201)
+    expect(response.status).to.equal(200)
   })
 
   it('should return 500 when requesting json from the octet route', async function () {
@@ -109,7 +109,7 @@ describeAuthOnly('attachments - authenticated', function () {
   })
 
   it('should return 404 when requesting incorrect ID', async function () {
-    const attachment = '00000000-0000-1000-8000-000000040002'
+    const attachment = '00000000-0000-1000-8000-000000000002'
     const response = await getAttachmentRouteOctet(attachment, app, authToken)
     expect(response.status).to.equal(404)
   })

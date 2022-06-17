@@ -19,18 +19,6 @@ module.exports = function () {
         },
       ],
       responses: {
-        201: {
-          description: 'Return attachment',
-          content: {
-            'application/octet-stream': {
-              schema: {
-                description: 'Attachment file',
-                type: 'string',
-                format: 'binary',
-              },
-            },
-          },
-        },
         200: {
           description: 'Return attachment',
           content: {
@@ -53,6 +41,13 @@ module.exports = function () {
                 ],
               },
               example: {},
+            },
+            'application/octet-stream': {
+              schema: {
+                description: 'Attachment file',
+                type: 'string',
+                format: 'binary',
+              },
             },
           },
         },
