@@ -7,6 +7,9 @@ const { createAttachmentFromFile, createAttachment } = require('../Attachment/he
 const { InternalError, NotFoundError, BadRequestError } = require('../../../utils/errors')
 
 module.exports = {
+  getAll: async function () {
+    return { status: 500, response: { message: 'Not Implemented' } }
+  },
   get: async (req) => {
     const { id } = req.params
     if (!id) throw new BadRequestError('missing params')
@@ -44,9 +47,6 @@ module.exports = {
     }
 
     throw new InternalError({ message: 'Client file request not supported' })
-  },
-  getAll: async function () {
-    return { status: 500, response: { message: 'Not Implemented' } }
   },
   create: async (req) => {
     if (req.headers['content-type'] === 'application/json') {
