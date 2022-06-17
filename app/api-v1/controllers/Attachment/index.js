@@ -4,7 +4,7 @@ const logger = require('../../../utils/Logger')
 const db = require('../../../db')
 
 const { createAttachmentFromFile, createAttachment } = require('../Attachment/helpers')
-const { InternalError, NotFoundError, BadRequestError } = require('../../../utils/errors')
+const { InternalError, NotFoundError, BadRequestError, NotAcceptableError } = require('../../../utils/errors')
 
 module.exports = {
   getAll: async function () {
@@ -19,11 +19,10 @@ module.exports = {
     const orderedAccept = parseAccept(req.headers.accept)
 
     for (const mimeType of orderedAccept) {
-      if (mimeType === 'application/octet-stream' && attachment.filename.includes('json'))
-        return {
-          status: 406,
-          response: 'some error msg',
-        }
+      if (mimeType === 'application/octet-stream' && attachment.filename.includes('json')) {
+        throw new NotAcceptableError('Client file request not supported')
+      }
+
       if (mimeType === 'application/json' || mimeType === 'application/*' || mimeType === '*/*') {
         const json = JSON.parse(attachment.binary_blob)
         return {
