@@ -7,6 +7,6 @@ module.exports = {
   jsonAttachment: {
     id: '00000000-0000-1000-9000-000000000001',
     filename: 'json',
-    binary_blob: { 'First Item': 'Test Data' },
+    binary_blob: '{ "First Item": "Test Data" }',
   },
 }

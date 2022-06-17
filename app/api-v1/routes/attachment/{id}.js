@@ -19,7 +19,7 @@ module.exports = function () {
         },
       ],
       responses: {
-        200: {
+        201: {
           description: 'Return attachment',
           content: {
             'application/octet-stream': {
@@ -29,6 +29,11 @@ module.exports = function () {
                 format: 'binary',
               },
             },
+          },
+        },
+        200: {
+          description: 'Return attachment',
+          content: {
             'application/json': {
               schema: {
                 description: 'Attachment json',
@@ -41,6 +46,9 @@ module.exports = function () {
                   {
                     type: 'array',
                     items: {},
+                  },
+                  {
+                    type: 'string',
                   },
                 ],
               },

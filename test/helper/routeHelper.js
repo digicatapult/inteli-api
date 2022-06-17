@@ -141,6 +141,7 @@ async function postAttachmentJSON({ app }, body, token) {
 }
 
 async function getAttachmentRouteJSON(id, { app }, token) {
+  console.log('route id', id)
   return request(app)
     .get(`/${API_MAJOR_VERSION}/attachment/${id}`)
     .set('Accept', 'application/json')
@@ -150,7 +151,7 @@ async function getAttachmentRouteJSON(id, { app }, token) {
       return response
     })
     .catch((err) => {
-      console.error(`postAttachmentErr ${err}`)
+      console.log(`postAttachmentErr ${err}`)
       return err
     })
 }

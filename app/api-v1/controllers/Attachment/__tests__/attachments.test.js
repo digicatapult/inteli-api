@@ -70,7 +70,7 @@ describe('Attachment controller', () => {
       it('returns a file attachment', () => {
         const { status, response: body } = response
         expect(status).to.be.equal(201)
-        expect(body).to.deep.equal(fileAttachment)
+        expect(body).to.deep.equal(fileAttachment.binary_blob.toString())
       })
     })
 
@@ -86,14 +86,15 @@ describe('Attachment controller', () => {
           headers: { accept: 'application/json' },
         })
       })
+
       afterEach(() => {
         stubs.getAttachment.restore()
       })
 
       it('returns a json attachment', () => {
         const { status, response: body } = response
-        expect(status).to.be.equal(201)
-        expect(body).to.deep.equal(jsonAttachment)
+        expect(status).to.be.equal(200)
+        expect(body).to.deep.equal({ 'First Item': 'Test Data' })
       })
     })
   })

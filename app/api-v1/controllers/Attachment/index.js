@@ -13,13 +13,21 @@ module.exports = {
 
     const [attachment] = await db.getAttachment(req.params.id)
     if (!attachment) throw new NotFoundError('Attachment Not Found')
-
     const orderedAccept = parseAccept(req.headers.accept)
 
     for (const mimeType of orderedAccept) {
+      if (mimeType === 'application/octet-stream' && attachment.filename.includes('json'))
+        return {
+          status: 406,
+          response: 'some error msg',
+        }
       if (mimeType === 'application/json' || mimeType === 'application/*' || mimeType === '*/*') {
-        const json = JSON.parse(JSON.stringify(attachment.binary_blob))
-        return { status: 201, response: { binary_blob: json, filename: attachment.filename, id: attachment.id } }
+        const json = JSON.parse(attachment.binary_blob)
+        //It looks like the validator is still the issue, I get a status f 200 befre validatioo
+        return {
+          status: 200,
+          response: json,
+        }
       }
       if (mimeType === 'application/octet-stream') {
         return {
@@ -31,14 +39,11 @@ module.exports = {
             'access-control-expose-headers': 'content-disposition',
             'content-type': 'application/octet-stream',
           },
-          response: {
-            binary_blob: attachment.binary_blob,
-            filename: attachment.filename,
-            id: attachment.id,
-          },
+          response: attachment.binary_blob.toString(),
         }
       }
     }
+
     throw new InternalError({ message: 'Client file request not supported' })
   },
   create: async (req) => {
