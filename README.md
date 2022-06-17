@@ -39,7 +39,7 @@ The following environment variables are additionally used when `AUTH_TYPE : 'JWT
 To start dependencies
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 Run DB migrations
@@ -138,6 +138,22 @@ The last top level entity `attachment` which accepts a `multipart/form-data` pay
 - `POST /attachment`
 - `GET /attachment/{attachmentId}`
 
-## Demo scenarios
+## Demo scenario
 
-Demoing the routes in `inteli-api` involves two personas.
+Demoing the routes in `inteli-api` requires two personas: `buyer` and `supplier`. Each persona runs their own instance of `inteli-api` and its dependencies.
+
+Before transacting, each persona sets aliases in `dscp-identity-service` for other parties' node addresses so they can refer to them by human-friendly names. The `self` alias should also be set for a persona's own node address.
+
+1. `buyer` wants to create a `recipe`, which describes how a particular `supplier` will make a `part`. A `recipe` always includes an image `attachment`, so first `buyer` must upload an image to their local database with `POST /attachment`.
+2. They use the returned `imageattachmentId` in the request body to `POST /recipe`, as well as setting `supplier: 'supplier'` and providing an array of `requiredCerts` for the `recipe`. Later on, `supplier` will need to add a certificate file for each `requiredCert` for the `part` built from the `recipe`. At this point, the `recipe` only exists in the `buyer` database.
+3. When `buyer` is ready for the `recipe` to exist on chain they `POST recipe/{id}/creation`. `supplier` can now see the `recipe` if their node is running and connected.
+4. `buyer` creates an `order` of 1-10 `recipes` in their local database with `POST /order`, again setting `supplier: 'supplier'`. The request will fail if any of the listed recipes are set with a different supplier.
+5. When `buyer` is ready for the `order` to exist on chain they `POST order/{id}/submission`.
+6. `supplier` can `POST order/{id}/rejection` or `POST order/{id}/acceptance` the order. For simplicity they will accept, signifying their intent to build `parts` to fulfil the `order`.
+7. `supplier` creates a `build` of 1-10 `recipes` in their local database. They must have the `supplier` role for each `recipe`.
+8. When `supplier` is ready for the `build` to exist on chain they `POST build/{id}/schedule`. This also creates a new `part` on chain for each `recipe`.
+9. `supplier` can assign an individual `part` to an `order` with `POST part/{id}/order-assignment`. `itemIndex` in the request body matches the index on the `order` for the specific `recipe` that was used to build that `part`. `builds` (and `parts`) can be started and completed before an `order` is made and later assigned to one.
+10. A required certificate (`attachment`) for a `part` is added with `/part/{id}/certification` by `supplier`. `certificationIndex` in the request matches the index on the `recipe` for the `requiredCert` that the uploaded certificate is fulfilling.
+11. `supplier` can change the estimated date of completion or add general build files (`attachments`) to the `build` with `POST build/{id}/progress-update`.
+12. `supplier` can add general, non-required files (`attachments`) to the `part` with `POST build/{id}/metadata-update`.
+13. Finally, `supplier` can complete the `build` with `POST build/{id}/completion`.
