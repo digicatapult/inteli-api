@@ -57,7 +57,28 @@ describe('Order controller', () => {
       stubs.identitySelf = stubs(identifyService, 'getMemberBySelf')
     })
 
-    afterEach(() => {
+    afterEach(() => {})
+
+    describe('if req.body is missing', () => {
+      it('throws BadRequestError and returns 400', () => {})
+      it('and does not make any calls to the identity service', () => {})
+      it('and does not attempt to persist order', () => {})
+    })
+
+    describe('if identity service is unavailable or returned an error', () => {
+      it('returns server error', () => {})
+      it('and does not attempt to persist order', () => {})
+    })
+
+    describe('if persisting order fails', () => {
+      it('and does not attempt to persist order', () => {})
+    })
+
+    it('gets supplier\'s alias', () => {})
+    it('retrieves self address', () => {})
+    it('gets self alias name', () => {})
+    it('validates properties by calling a helper method \'validate\'', () => {})
+    it('persist order and returns 201 along with other details', () => {
 
     })
   })
