@@ -5,7 +5,7 @@ const { stub } = require('sinon')
 const orderController = require('../index')
 const db = require('../../../../db')
 const identifyService = require('../../../services/identityService')
-const { BadRequestError, NotFoundError, IdentityError, NoTokenError } = require('../../../../utils/errors')
+const { BadRequestError, NotFoundError, IdentityError, NoTokenError, InternalError } = require('../../../../utils/errors')
 const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
 
 const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
@@ -13,19 +13,30 @@ const recipeExamples = [
   {
     id: '50000000-0000-1000-5500-000000000001',
     token_id: 20,
+    supplier: 'supplier-address',
   },
   {
     id: '50000000-0000-1000-5600-000000000001',
     token_id: null,
+    supplier: 'supplier-address',
   },
   {
     id: '50000000-0000-1000-5700-000000000001',
     token_id: 2,
+    supplier: 'supplier-address',
   },
 ]
 const createTransaction = async (req) => {
   try {
     return await orderController.transaction.create(req)
+  } catch (err) {
+    return err
+  }
+}
+
+const postOrder = async (req) => {
+  try {
+    return await orderController.post(req)
   } catch (err) {
     return err
   }
@@ -51,35 +62,171 @@ describe('Order controller', () => {
     nock.cleanAll()
   })
 
-  describe('order.post', () => {
-    beforeEach(() => {
-      stubs.identityByAlias = stubs(identifyService, 'getMemberByAlias')
-      stubs.identitySelf = stubs(identifyService, 'getMemberBySelf')
+  describe.only('order.post', () => {
+    beforeEach(async () => {
+      stubs.getRecipeIds = stub(db, 'getRecipeByIDs').resolves(recipeExamples)
+      stubs.identityByAlias = stub(identifyService, 'getMemberByAlias')
+        .onFirstCall()
+        .resolves({ address: 'supplier-address' })
+        .onSecondCall()
+        .resolves({ address: 'self-address' })
+      stubs.identitySelf = stub(identifyService, 'getMemberBySelf').resolves('self-address')
+      stubs.insertOder = stub(db, 'postOrderDb').resolves({ a: 'a' })
     })
 
-    afterEach(() => {})
+    afterEach(() => {
+      stubs.getRecipeIds.restore()
+      stubs.identityByAlias.restore()
+      stubs.identitySelf.restore()
+      stubs.insertOder.restore()
+    })
 
     describe('if req.body is missing', () => {
-      it('throws BadRequestError and returns 400', () => {})
-      it('and does not make any calls to the identity service', () => {})
-      it('and does not attempt to persist order', () => {})
+      beforeEach(async () => {
+        response = await postOrder({ key: 'req without a body key' })
+      })
+
+      it('throws BadRequestError and returns 400', () => {
+        expect(response).to.be.an.instanceOf(BadRequestError)
+        expect(response.message).to.be.equal('Bad Request: missing req.body')
+      })
+
+      it('and does not make any calls to the identity service', () => {
+        expect(stubs.identityByAlias.calledOnce).to.equal(false)
+        expect(stubs.identitySelf.calledOnce).to.equal(false)
+      })
+
+      it('and does not attempt to persist order', () => {
+        expect(stubs.insertOder.calledOnce).to.equal(false)
+      })
     })
 
     describe('if identity service is unavailable or returned an error', () => {
-      it('returns server error', () => {})
-      it('and does not attempt to persist order', () => {})
+      beforeEach(async () => {
+        stubs.identityByAlias.restore()
+        stubs.identitySelf.throws('some error - identity self')
+        stubs.identityByAlias.rejects('some error - identity alias')
+        response = await postOrder({ body: { 
+          supplier: 'supplier-address-req',
+          description: 'some description - test',
+          requiredBy: '2022-06-17T07:31:37.602Z',
+          items: recipeExamples.map((el) => el.id),
+        }})
+      })
+
+      it('throws and allows middleware to step in', () => {
+        expect(response).to.be.an.instanceOf(InternalError)
+        expect(response.message).to.be.equal('Internal server error')
+      })
+
+      it('and does not call insert order db method', () => {
+        expect(stubs.insertOder.calledOnce).to.equal(false)
+      })
+    })
+
+    describe('when payload validation fails', () => {
+      describe('due to recipes not found', () => {
+        beforeEach(async () => {
+          stubs.insertOder.restore()
+          stubs.getRecipeIds.resolves([])
+          response = await postOrder({ body: { 
+            supplier: 'supplier-address-req',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: recipeExamples.map((el) => el.id),
+          }})
+        })
+        
+        afterEach(() => {
+          stubs.getRecipeIds.restore()
+        })
+
+        it('throws NotFoundError and returns 404 with the message', () => {
+          expect(response).to.be.an.instanceOf(NotFoundError)
+          expect(response.message).to.be.equal('Not Found: recipe')
+        })
+        
+        it('does not attempt to insert order', () => {
+          expect(stubs.insertOder.calledOnce).to.equal(false)
+        })
+      })
+      
+      describe('due to mismatch of supplier that is in req.body', () => {
+        beforeEach(async () => {
+          stubs.getRecipeIds.resolves([{ supplier: 'a' }, { supplier: 'a' }, { supplier: 'a' }])
+          stubs.identityByAlias.returns('a-missmatched-alias')
+          
+          response = await postOrder({ body: { 
+            supplier: 'supplier-address-req-mismatch',
+            description: 'some description - test',
+            requiredBy: '2022-06-17T07:31:37.602Z',
+            items: recipeExamples.map((el) => el.id),
+          }})
+        })
+
+        afterEach(() => {
+          stubs.getRecipeIds.restore()
+        })
+
+        it('throws BadRequestError and returns 400 with the message', () => {
+          expect(response).to.be.an.instanceOf(BadRequestError)
+          expect(response.message).to.be.equal('Bad Request: Supplier does not match')
+        })
+
+        it('does not attempt to insert order', () => {
+          expect(stubs.insertOder.calledOnce).to.equal(false)
+        })
+      })
     })
 
     describe('if persisting order fails', () => {
-      it('and does not attempt to persist order', () => {})
+      beforeEach(async () => {
+        stubs.insertOder.restore()
+        stubs.insertOder.rejects('some error - insert order')
+        response = await postOrder({ body: { 
+          supplier: 'supplier-address-req',
+          description: 'some description - test',
+          requiredBy: '2022-06-17T07:31:37.602Z',
+          items: recipeExamples.map((el) => el.id),
+        }})
+      })
+
+      it('returns insert error and allows middleware to handle the response', () => {
+        expect(response).to.be.an.instanceOf(Error)
+        expect(response.code).to.be.equal('23502')
+        expect(response.severity).to.be.equal('ERROR')
+      })
+
     })
 
-    it('gets supplier\'s alias', () => {})
-    it('retrieves self address', () => {})
-    it('gets self alias name', () => {})
-    it('validates properties by calling a helper method \'validate\'', () => {})
-    it('persist order and returns 201 along with other details', () => {
+    describe('happy path', () => {
+      beforeEach(async () => {
+        stubs.getRecipeIds.resolves(recipeExamples)
 
+        response = await postOrder({ body: { 
+          supplier: 'supplier-address-req-mismatch',
+          description: 'some description - test',
+          requiredBy: '2022-06-17T07:31:37.602Z',
+          items: recipeExamples.map((el) => el.id),
+        }})
+      })
+
+      it('gets aliases from identity service', () => {
+        expect(stubs.identityByAlias.getCall(0).args[0]).to.deep.equal('')
+        expect(stubs.identityByAlias.getCall(1).args[0]).to.deep.equal('')
+      })
+
+      it('retrieves self address', () => {
+        expect(stubs.identitySelf.getCall(0).args[0]).to.deep.equal('')
+      })
+
+      it('validates properties by calling a helper method \'validate\'', () => {
+        expect(stubs.insertOder.getCall(0).args[0]).to.deep.equal('')
+      })
+
+      it('persist order and returns 201 along with other details', () => {
+        expect(response).to.deep.equal('')
+      })
     })
   })
 

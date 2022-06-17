@@ -1,6 +1,6 @@
 const { runProcess } = require('../../../utils/dscp-api')
 const db = require('../../../db')
-const { mapOrderData, validate } = require('./helpers')
+const ext = require('./helpers')
 const idenity = require('../../services/identityService')
 const { BadRequestError, NotFoundError, IdentityError } = require('../../../utils/errors')
 
@@ -16,7 +16,7 @@ module.exports = {
     const selfAddress = await idenity.getMemberBySelf(req)
     const { alias: selfAlias } = await idenity.getMemberByAlias(req, selfAddress)
 
-    const [result] = await db.postOrderDb(await validate({
+    const [result] = await db.postOrderDb(await ext.validate({
       ...req.body,
       supplier: supplierAddress,
       purchaserAddress: selfAlias,
