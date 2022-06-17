@@ -10,7 +10,6 @@ const {
   NotFoundError,
   IdentityError,
   NoTokenError,
-  InternalError,
 } = require('../../../../utils/errors')
 const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
 
@@ -125,11 +124,6 @@ describe('Order controller', () => {
             items: recipeExamples.map((el) => el.id),
           },
         })
-      })
-
-      it('throws and allows middleware to step in', () => {
-        expect(response).to.be.an.instanceOf(InternalError)
-        expect(response.message).to.be.equal('Internal server error')
       })
 
       it('and does not call insert order db method', () => {
