@@ -5,7 +5,13 @@ const { stub } = require('sinon')
 const orderController = require('../index')
 const db = require('../../../../db')
 const identifyService = require('../../../services/identityService')
-const { BadRequestError, NotFoundError, IdentityError, NoTokenError, InternalError } = require('../../../../utils/errors')
+const {
+  BadRequestError,
+  NotFoundError,
+  IdentityError,
+  NoTokenError,
+  InternalError,
+} = require('../../../../utils/errors')
 const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
 
 const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
@@ -71,10 +77,12 @@ describe('Order controller', () => {
         .onSecondCall()
         .resolves({ alias: 'self-address' })
       stubs.identitySelf = stub(identifyService, 'getMemberBySelf').resolves('self-address')
-      stubs.insertOrder = stub(db, 'postOrderDb').resolves([{
-        id: 'order-id',
-        Items: recipeExamples.map((el) => el.id),
-      }])
+      stubs.insertOrder = stub(db, 'postOrderDb').resolves([
+        {
+          id: 'order-id',
+          items: recipeExamples.map((el) => el.id),
+        },
+      ])
     })
 
     afterEach(() => {
@@ -115,7 +123,7 @@ describe('Order controller', () => {
             description: 'some description - test',
             requiredBy: '2022-06-17T07:31:37.602Z',
             items: recipeExamples.map((el) => el.id),
-          }
+          },
         })
       })
 
@@ -140,7 +148,7 @@ describe('Order controller', () => {
               description: 'some description - test',
               requiredBy: '2022-06-17T07:31:37.602Z',
               items: recipeExamples.map((el) => el.id),
-            }
+            },
           })
         })
 
@@ -169,7 +177,7 @@ describe('Order controller', () => {
               description: 'some description - test',
               requiredBy: '2022-06-17T07:31:37.602Z',
               items: recipeExamples.map((el) => el.id),
-            }
+            },
           })
         })
 
@@ -199,7 +207,7 @@ describe('Order controller', () => {
             description: 'some description - test',
             requiredBy: '2022-06-17T07:31:37.602Z',
             items: recipeExamples.map((el) => el.id),
-          }
+          },
         })
       })
 
@@ -219,7 +227,7 @@ describe('Order controller', () => {
             description: 'some description - test',
             requiredBy: '2022-06-17T07:31:37.602Z',
             items: recipeExamples.map((el) => el.id),
-          }
+          },
         })
       })
 
@@ -236,9 +244,9 @@ describe('Order controller', () => {
             items: [
               '50000000-0000-1000-5500-000000000001',
               '50000000-0000-1000-5600-000000000001',
-              '50000000-0000-1000-5700-000000000001'
-            ]
-          }
+              '50000000-0000-1000-5700-000000000001',
+            ],
+          },
         })
         expect(stubs.identityByAlias.getCall(1).args[0]).to.deep.equal({
           body: {
@@ -248,9 +256,9 @@ describe('Order controller', () => {
             items: [
               '50000000-0000-1000-5500-000000000001',
               '50000000-0000-1000-5600-000000000001',
-              '50000000-0000-1000-5700-000000000001'
-            ]
-          }
+              '50000000-0000-1000-5700-000000000001',
+            ],
+          },
         })
       })
 
@@ -263,13 +271,13 @@ describe('Order controller', () => {
             items: [
               '50000000-0000-1000-5500-000000000001',
               '50000000-0000-1000-5600-000000000001',
-              '50000000-0000-1000-5700-000000000001'
-            ]
-          }
+              '50000000-0000-1000-5700-000000000001',
+            ],
+          },
         })
       })
 
-      it('validates properties by calling a helper method \'validate\'', () => {
+      it('validates properties by calling a helper method [validate]', () => {
         expect(stubs.insertOrder.getCall(0).args[0]).to.deep.equal({
           supplier: 'supplier-address',
           description: 'some description - test',
@@ -277,34 +285,27 @@ describe('Order controller', () => {
           items: [
             '50000000-0000-1000-5500-000000000001',
             '50000000-0000-1000-5600-000000000001',
-            '50000000-0000-1000-5700-000000000001'
+            '50000000-0000-1000-5700-000000000001',
           ],
           purchaserAddress: 'self-address',
           status: 'Created',
-          purchaser: 'self-address'
+          purchaser: 'self-address',
         })
       })
 
       it('persist order and returns 201 along with other details', () => {
         expect(response.status).to.equal(201)
-        expect(response.response).to.deep.equal(
-          {
-            id: 'order-id',
-            Items: [
-              '50000000-0000-1000-5500-000000000001',
-              '50000000-0000-1000-5600-000000000001',
-              '50000000-0000-1000-5700-000000000001'
-            ],
-            supplier: 'supplier-address-req-mismatch',
-            description: 'some description - test',
-            requiredBy: '2022-06-17T07:31:37.602Z',
-            items: [
-              '50000000-0000-1000-5500-000000000001',
-              '50000000-0000-1000-5600-000000000001',
-              '50000000-0000-1000-5700-000000000001'
-            ]
-          }
-        )
+        expect(response.response).to.deep.equal({
+          id: 'order-id',
+          supplier: 'supplier-address-req-mismatch',
+          description: 'some description - test',
+          requiredBy: '2022-06-17T07:31:37.602Z',
+          items: [
+            '50000000-0000-1000-5500-000000000001',
+            '50000000-0000-1000-5600-000000000001',
+            '50000000-0000-1000-5700-000000000001',
+          ],
+        })
       })
     })
   })

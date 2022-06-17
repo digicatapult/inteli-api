@@ -16,13 +16,14 @@ module.exports = {
     const selfAddress = await idenity.getMemberBySelf(req)
     const { alias: selfAlias } = await idenity.getMemberByAlias(req, selfAddress)
 
-    const [result] = await db.postOrderDb(await validate({
+    const validated = await validate({
       ...req.body,
       supplier: supplierAddress,
       purchaserAddress: selfAddress,
       status: 'Created',
       purchaser: selfAlias,
-    }))
+    })
+    const [result] = await db.postOrderDb(validated)
 
     return {
       status: 201,
