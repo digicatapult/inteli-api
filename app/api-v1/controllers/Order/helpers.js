@@ -1,5 +1,5 @@
 const db = require('../../../db')
-const { NotFoundError, NoTokenError, NothingToProcess, BadRequestError } = require('../../../utils/errors')
+const { NoTokenError, NothingToProcess, BadRequestError } = require('../../../utils/errors')
 
 exports.validate = async (body) => {
   // Will add a get function at a later date to check for duplication

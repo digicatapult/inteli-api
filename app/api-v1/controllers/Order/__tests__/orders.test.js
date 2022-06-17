@@ -1,16 +1,10 @@
 const nock = require('nock')
 const { expect } = require('chai')
 const { stub } = require('sinon')
-
 const orderController = require('../index')
 const db = require('../../../../db')
 const identifyService = require('../../../services/identityService')
-const {
-  BadRequestError,
-  NotFoundError,
-  IdentityError,
-  NoTokenError,
-} = require('../../../../utils/errors')
+const { BadRequestError, NotFoundError, IdentityError, NoTokenError } = require('../../../../utils/errors')
 const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
 
 const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
