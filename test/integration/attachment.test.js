@@ -102,7 +102,8 @@ describeAuthOnly('attachments - authenticated', function () {
     expect(response.status).to.equal(200)
   })
 
-  it('should return 406 when filename is .json but accept header is octet', async function () {
+  it.skip('should return 406 when filename is .json but accept header is octet', async function () {
+    // THIS IS INVALID, and will be removed shortly
     const attachment = '00000000-0000-1000-9000-000000000001'
     const response = await getAttachmentRouteOctet(attachment, app, authToken)
     expect(response.status).to.equal(406)

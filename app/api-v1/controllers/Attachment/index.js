@@ -4,13 +4,21 @@ const logger = require('../../../utils/Logger')
 const db = require('../../../db')
 
 const { createAttachmentFromFile, createAttachment } = require('../Attachment/helpers')
-const { InternalError, NotFoundError, BadRequestError, NotAcceptableError } = require('../../../utils/errors')
+const { NotFoundError, BadRequestError, NotAcceptableError } = require('../../../utils/errors')
+
+const buildOctetHeader = (filename) => ({
+  immutable: true,
+  maxAge: 365 * 24 * 60 * 60 * 1000,
+  'content-disposition': `attachment; filename="${filename}"`,
+  'access-control-expose-headers': 'content-disposition',
+  'content-type': 'application/octet-stream',
+})
 
 module.exports = {
   getAll: async function () {
     return { status: 500, response: { message: 'Not Implemented' } }
   },
-  get: async (req) => {
+  get: async function (req) {
     const { id } = req.params
     if (!id) throw new BadRequestError('missing params')
 
@@ -18,34 +26,33 @@ module.exports = {
     if (!attachment) throw new NotFoundError('Attachment Not Found')
     const orderedAccept = parseAccept(req.headers.accept)
 
-    for (const mimeType of orderedAccept) {
-      if (mimeType === 'application/octet-stream' && attachment.filename.includes('json')) {
-        throw new NotAcceptableError('Client file request not supported')
-      }
-
-      if (mimeType === 'application/json' || mimeType === 'application/*' || mimeType === '*/*') {
-        const json = JSON.parse(attachment.binary_blob)
-        return {
-          status: 200,
-          response: json,
+    if (attachment.filename === 'json') {
+      for (const mimeType of orderedAccept) {
+        if (mimeType === 'application/json' || mimeType === 'application/*' || mimeType === '*/*') {
+          const json = JSON.parse(attachment.binary_blob)
+          return { status: 200, response: json }
+        }
+        if (mimeType === 'application/octet-stream') {
+          return {
+            status: 200,
+            response: attachment.binary_blob,
+            headers: buildOctetHeader(attachment.filename),
+          }
         }
       }
-      if (mimeType === 'application/octet-stream') {
-        return {
-          status: 200,
-          headers: {
-            immutable: true,
-            maxAge: 365 * 24 * 60 * 60 * 1000,
-            'content-disposition': `attachment; filename="${attachment.filename}"`,
-            'access-control-expose-headers': 'content-disposition',
-            'content-type': 'application/octet-stream',
-          },
-          response: attachment.binary_blob,
+      throw new NotAcceptableError({ message: 'Client file request not supported' })
+    } else {
+      for (const mimeType of orderedAccept) {
+        if (mimeType === 'application/octet-stream' || mimeType === 'application/*' || mimeType === '*/*') {
+          return {
+            status: 200,
+            headers: buildOctetHeader(attachment.filename),
+            response: attachment.binary_blob,
+          }
         }
+        throw new NotAcceptableError({ message: 'Client file request not supported' })
       }
     }
-
-    throw new InternalError({ message: 'Client file request not supported' })
   },
   create: async (req) => {
     if (req.headers['content-type'] === 'application/json') {
