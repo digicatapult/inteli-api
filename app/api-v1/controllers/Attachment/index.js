@@ -40,7 +40,7 @@ module.exports = {
             'access-control-expose-headers': 'content-disposition',
             'content-type': 'application/octet-stream',
           },
-          response: attachment.binary_blob.toString(),
+          response: attachment.binary_blob,
         }
       }
     }
