@@ -4,7 +4,8 @@ const attachmentController = require('../../controllers/Attachment')
 module.exports = function () {
   const doc = {
     GET: async (req, res) => {
-      const { status, response } = await attachmentController.get(req)
+      const { status, response, headers } = await attachmentController.get(req)
+      if (headers) res.set(headers)
       res.status(status).send(response)
     },
   }

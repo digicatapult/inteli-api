@@ -68,8 +68,15 @@ describe('Attachment controller', () => {
       })
 
       it('returns a file attachment', () => {
-        const { status, response: body } = response
+        const { status, response: body, headers } = response
         expect(status).to.be.equal(200)
+        expect(headers).to.deep.equal({
+          'access-control-expose-headers': 'content-disposition',
+          'content-disposition': 'attachment; filename="foo1.jpg"',
+          'content-type': 'application/octet-stream',
+          immutable: true,
+          maxAge: 31536000000,
+        })
         expect(body).to.deep.equal(fileAttachment.binary_blob.toString())
       })
     })
