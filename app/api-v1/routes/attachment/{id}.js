@@ -48,9 +48,6 @@ module.exports = function () {
                   type: 'array',
                   items: {},
                 },
-                {
-                  type: 'string',
-                },
               ],
             },
             example: {},
