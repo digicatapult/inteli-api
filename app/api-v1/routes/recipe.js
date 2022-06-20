@@ -32,6 +32,7 @@ module.exports = function (recipeService, identityService) {
       },
       {
         summary: 'List Recipes',
+        description: 'Returns all recipes.',
         parameters: [],
         responses: {
           200: {

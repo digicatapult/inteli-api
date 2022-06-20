@@ -29,6 +29,7 @@ module.exports = function (recipeService, identityService) {
       },
       {
         summary: 'Get Recipe',
+        description: 'Returns the recipe {id}.',
         parameters: [
           {
             description: 'Id of the recipe to get',
