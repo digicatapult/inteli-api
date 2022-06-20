@@ -28,7 +28,7 @@ So that each recipe is available to be used again, a new token for each recipe i
 | Buyer: `BAE`         |                            |
 | Supplier:`SupplierX` |                            |
 
-The `ORDER` token. Each `recipeN: <TokenId>` matches a` <TokenId>` from the `inputs`.
+The `Order` token. Each `recipeN: <TokenId>` matches a `<TokenId>` from the `inputs`.
 
 | Roles                | Metadata                                                          |
 | :------------------- | :---------------------------------------------------------------- |
@@ -87,9 +87,7 @@ The new `Order` token will have the following restrictions:
       "index": 0,
       "metadata_key": "transactionId",
       "metadata_value_type": "Literal"
-    }
-  ],
-  "FixedOutputMetadataValueType": [
+    },
     {
       "index": 0,
       "metadata_key": "recipe0",
@@ -163,7 +161,7 @@ So that each recipe is available to be used again, a new token for each recipe i
 | Buyer: `BAE`         |                            |
 | Supplier:`SupplierX` |                            |
 
-The `ORDER` token. Each `recipeN: <TokenId>` matches a `<TokenId>`from the `inputs`.
+The `Order` token. Each `recipeN: <TokenId>` matches a `<TokenId>`from the `inputs`.
 
 | Roles                | Metadata                             |
 | :------------------- | :----------------------------------- |
