@@ -71,11 +71,11 @@ describe('recipe controller', () => {
   })
 
   it('gets supplier alias from identity service', () => {
-    expect(stubs.getMemberByAddress.getCall(0).args[1]).to.equal('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
+    expect(stubs.getMemberByAddress.getCall(0).args[1]).to.equal(recipeExample.supplier)
   })
 
   it('gets owner alias from identity service', () => {
-    expect(stubs.getMemberByAddress.getCall(1).args[1]).to.equal('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY')
+    expect(stubs.getMemberByAddress.getCall(1).args[1]).to.equal(recipeExample.owner)
   })
 
   it('returns a formatted array of recipes', () => {
