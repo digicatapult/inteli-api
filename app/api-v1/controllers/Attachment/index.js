@@ -46,8 +46,8 @@ module.exports = {
       if (mimeType === 'application/octet-stream' || mimeType === 'application/*' || mimeType === '*/*') {
         return returnOctet(attachment)
       }
-      throw new NotAcceptableError({ message: 'Client file request not supported' })
     }
+    throw new NotAcceptableError({ message: 'Client file request not supported' })
   },
   create: async (req) => {
     if (req.headers['content-type'] === 'application/json') {
