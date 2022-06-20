@@ -135,6 +135,18 @@ describeAuthOnly('attachments - authenticated', function () {
     expect(response.status).to.equal(404)
   })
 
+  it('should return 406 if requested for JSON and mime type is not JSON', async function () {
+    const attachment = '00000000-0000-1000-8000-000000000001'
+    const { status, body, header } = await getAttachmentRouteJSON(attachment, app, authToken)
+
+    expect(status).to.equal(406)
+    expect(body.message).to.be.equal('Client file request not supported')
+    expect(header).to.deep.contain({
+      'content-type': 'application/json; charset=utf-8',
+      vary: 'Accept-Encoding',
+    })
+  })
+
   it('should return 400 when requesting invalid ID', async function () {
     const attachment = 'invalid'
     const response = await getAttachmentRouteOctet(attachment, app, authToken)
