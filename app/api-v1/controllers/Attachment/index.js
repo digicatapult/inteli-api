@@ -9,8 +9,8 @@ const { NotFoundError, BadRequestError, NotAcceptableError } = require('../../..
 const returnOctet = ({ filename, binary_blob }) => ({
   status: 200,
   headers: {
-  immutable: true,
-  maxAge: 365 * 24 * 60 * 60 * 1000,
+    immutable: true,
+    maxAge: 365 * 24 * 60 * 60 * 1000,
     'content-disposition': `attachment; filename="${filename}"`,
     'access-control-expose-headers': 'content-disposition',
     'content-type': 'application/octet-stream',
@@ -48,7 +48,7 @@ module.exports = {
       }
       throw new NotAcceptableError({ message: 'Client file request not supported' })
     }
-},
+  },
   create: async (req) => {
     if (req.headers['content-type'] === 'application/json') {
       logger.info('JSON attachment upload: %j', req.body)
