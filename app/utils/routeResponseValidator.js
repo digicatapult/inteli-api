@@ -43,10 +43,10 @@ const buildValidatedJsonHandler = (controller, apiDoc) => {
 
     if (validationErrors) {
       logger.warn('API response validation error for handler "%s". Errors were: %j', apiDoc.summary, validationErrors)
-      res.status(500).send({ message: 'Internal server error' })
-    } else {
-      res.status(status).send(response)
+      return res.status(500).send({ message: 'Internal server error' })
     }
+
+    res.status(status).send(response)
   }
   handler.apiDoc = {
     ...apiDoc,

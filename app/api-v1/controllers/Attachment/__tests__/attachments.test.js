@@ -14,7 +14,7 @@ const getAttachment = async (req) => {
   }
 }
 
-describe('Attachment controller', () => {
+describe.only('Attachment controller', () => {
   let stubs = {}
   let response
   beforeEach(() => {
