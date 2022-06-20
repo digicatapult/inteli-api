@@ -77,7 +77,7 @@ describe('Attachment controller', () => {
           immutable: true,
           maxAge: 31536000000,
         })
-        expect(body).to.deep.equal(fileAttachment.binary_blob.toString())
+        expect(body).to.deep.equal(fileAttachment.binary_blob)
       })
     })
 
