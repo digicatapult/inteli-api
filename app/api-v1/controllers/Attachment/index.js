@@ -6,12 +6,16 @@ const db = require('../../../db')
 const { createAttachmentFromFile, createAttachment } = require('../Attachment/helpers')
 const { NotFoundError, BadRequestError, NotAcceptableError } = require('../../../utils/errors')
 
-const buildOctetHeader = (filename) => ({
+const returnOctet = ({ filename, binary_blob }) => ({
+  status: 200,
+  headers: {
   immutable: true,
   maxAge: 365 * 24 * 60 * 60 * 1000,
-  'content-disposition': `attachment; filename="${filename}"`,
-  'access-control-expose-headers': 'content-disposition',
-  'content-type': 'application/octet-stream',
+    'content-disposition': `attachment; filename="${filename}"`,
+    'access-control-expose-headers': 'content-disposition',
+    'content-type': 'application/octet-stream',
+  },
+  response: binary_blob,
 })
 
 module.exports = {
@@ -33,22 +37,14 @@ module.exports = {
           return { status: 200, response: json }
         }
         if (mimeType === 'application/octet-stream') {
-          return {
-            status: 200,
-            response: attachment.binary_blob,
-            headers: buildOctetHeader(attachment.filename),
-          }
+          return returnOctet(attachment)
         }
       }
       throw new NotAcceptableError({ message: 'Client file request not supported' })
     } else {
       for (const mimeType of orderedAccept) {
         if (mimeType === 'application/octet-stream' || mimeType === 'application/*' || mimeType === '*/*') {
-          return {
-            status: 200,
-            headers: buildOctetHeader(attachment.filename),
-            response: attachment.binary_blob,
-          }
+          return returnOctet(attachment)
         }
         throw new NotAcceptableError({ message: 'Client file request not supported' })
       }
