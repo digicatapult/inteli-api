@@ -1,7 +1,5 @@
 const { getDefaultSecurity } = require('../../../utils/auth')
-
-// eslint-disable-next-line no-unused-vars
-const { BadRequestError, InternalError, NotAcceptableError } = require('../../../utils/errors')
+const { InternalError, NotAcceptableError } = require('../../../utils/errors')
 const { parseAccept } = require('../../../utils/parseAcceptHeader')
 
 module.exports = function (attachmentService) {
