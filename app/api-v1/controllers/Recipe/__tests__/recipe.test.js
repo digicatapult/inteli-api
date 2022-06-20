@@ -51,9 +51,7 @@ describe('recipe controller', () => {
 
   describe('if identity service isnt available', () => {
     beforeEach(async () => {
-      stubs.getMemberByAddress.rejects(
-        new Error('identity service error')
-      )
+      stubs.getMemberByAddress.rejects(new Error('identity service error'))
       response = await getRecipes()
     })
 
