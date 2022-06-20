@@ -41,15 +41,14 @@ module.exports = {
         }
       }
       throw new NotAcceptableError({ message: 'Client file request not supported' })
-    } else {
-      for (const mimeType of orderedAccept) {
-        if (mimeType === 'application/octet-stream' || mimeType === 'application/*' || mimeType === '*/*') {
-          return returnOctet(attachment)
-        }
-        throw new NotAcceptableError({ message: 'Client file request not supported' })
-      }
     }
-  },
+    for (const mimeType of orderedAccept) {
+      if (mimeType === 'application/octet-stream' || mimeType === 'application/*' || mimeType === '*/*') {
+        return returnOctet(attachment)
+      }
+      throw new NotAcceptableError({ message: 'Client file request not supported' })
+    }
+},
   create: async (req) => {
     if (req.headers['content-type'] === 'application/json') {
       logger.info('JSON attachment upload: %j', req.body)
