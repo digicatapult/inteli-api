@@ -7,6 +7,7 @@ module.exports = function (orderService, identityService) {
   const doc = {
     GET: buildValidatedJsonHandler(orderController.getAll, {
       summary: 'List Purchase Orders',
+      description: 'Returns all orders.',
       parameters: [],
       responses: {
         200: {
@@ -54,6 +55,8 @@ module.exports = function (orderService, identityService) {
       },
       {
         summary: 'Create Purchase Order',
+        description:
+          'A Buyer creates a new order containing a list of recipes. One part is ordered per recipe. Multiple parts can be ordered by listing the same recipe ID multiple times. Supplier in the request body must match `supplier` on each recipe. The order is not yet viewable to other members',
         requestBody: {
           content: {
             'application/json': {

@@ -7,6 +7,7 @@ module.exports = function (orderService) {
   const doc = {
     GET: buildValidatedJsonHandler(orderController.transaction.getAll, {
       summary: 'List Purchase Orders Acceptance Actions',
+      description: 'Returns the details of all on-chain transactions to accept the order {id}.',
       parameters: [
         {
           description: 'Id of the purchase-order',
@@ -49,6 +50,7 @@ module.exports = function (orderService) {
     }),
     POST: buildValidatedJsonHandler(orderController.transaction.create, {
       summary: 'Create Purchase Order Acceptance Action',
+      description: 'A Supplier accepts the order {id}. Order must be in `Submitted` or `Amended` state.',
       parameters: [
         {
           description: 'Id of the purchase-order. Must be in "Submitted" or "Amended" state',

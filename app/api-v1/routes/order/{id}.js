@@ -7,6 +7,7 @@ module.exports = function (orderService) {
   const doc = {
     GET: buildValidatedJsonHandler(orderController.get, {
       summary: 'Get Purchase Order',
+      description: 'Returns the order {id}.',
       parameters: [
         {
           description: 'Id of the purchase-order to get',
