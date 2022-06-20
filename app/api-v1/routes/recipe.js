@@ -27,8 +27,7 @@ module.exports = function (recipeService, identityService) {
       },
       security: getDefaultSecurity(),
       tags: ['recipe'],
-    }
-    ),
+    }),
     POST: buildValidatedJsonHandler(
       async function (req) {
         if (!req.body) {

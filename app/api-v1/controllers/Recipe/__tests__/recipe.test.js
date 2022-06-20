@@ -10,7 +10,7 @@ const { recipeExample } = require('./transaction_fixtures')
 const getRecipes = async () => {
   try {
     return await get()
-  } catch(err) {
+  } catch (err) {
     return err
   }
 }
@@ -51,16 +51,18 @@ describe('recipe controller', () => {
     })
   })
 
-  describe('if identity service isn\'t available', () => {
+  describe('if identity service isnt available', () => {
     beforeEach(async () => {
-      stubs.getMemberByAddress.rejects(new Errors.InternalError({ message: 'identity.getMemberByAddress() method has failed' }))
+      stubs.getMemberByAddress.rejects(
+        new Errors.InternalError({ message: 'identity.getMemberByAddress() method has failed' })
+      )
       response = await getRecipes()
     })
 
     it('returns server error', () => {
       expect(response.code).to.equal(500)
       expect(response).to.be.instanceOf(Errors.InternalError)
-      expect(response.message).to.equal('identity.getMemberByAddress() method has failed') 
+      expect(response.message).to.equal('identity.getMemberByAddress() method has failed')
     })
   })
 
@@ -78,8 +80,7 @@ describe('recipe controller', () => {
 
   it('returns a formatted array of recipes', () => {
     const { status, response: body } = response
-
-    expect(status).to.equal(200),
+    expect(status).to.equal(200)
     expect(body).to.be.instanceOf(Array)
     expect(body).to.deep.equal([
       {
@@ -90,12 +91,14 @@ describe('recipe controller', () => {
         material: 'TEST-material',
         alloy: 'TEST-alloy',
         price: '99.99',
-        requiredCerts: [{
-          'description': "TEST-certificate"
-        }],
+        requiredCerts: [
+          {
+            description: 'TEST-certificate',
+          },
+        ],
         supplier: 'supplier-alias-test',
-        owner: 'owner-alias-test'
-      }
+        owner: 'owner-alias-test',
+      },
     ])
   })
 })
