@@ -61,17 +61,62 @@ const seed = async () => {
     },
   ])
 
-  // with reciope that has a token_id
+  // with status  'Submitted', 
   await client('orders').insert([
     {
       id: '36345f4f-6535-42e2-83f9-79e2e195e112',
       supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
       items: ['10000000-0000-1000-8000-000000000000'],
       purchaser: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
-      status: 'Created',
+      status: 'Submitted',
       required_by: '2022-10-21T11:45:46.919Z',
     },
   ])
+  // with status 'Rejected',
+  await client('orders').insert([
+    {
+      id: '36345f4f-6535-42e2-83f9-79e2e195e112',
+      supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+      items: ['10000000-0000-1000-8000-000000000000'],
+      purchaser: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
+      status: 'Rejected',
+      required_by: '2022-10-21T11:45:46.919Z',
+    },
+  ])
+  // with status 'Amended',
+  await client('orders').insert([
+    {
+      id: '36345f4f-6535-42e2-83f9-79e2e195e112',
+      supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+      items: ['10000000-0000-1000-8000-000000000000'],
+      purchaser: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
+      status: 'Amended',
+      required_by: '2022-10-21T11:45:46.919Z',
+    },
+  ])
+  // with status 'Accepted'
+  await client('orders').insert([
+    {
+      id: '36345f4f-6535-42e2-83f9-79e2e195e112',
+      supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+      items: ['10000000-0000-1000-8000-000000000000'],
+      purchaser: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
+      status: 'Accepted',
+      required_by: '2022-10-21T11:45:46.919Z',
+    },
+  ])
+
+    // with reciope that has a token_id
+    await client('orders').insert([
+      {
+        id: '36345f4f-6535-42e2-83f9-79e2e195e112',
+        supplier: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        items: ['10000000-0000-1000-8000-000000000000'],
+        purchaser: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
+        status: 'Created',
+        required_by: '2022-10-21T11:45:46.919Z',
+      },
+    ])
 }
 
 module.exports = {
