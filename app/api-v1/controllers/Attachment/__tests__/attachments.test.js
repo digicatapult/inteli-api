@@ -40,6 +40,10 @@ describe('Attachment controller', () => {
         expect(response).to.be.an.instanceOf(BadRequestError)
         expect(response.message).to.be.equal('Bad Request: missing params')
       })
+
+      it('does not perform any database calls', () => {
+        expect(stubs.getAttachment.calledOnce).to.equal(false)
+      })
     })
 
     describe('if no attachments are found with a given ID', () => {
