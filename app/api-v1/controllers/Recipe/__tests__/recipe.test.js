@@ -128,6 +128,8 @@ describe('recipe controller', () => {
 
     describe('if req.params.id is not provided', () => {
       beforeEach(async () => {
+        stubs.getRecipeByIDdb.restore()
+        stubs.getRecipeByIDdb = stub(db, 'getRecipeByIDdb').resolves([])
         response = await getRecipeByID({ params: {} })
       })
 
