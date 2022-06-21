@@ -109,7 +109,7 @@ describe('recipe controller', () => {
     ])
   })
 
-  describe('Recipe /GET BY ID', () => {
+  describe('Recipe /recipe/{id}', () => {
     describe('if req.params.id is not provided', () => {
       beforeEach(async () => {
         response = await getRecipeByID({ params: {} })
