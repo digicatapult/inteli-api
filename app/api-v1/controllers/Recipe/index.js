@@ -63,12 +63,16 @@ module.exports = {
     const selfAddress = await identity.getMemberBySelf(req)
     const { alias: selfAlias } = await identity.getMemberByAddress(req, selfAddress)
 
-    const [attachment] = await db.getAttachment(req.body.imageAttachmentId)
+    const { externalId, requiredCerts, imageAttachmentId, ...rest } = req.body
+    const [attachment] = await db.getAttachment(imageAttachmentId)
+    if (!attachment) {
+      throw new BadRequestError('Attachment id not found')
+    }
     const [recipe] = await db.addRecipe({
-      ...req.body,
-      external_id: req.body.externalId,
+      ...rest,
+      external_id: externalId,
       image_attachment_id: attachment.id,
-      required_certs: JSON.stringify(req.body.requiredCerts),
+      required_certs: JSON.stringify(requiredCerts),
       owner: selfAddress,
       supplier: supplierAddress,
     })
