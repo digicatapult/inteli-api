@@ -8,7 +8,7 @@ const db = require('../../../../db')
 
 const getAttachment = async (req) => {
   try {
-    return await attachmentController.getById(req)
+    return await attachment.getById(req)
   } catch (err) {
     return err
   }
@@ -124,7 +124,7 @@ describe('Attachment controller', () => {
     afterEach(() => {
       stubs.getAttachments.restore()
     })
-    describe.only('if no attachments are found', () => {
+    describe('if no attachments are found', () => {
       beforeEach(async () => {
         stubs.getAttachments.restore()
         stubs.getAttachments = stub(db, 'getAttachments').resolves([])
