@@ -5,7 +5,7 @@ const { getDefaultSecurity } = require('../../utils/auth')
 const routeCommon = { security: getDefaultSecurity(), tags: ['order'] }
 
 const docs = {
-  GET_ALL: {
+  GET: {
     summary: 'List Purchase Orders',
     description: 'Returns all orders.',
     parameters: [],
@@ -56,6 +56,6 @@ const docs = {
 }
 
 module.exports = {
-  GET: buildValidatedJsonHandler(order.getAll, docs.GET_ALL),
+  GET: buildValidatedJsonHandler(order.get, docs.GET),
   POST: buildValidatedJsonHandler(order.post, docs.POST),
 }

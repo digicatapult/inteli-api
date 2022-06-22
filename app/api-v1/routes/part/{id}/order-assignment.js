@@ -5,7 +5,7 @@ const { buildValidatedJsonHandler } = require('../../../../utils/routeResponseVa
 // eslint-disable-next-line no-unused-vars
 module.exports = function (partService) {
   const doc = {
-    GET: buildValidatedJsonHandler(partController.transaction.getAll, {
+    GET: buildValidatedJsonHandler(partController.transaction.get, {
       summary: 'List Part Order Assignment Actions',
       description: 'Returns the details of all on-chain transactions to assign the part {id} to an order.',
       parameters: [

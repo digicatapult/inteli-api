@@ -1,10 +1,10 @@
 const { getDefaultSecurity } = require('../../utils/auth')
-const attachmentController = require('../controllers/Attachment')
+const attachment = require('../controllers/Attachment')
 const { buildValidatedJsonHandler } = require('../../utils/routeResponseValidator')
 
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(attachmentController.getAll, {
+    GET: buildValidatedJsonHandler(attachment.get, {
       summary: 'List attachments',
       description: 'Returns the file metadata (e.g. filename, size) of all uploaded attachments.',
       parameters: [],
@@ -26,7 +26,7 @@ module.exports = function () {
       security: getDefaultSecurity(),
       tags: ['attachment'],
     }),
-    POST: buildValidatedJsonHandler(attachmentController.create, {
+    POST: buildValidatedJsonHandler(attachment.create, {
       summary: 'Create Attachment',
       description: `Uploads a file to later use in a request (such as the image of a recipe). Content can either be a file (multipart/form-data) or JSON (application/json). Attachments are not viewable to other members`,
       requestBody: {

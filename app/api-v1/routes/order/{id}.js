@@ -1,10 +1,10 @@
 const { getDefaultSecurity } = require('../../../utils/auth')
-const orderController = require('../../controllers/Order')
+const order = require('../../controllers/Order')
 const { buildValidatedJsonHandler } = require('../../../utils/routeResponseValidator')
 
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(orderController.get, {
+    GET: buildValidatedJsonHandler(order.getById, {
       summary: 'Get Purchase Order',
       description: 'Returns the order {id}.',
       parameters: [

@@ -1,10 +1,10 @@
 const { getDefaultSecurity } = require('../../../../utils/auth')
-const orderController = require('../../../controllers/Order')
+const order = require('../../../controllers/Order')
 const { buildValidatedJsonHandler } = require('../../../../utils/routeResponseValidator')
 
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(orderController.transaction.getAll, {
+    GET: buildValidatedJsonHandler(order.transaction.get, {
       summary: 'List Purchase Orders Submission Actions',
       description: 'Returns the details of all on-chain transactions to submit the order {id}.',
       parameters: [
@@ -46,7 +46,7 @@ module.exports = function () {
       },
       tags: ['order'],
     }),
-    POST: buildValidatedJsonHandler(orderController.transaction.create, {
+    POST: buildValidatedJsonHandler(order.transaction.create, {
       summary: 'Create Purchase Order Submission Action',
       description:
         'A Buyer submits the order {id}. Order must be in `Created` state. Order is now viewable to other members.',
