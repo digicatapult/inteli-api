@@ -16,7 +16,7 @@ const getAttachment = async (req) => {
 
 const getAttachments = async () => {
   try {
-    return await attachment.getAll()
+    return await attachment.get()
   } catch (err) {
     return err
   }
@@ -140,7 +140,7 @@ describe('Attachment controller', () => {
       })
     })
 
-    describe.only('attachments are found', () => {
+    describe('attachments are found', () => {
       beforeEach(async () => {
         stubs.getAttachments.restore()
         stubs.getAttachments = stub(db, 'getAttachments').resolves([allAttachments])

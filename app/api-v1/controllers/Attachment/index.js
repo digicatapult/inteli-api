@@ -23,7 +23,7 @@ const getSize = (blob) => {
 }
 
 module.exports = {
-  getAll: async function () {
+  get: async function () {
     const [result] = await db.getAttachments()
     if (!result) throw new NotFoundError('Attachments Not Found')
     const res = result.map((item) => {
