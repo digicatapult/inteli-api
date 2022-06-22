@@ -1,10 +1,10 @@
 const { getDefaultSecurity } = require('../../../utils/auth')
-const attachmentController = require('../../controllers/Attachment')
+const attachment = require('../../controllers/Attachment')
 
 module.exports = function () {
   const doc = {
     GET: async (req, res) => {
-      const { status, response, headers } = await attachmentController.get(req)
+      const { status, response, headers } = await attachment.getById(req)
       if (headers) res.set(headers)
       res.status(status).send(response)
     },
@@ -12,6 +12,7 @@ module.exports = function () {
 
   doc.GET.apiDoc = {
     summary: 'GET attachment by id',
+    description: `Downloads a file {id}. Content can either be a file (application/octet-stream) or JSON (application/json).`,
     parameters: [
       {
         description: 'Id of the attachment to get',

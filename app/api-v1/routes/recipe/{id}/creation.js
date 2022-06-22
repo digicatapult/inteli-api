@@ -4,8 +4,9 @@ const { getDefaultSecurity } = require('../../../../utils/auth')
 
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(transaction.getAll, {
+    GET: buildValidatedJsonHandler(transaction.get, {
       summary: 'List Recipe Creation Actions',
+      description: 'Returns the details of all on-chain transactions to create the recipe {id}.',
       parameters: [
         {
           description: 'Id of the recipe',
@@ -45,60 +46,55 @@ module.exports = function () {
       },
       tags: ['recipe'],
     }),
-    POST: buildValidatedJsonHandler(
-      async function (req) {
-        const { status, ...body } = await transaction.create(req)
-        return { status, response: body }
-      },
-      {
-        summary: 'Create Recipe Creation Action',
-        parameters: [
-          {
-            description: 'Id of the recipe',
-            in: 'path',
-            required: true,
-            name: 'id',
-            allowEmptyValue: false,
+    POST: buildValidatedJsonHandler(transaction.create, {
+      summary: 'Create Recipe Creation Action',
+      description: 'A buyer creates the recipe {id}. Recipe is now viewable to other members',
+      parameters: [
+        {
+          description: 'Id of the recipe',
+          in: 'path',
+          required: true,
+          name: 'id',
+          allowEmptyValue: false,
+          schema: {
+            $ref: '#/components/schemas/ObjectReference',
+          },
+        },
+      ],
+      requestBody: {
+        content: {
+          'application/json': {
             schema: {
-              $ref: '#/components/schemas/ObjectReference',
+              $ref: '#/components/schemas/NewRecipeCreation',
             },
           },
-        ],
-        requestBody: {
+        },
+      },
+      responses: {
+        201: {
+          description: 'Recipe Creation Created',
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/NewRecipeCreation',
+                $ref: '#/components/schemas/RecipeCreation',
               },
             },
           },
         },
-        responses: {
-          201: {
-            description: 'Recipe Creation Created',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/RecipeCreation',
-                },
-              },
-            },
-          },
-          400: {
-            description: 'Invalid request',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/BadRequestError',
-                },
+        400: {
+          description: 'Invalid request',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/BadRequestError',
               },
             },
           },
         },
-        security: getDefaultSecurity(),
-        tags: ['recipe'],
-      }
-    ),
+      },
+      security: getDefaultSecurity(),
+      tags: ['recipe'],
+    }),
   }
 
   return doc

@@ -8,7 +8,7 @@ const db = require('../../../../db')
 
 const getAttachment = async (req) => {
   try {
-    return await attachment.get(req)
+    return await attachmentController.getById(req)
   } catch (err) {
     return err
   }

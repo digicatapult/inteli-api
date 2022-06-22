@@ -38,7 +38,7 @@ module.exports = {
       response: res,
     }
   },
-  get: async function (req) {
+  getById: async function (req) {
     const { id } = req.params
     if (!id) throw new BadRequestError('missing params')
 

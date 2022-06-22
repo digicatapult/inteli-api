@@ -1,12 +1,12 @@
 const { getDefaultSecurity } = require('../../../../utils/auth')
-const orderController = require('../../../controllers/Order')
+const order = require('../../../controllers/Order')
 const { buildValidatedJsonHandler } = require('../../../../utils/routeResponseValidator')
 
-// eslint-disable-next-line no-unused-vars
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(orderController.transaction.getAll, {
+    GET: buildValidatedJsonHandler(order.transaction.get, {
       summary: 'List Purchase Orders Amendment Actions',
+      description: 'Returns the details of all on-chain transactions to amend the order {id}.',
       parameters: [
         {
           description: 'Id of the purchase-order',
@@ -47,8 +47,9 @@ module.exports = function () {
       security: getDefaultSecurity(),
       tags: ['order'],
     }),
-    POST: buildValidatedJsonHandler(orderController.transaction.create, {
+    POST: buildValidatedJsonHandler(order.transaction.create, {
       summary: 'Create Purchase Order Amendment Action',
+      description: 'A Buyer amends the order {id}. Order must be in `Rejected` state.',
       parameters: [
         {
           description: 'Id of the purchase-order. Must be in "Rejected" state',
