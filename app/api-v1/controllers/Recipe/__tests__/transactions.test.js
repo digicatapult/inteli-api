@@ -240,7 +240,7 @@ describe('recipe transactions controller', () => {
 
       it('returns 200 along with the transaction id', () => {
         const { status, response: body } = response
-        expect(status).to.be.equal(200)
+        expect(status).to.be.equal(201)
         expect(body).to.deep.equal({
           id: '50000000-0000-1000-3000-000000000001',
           status: 'Submitted',
