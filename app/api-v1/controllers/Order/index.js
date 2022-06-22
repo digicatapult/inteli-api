@@ -33,8 +33,8 @@ module.exports = {
       },
     }
   },
-  getById: _tmp,
-  get: _tmp,
+  getById: _tmp, // TODO - mark
+  get: _tmp, // TODO - mark
   transaction: {
     getById: _tmp,
     get: _tmp,

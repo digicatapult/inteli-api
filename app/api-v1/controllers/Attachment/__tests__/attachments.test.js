@@ -105,7 +105,7 @@ describe('Attachment controller', () => {
       })
     })
 
-    describe('attachment.getAll', () => {
+    describe('attachment.get', () => {
       it('should resolve 500 error', async () => {
         const result = await attachmentController.get()
         expect(result.status).to.equal(500)
