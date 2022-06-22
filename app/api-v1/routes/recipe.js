@@ -6,6 +6,7 @@ module.exports = function () {
   const doc = {
     GET: buildValidatedJsonHandler(recipe.get, {
       summary: 'List Recipes',
+      description: 'Returns all recipes.',
       parameters: [],
       responses: {
         200: {

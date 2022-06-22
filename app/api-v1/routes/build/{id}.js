@@ -7,6 +7,7 @@ module.exports = function () {
   const doc = {
     GET: buildValidatedJsonHandler(buildController.getAll, {
       summary: 'Get Build',
+      description: 'Returns the build {id}.',
       parameters: [
         {
           description: 'Id of the build to get',

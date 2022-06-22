@@ -7,6 +7,7 @@ module.exports = function () {
   const doc = {
     GET: buildValidatedJsonHandler(partController.transaction.get, {
       summary: 'Get Part Metadata Update Action',
+      description: 'Returns the details of the on-chain transaction {updateId} to update metadata on the part {id}.',
       parameters: [
         {
           description: 'Id of the part',
