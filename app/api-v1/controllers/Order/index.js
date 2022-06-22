@@ -33,7 +33,7 @@ module.exports = {
       },
     }
   },
-  getAll: _tmp,
+  getById: _tmp,
   get: _tmp,
   transaction: {
     getAll: _tmp,

@@ -4,7 +4,7 @@ const { buildValidatedJsonHandler } = require('../../utils/routeResponseValidato
 
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(attachment.getAll, {
+    GET: buildValidatedJsonHandler(attachment.get, {
       summary: 'List attachments',
       parameters: [],
       responses: {

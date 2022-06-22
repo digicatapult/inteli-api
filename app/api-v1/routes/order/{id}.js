@@ -5,7 +5,7 @@ const { buildValidatedJsonHandler } = require('../../../utils/routeResponseValid
 // eslint-disable-next-line no-unused-vars
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(order.get, {
+    GET: buildValidatedJsonHandler(order.getById, {
       summary: 'Get Purchase Order',
       parameters: [
         {

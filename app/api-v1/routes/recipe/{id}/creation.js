@@ -4,7 +4,7 @@ const { getDefaultSecurity } = require('../../../../utils/auth')
 
 module.exports = function () {
   const doc = {
-    GET: buildValidatedJsonHandler(transaction.getAll, {
+    GET: buildValidatedJsonHandler(transaction.get, {
       summary: 'List Recipe Creation Actions',
       parameters: [
         {

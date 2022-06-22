@@ -53,6 +53,6 @@ const docs = {
 }
 
 module.exports = {
-  GET: buildValidatedJsonHandler(order.getAll, docs.GET_ALL),
+  GET: buildValidatedJsonHandler(order.get, docs.GET_ALL),
   POST: buildValidatedJsonHandler(order.post, docs.POST),
 }
