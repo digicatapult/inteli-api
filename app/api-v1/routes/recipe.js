@@ -26,42 +26,41 @@ module.exports = function () {
       tags: ['recipe'],
     }),
     POST: buildValidatedJsonHandler(recipe.create, {
-        summary: 'Create Recipe',
-        requestBody: {
+      summary: 'Create Recipe',
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/NewRecipe',
+            },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: 'Recipe Created',
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/NewRecipe',
+                $ref: '#/components/schemas/Recipe',
               },
             },
           },
         },
-        responses: {
-          201: {
-            description: 'Recipe Created',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Recipe',
-                },
-              },
-            },
-          },
-          400: {
-            description: 'Invalid request',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/BadRequestError',
-                },
+        400: {
+          description: 'Invalid request',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/BadRequestError',
               },
             },
           },
         },
-        security: getDefaultSecurity(),
-        tags: ['recipe'],
-      }
-    ),
+      },
+      security: getDefaultSecurity(),
+      tags: ['recipe'],
+    }),
   }
 
   return doc

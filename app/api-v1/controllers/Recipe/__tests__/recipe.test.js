@@ -18,7 +18,7 @@ const recipeCreatePayload = {
     price: '1000.99',
     requiredCerts: { description: 'some descripton about this recipe' },
     supplier: 'supplier-alias',
-  }
+  },
 }
 
 const createRecipe = async (req) => {
@@ -135,14 +135,14 @@ describe('recipe controller', () => {
 
         response = await createRecipe(recipeCreatePayload)
       })
-      
+
       it('throws and allows middle ware to take it from there', () => {
         expect(response).to.be.instanceOf(Error)
         expect(response.message).to.equal('some attachment db query error')
       })
 
       it('does not write to the database', () => {
-        expect(stubs.addRecipe.calledOnce).to.equal(false) 
+        expect(stubs.addRecipe.calledOnce).to.equal(false)
       })
     })
 
@@ -164,33 +164,32 @@ describe('recipe controller', () => {
 
     it('persists recipe and returns 201 along with details', () => {
       const { status, response: body } = response
-
-      expect(stubs.addRecipe.getCall(0).args[0]).to.deep.equal({                                                                                                                                                                                                               
-        externalId: 'some-ext-id',                                                                                                                                                                                    
-        name: 'recipe-name',                                                                                                                                                                                          
-        imageAttachmentId: 'attachment-id',                                                                                                                                                                           
-        material: 'iron',                                                                                                                                                                                             
-        alloy: 'metal',                                                                                                                                                                                               
-        price: '1000.99',                                                                                                                                                                                             
-        requiredCerts: { description: 'some descripton about this recipe' },                                                                                                                                          
-        supplier: 'supplier-address',                                                                                                                                                                                 
-        external_id: 'some-ext-id',                                                                                                                                                                                   
-        image_attachment_id: '00000000-0000-1000-8000-000000000001',                                                                                                                                                  
-        required_certs: '{"description":"some descripton about this recipe"}',                                                                                                                                        
-        owner: 'self-address'                                                                                                                                                                                         
+      expect(stubs.addRecipe.getCall(0).args[0]).to.deep.equal({
+        externalId: 'some-ext-id',
+        name: 'recipe-name',
+        imageAttachmentId: 'attachment-id',
+        material: 'iron',
+        alloy: 'metal',
+        price: '1000.99',
+        requiredCerts: { description: 'some descripton about this recipe' },
+        supplier: 'supplier-address',
+        external_id: 'some-ext-id',
+        image_attachment_id: '00000000-0000-1000-8000-000000000001',
+        required_certs: '{"description":"some descripton about this recipe"}',
+        owner: 'self-address',
       })
       expect(status).to.equal(201)
-      expect(body).to.deep.contain({                                                                                                                                                                                                       
-        id: '10000000-0000-1000-8000-0000000000000',                                                                                                                                                                
-        owner: 'self-alias',                                                                                                                                                                                        
-        externalId: 'some-ext-id',                                                                                                                                                                                  
-        name: 'recipe-name',                                                                                                                                                                                        
-        imageAttachmentId: 'attachment-id',                                                                                                                                                                         
-        requiredCerts: { description: 'some descripton about this recipe' },                                                                                                                                          
-        material: 'iron',                                                                                                                                                                                           
-        alloy: 'metal',                                                                                                                                                                                             
-        price: '1000.99',                                                                                                                                                                                           
-        supplier: 'supplier-alias'                                                                                                                                                                                  
+      expect(body).to.deep.contain({
+        id: '10000000-0000-1000-8000-0000000000000',
+        owner: 'self-alias',
+        externalId: 'some-ext-id',
+        name: 'recipe-name',
+        imageAttachmentId: 'attachment-id',
+        requiredCerts: { description: 'some descripton about this recipe' },
+        material: 'iron',
+        alloy: 'metal',
+        price: '1000.99',
+        supplier: 'supplier-alias',
       })
     })
   })
