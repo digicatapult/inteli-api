@@ -103,9 +103,9 @@ module.exports = {
       runProcess(payload, req.token)
       return {
         status: 200,
-        message: `transaction ${transaction.id} has been created`,
         response: {
           id: transaction.id,
+          message: `transaction ${transaction.id} has been created`,
           submittedAt: new Date(transaction.created_at).toISOString(),
           status: transaction.status,
         },
