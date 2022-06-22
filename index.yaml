@@ -2,6 +2,25 @@ apiVersion: v1
 entries:
   inteli-api:
   - apiVersion: v2
+    appVersion: 1.26.0
+    created: "2022-06-22T14:31:36.683636248Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ^10.12.2
+    description: A Helm chart for inteli-api
+    digest: 1260649f4f18be116827d591c5f7c3de7b1358fedbc6bf5e940aa8cc64779cfc
+    maintainers:
+    - email: opensource@digicatapult.org.uk
+      name: digicatapult
+      url: www.digicatapult.org.uk
+    name: inteli-api
+    type: application
+    urls:
+    - https://digicatapult.github.io/inteli-api/inteli-api-1.26.0.tgz
+    version: 1.26.0
+  - apiVersion: v2
     appVersion: 1.25.12
     created: "2022-06-22T14:11:54.718066029Z"
     dependencies:
@@ -917,4 +936,4 @@ entries:
     urls:
     - https://digicatapult.github.io/inteli-api/inteli-api-0.0.1.tgz
     version: 0.0.1
-generated: "2022-06-22T14:11:54.710996647Z"
+generated: "2022-06-22T14:31:36.67871188Z"
