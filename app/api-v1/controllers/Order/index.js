@@ -36,7 +36,7 @@ module.exports = {
   getById: _tmp,
   get: _tmp,
   transaction: {
-    getAll: _tmp,
+    getById: _tmp,
     get: _tmp,
     create: async (req) => {
       const { id } = req.params

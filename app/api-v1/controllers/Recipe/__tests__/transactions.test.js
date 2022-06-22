@@ -35,7 +35,7 @@ const submitTransaction = async (req) => {
 
 const getAllTransactions = async (req) => {
   try {
-    return await transaction.getAll(req)
+    return await transaction.get(req)
   } catch (err) {
     return err
   }
@@ -43,13 +43,13 @@ const getAllTransactions = async (req) => {
 
 const getTransaction = async (req) => {
   try {
-    return await transaction.get(req)
+    return await transaction.getById(req)
   } catch (err) {
     return err
   }
 }
 
-describe('recipe transactions controller', () => {
+describe('recipe transaction', () => {
   let stubs = {}
   let response
   let runProcessBody
@@ -113,7 +113,7 @@ describe('recipe transactions controller', () => {
     })
   })
 
-  describe('transactions /create', () => {
+  describe('/recipe/{id}/creation - creates a transaction', () => {
     beforeEach(async () => {
       stubs.getRecipe = stub(db, 'getRecipe').resolves([])
       stubs.insertTransaction = stub(db, 'insertRecipeTransaction').resolves({

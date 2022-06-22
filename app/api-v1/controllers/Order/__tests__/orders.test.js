@@ -299,7 +299,7 @@ describe('Order controller', () => {
 
   describe('order.getAll', () => {
     it('should resolve 500 error', async () => {
-      const result = await orderController.getAll()
+      const result = await orderController.get()
       expect(result.status).to.equal(500)
     })
   })
@@ -314,7 +314,7 @@ describe('Order controller', () => {
   describe('order.transaction', () => {
     describe('getAll', () => {
       it('should resolve 500 error', async () => {
-        const result = await orderController.transaction.getAll()
+        const result = await orderController.transaction.get()
         expect(result.status).to.equal(500)
       })
     })
