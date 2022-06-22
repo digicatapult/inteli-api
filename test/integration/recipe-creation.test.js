@@ -94,7 +94,7 @@ describeNoAuthOnly('get all recipe transactions - no auth', () => {
 
   it('returns a list of recipe transactions', () => {
     const { status, body } = response
-    expect(status).to.be.equal(200)
+    expect(status).to.be.equal(201)
     expect(body.length).to.equal(2)
     expect(body[0]).to.deep.contain({
       status: 'InBlock',
