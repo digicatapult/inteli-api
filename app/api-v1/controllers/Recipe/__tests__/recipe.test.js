@@ -165,26 +165,23 @@ describe('recipe controller', () => {
     it('persists recipe and returns 201 along with details', () => {
       const { status, response: body } = response
       expect(stubs.addRecipe.getCall(0).args[0]).to.deep.equal({
-        externalId: 'some-ext-id',
         name: 'recipe-name',
-        imageAttachmentId: 'attachment-id',
+        image_attachment_id: '00000000-0000-1000-8000-000000000001',
         material: 'iron',
         alloy: 'metal',
         price: '1000.99',
-        requiredCerts: { description: 'some descripton about this recipe' },
         supplier: 'supplier-address',
         external_id: 'some-ext-id',
-        image_attachment_id: '00000000-0000-1000-8000-000000000001',
         required_certs: '{"description":"some descripton about this recipe"}',
         owner: 'self-address',
       })
       expect(status).to.equal(201)
-      expect(body).to.deep.contain({
+      expect(body).to.deep.equal({
         id: '10000000-0000-1000-8000-0000000000000',
-        owner: 'self-alias',
         externalId: 'some-ext-id',
-        name: 'recipe-name',
         imageAttachmentId: 'attachment-id',
+        owner: 'self-alias',
+        name: 'recipe-name',
         requiredCerts: { description: 'some descripton about this recipe' },
         material: 'iron',
         alloy: 'metal',
