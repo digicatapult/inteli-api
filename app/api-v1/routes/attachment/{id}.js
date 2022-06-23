@@ -47,7 +47,6 @@ module.exports = function () {
                 {
                   type: 'array',
                   items: {
-                    type: 'object',
                     example: { some: 'example JSON' },
                   },
                 },
