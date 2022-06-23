@@ -1,26 +1,18 @@
 const OpenAPIResponseValidatorModule = require('openapi-response-validator')
 const commonApiDoc = require('../api-v1/api-doc')
 const logger = require('./Logger')
-const { AUTH_TYPE } = require('../env')
-
-const unauthorizedResponse =
-  AUTH_TYPE === 'JWT'
-    ? {
-        401: {
-          description: 'An unauthorized error occurred',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/UnauthorizedError',
-              },
-            },
-          },
-        },
-      }
-    : {}
 
 const commonResponses = {
-  ...unauthorizedResponse,
+  401: {
+    description: 'An unauthorized error occurred',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/UnauthorizedError',
+        },
+      },
+    },
+  },
   default: {
     description: 'An error occurred',
     content: {

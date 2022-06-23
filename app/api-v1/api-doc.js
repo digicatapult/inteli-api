@@ -173,12 +173,12 @@ const apiDoc = {
             allOf: [{ $ref: '#/components/schemas/OnChainLiteral' }],
             example: 'some-external-system-id',
           },
-          recipes: {
+          parts: {
             description: 'List of recipes describing parts to be created by this build',
             type: 'array',
             maxItems: 10,
             items: {
-              $ref: '#/components/schemas/ObjectReference',
+              $ref: '#/components/schemas/NewPart',
             },
           },
           completionEstimate: {
