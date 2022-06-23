@@ -304,10 +304,12 @@ const apiDoc = {
           },
           items: {
             type: 'array',
-            description: 'List of recipes to be supplied',
+            description: 'List of parts to be supplied',
             maxItems: 10,
             items: {
-              $ref: '#/components/schemas/ObjectReference',
+              description: 'id of the recipe to be built',
+              allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+              example: 'A9F1aD4f-A8ca-1f19-A5a2-cABf4e0c5E34',
             },
           },
         },
@@ -386,10 +388,12 @@ const apiDoc = {
           },
           items: {
             type: 'array',
-            description: 'List of recipes to be supplied',
+            description: 'List of parts to be supplied',
             maxItems: 10,
             items: {
-              $ref: '#/components/schemas/ObjectReference',
+              description: 'id of the recipe to be built',
+              allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+              example: 'A9F1aD4f-A8ca-1f19-A5a2-cABf4e0c5E34',
             },
           },
         },
@@ -410,10 +414,12 @@ const apiDoc = {
           },
           items: {
             type: 'array',
-            description: 'List of recipes to be supplied',
+            description: 'List of parts to be supplied',
             maxItems: 10,
             items: {
-              $ref: '#/components/schemas/ObjectReference',
+              description: 'id of the recipe to be built',
+              allOf: [{ $ref: '#/components/schemas/ObjectReference' }],
+              example: 'A9F1aD4f-A8ca-1f19-A5a2-cABf4e0c5E34',
             },
           },
         },
