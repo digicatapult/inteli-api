@@ -304,7 +304,7 @@ const apiDoc = {
           },
           items: {
             type: 'array',
-            description: 'List of parts to be supplied',
+            description: 'List of parts to be supplied, identified by their recipe id',
             maxItems: 10,
             items: {
               description: 'id of the recipe to be built',
@@ -388,7 +388,7 @@ const apiDoc = {
           },
           items: {
             type: 'array',
-            description: 'List of parts to be supplied',
+            description: 'List of parts to be supplied, identified by their recipe id',
             maxItems: 10,
             items: {
               description: 'id of the recipe to be built',
@@ -414,7 +414,7 @@ const apiDoc = {
           },
           items: {
             type: 'array',
-            description: 'List of parts to be supplied',
+            description: 'List of parts to be supplied, identified by their recipe id',
             maxItems: 10,
             items: {
               description: 'id of the recipe to be built',
