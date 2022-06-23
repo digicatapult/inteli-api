@@ -72,7 +72,7 @@ describeAuthOnly('attachments - authenticated', function () {
   })
 
   it('should return 201 - json array uploaded', async function () {
-    const attachment = ['test']
+    const attachment = [{ key: 'test' }]
     const response = await postAttachmentJSON(app, attachment, authToken)
 
     expect(response.status).to.equal(201)
