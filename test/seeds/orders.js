@@ -63,7 +63,6 @@ const seed = async () => {
     },
   ])
 
-  /* eslint-disable */
   await Promise.all(
     ['Created', 'Submitted', 'Rejected', 'Accepted', 'Amended'].map((status, i) =>
       client('orders').insert([
@@ -78,7 +77,6 @@ const seed = async () => {
       ])
     )
   )
-  /* eslint-enable */
 
   // with recipe that does not have a token_id
   await client('orders').insert([
