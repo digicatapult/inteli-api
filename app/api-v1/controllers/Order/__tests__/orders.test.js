@@ -274,7 +274,6 @@ describe('order controller', () => {
             '50000000-0000-1000-5700-000000000001',
           ],
           status: 'Created',
-          buyer: 'self-alias',
           buyerAddress: 'self-address',
         })
       })

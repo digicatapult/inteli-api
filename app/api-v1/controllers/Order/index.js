@@ -20,7 +20,6 @@ module.exports = {
       ...req.body,
       supplierAddress: supplierAddress,
       status: 'Created',
-      buyer: selfAlias,
       buyerAddress: selfAddress,
     })
     const [result] = await db.postOrderDb(validated)
