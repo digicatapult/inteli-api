@@ -274,9 +274,9 @@ describe('order controller', () => {
             '50000000-0000-1000-5600-000000000001',
             '50000000-0000-1000-5700-000000000001',
           ],
-          purchaserAddress: 'self-address',
+          buyerAddress: 'self-address',
           status: 'Created',
-          purchaser: 'self-address',
+          buyer: 'self-address',
         })
       })
 
