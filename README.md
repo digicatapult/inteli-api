@@ -61,7 +61,7 @@ Assuming `devDefault` environment variables, view OpenAPI documentation for all 
 localhost:3000/v1/swagger/
 ```
 
-The swagger route is constructed as `localhost:{PORT}/{API_MAJOR_VERSION}/swagger`. OpenAPI docs can also be viewed as JSON `localhost:{PORT}/{API_MAJOR_VERSION}/api-docs`.
+The Swagger route is constructed as `localhost:{PORT}/{API_MAJOR_VERSION}/swagger`. OpenAPI docs can also be viewed as JSON `localhost:{PORT}/{API_MAJOR_VERSION}/api-docs`.
 
 ## Authentication
 
