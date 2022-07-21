@@ -10,6 +10,7 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | :--------------------------- | :------: | :--------------------: | :----------------------------------------------------------------------------------- |
 | SERVICE_TYPE                 |    N     |         `info`         | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
 | PORT                         |    N     |          `80`          | The port for the API to listen on                                                    |
+| EXTERNAL_URL                 |    N     |                        | The url from which the OpenAPI service is accessible. If not provided the value will default to `http://localhost:${PORT}/${API_MAJOR_VERSION}` |
 | LOG_LEVEL                    |    N     |         `info`         | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
 | API_VERSION                  |    N     | `package.json version` | API version                                                                          |
 | API_MAJOR_VERSION            |    N     |          `v1`          | API major version                                                                    |
