@@ -89,6 +89,12 @@ async function createHttpServer() {
   )
   app.use(handleErrors)
 
+  logger.trace('Registered Express routes: %s', {
+    toString: () => {
+      return JSON.stringify(app._router.stack.map(({ route }) => route && route.path).filter((p) => !!p))
+    },
+  })
+
   return { app }
 }
 
