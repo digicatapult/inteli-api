@@ -8,7 +8,14 @@ const multer = require('multer')
 const path = require('path')
 const bodyParser = require('body-parser')
 const compression = require('compression')
-const { PORT, API_VERSION, API_MAJOR_VERSION, FILE_UPLOAD_SIZE_LIMIT_BYTES, AUTH_TYPE, EXTERNAL_URL } = require('./env')
+const {
+  PORT,
+  API_VERSION,
+  API_MAJOR_VERSION,
+  FILE_UPLOAD_SIZE_LIMIT_BYTES,
+  AUTH_TYPE,
+  EXTERNAL_PATH_PREFIX,
+} = require('./env')
 const logger = require('./utils/Logger')
 const v1ApiDoc = require('./api-v1/api-doc')
 const v1DscpApiService = require('./api-v1/services/dscpApiService')
@@ -68,14 +75,18 @@ async function createHttpServer() {
     swaggerOptions: {
       urls: [
         {
-          url: EXTERNAL_URL ? `${EXTERNAL_URL}/api-docs` : `../api-docs`,
+          url: `${v1ApiDoc.servers[0].url}/api-docs`,
           name: 'Inteli API Service',
         },
       ],
     },
   }
 
-  app.use(`/${API_MAJOR_VERSION}/swagger`, swaggerUi.serve, swaggerUi.setup(null, options))
+  app.use(
+    EXTERNAL_PATH_PREFIX ? `/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}/swagger` : `/${API_MAJOR_VERSION}/swagger`,
+    swaggerUi.serve,
+    swaggerUi.setup(null, options)
+  )
   app.use(handleErrors)
 
   return { app }
