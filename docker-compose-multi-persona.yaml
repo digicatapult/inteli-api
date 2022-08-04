@@ -45,7 +45,7 @@ services:
       - DB_NAME=dscp
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-      - SELF_ADDRESS=12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+      - SELF_ADDRESS=5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
 
   dscp-node-alice:
@@ -126,7 +126,7 @@ services:
       - DB_NAME=dscp
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-      - SELF_ADDRESS=12D3KooWHdiAxVd8uMQR1hGWXccidmfCwLqcMpGwR6QcTP6QRMuD
+      - SELF_ADDRESS=5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
 
   dscp-node-bob:
