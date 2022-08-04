@@ -47,6 +47,7 @@ services:
       - DB_PASSWORD=postgres
       - SELF_ADDRESS=5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
+      - EXTERNAL_ORIGIN=http://localhost:3002
 
   dscp-node-alice:
     image: digicatapult/dscp-node:latest
@@ -80,6 +81,7 @@ services:
       - IPFS_PORT=5001
       - LOG_LEVEL=trace
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
+      - EXTERNAL_ORIGIN=http://localhost:3001
     restart: on-failure
 
   postgres-inteli-api-bob:
@@ -128,6 +130,7 @@ services:
       - DB_PASSWORD=postgres
       - SELF_ADDRESS=5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
+      - EXTERNAL_ORIGIN=http://localhost:4002
 
   dscp-node-bob:
     image: digicatapult/dscp-node:latest
@@ -161,6 +164,7 @@ services:
       - IPFS_PORT=5001
       - LOG_LEVEL=trace
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
+      - EXTERNAL_ORIGIN=http://localhost:4001
     restart: on-failure
 
   dscp-node-charlie:
