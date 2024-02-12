@@ -5,9 +5,9 @@ const orderController = require('../index')
 const db = require('../../../../db')
 const identityService = require('../../../services/identityService')
 const { BadRequestError, NotFoundError, IdentityError, NoTokenError } = require('../../../../utils/errors')
-const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
+const { SQNC_API_HOST, SQNC_API_PORT } = require('../../../../env')
 
-const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
+const sqncApiUrl = `http://${SQNC_API_HOST}:${SQNC_API_PORT}`
 const recipeExamples = [
   {
     id: '50000000-0000-1000-5500-000000000001',
@@ -48,7 +48,7 @@ describe('order controller', () => {
   let runProcessReq
 
   before(async () => {
-    runProcessReq = nock(dscpApiUrl)
+    runProcessReq = nock(sqncApiUrl)
       .post('/v3/run-process', (body) => {
         runProcessBody = body
         return true

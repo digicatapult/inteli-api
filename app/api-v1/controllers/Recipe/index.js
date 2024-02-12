@@ -1,4 +1,4 @@
-const { runProcess } = require('../../../utils/dscp-api')
+const { runProcess } = require('../../../utils/sqnc-api')
 const db = require('../../../db')
 const identity = require('../../services/identityService')
 const { mapRecipeData } = require('./helpers')

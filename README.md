@@ -1,6 +1,6 @@
 # inteli-api
 
-Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platform)
+Inteli OpenAPI service for interacting with the Sequence (SQNC) distributed infrastructure
 
 ## Environment Variables
 
@@ -15,16 +15,16 @@ Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platf
 | LOG_LEVEL                    |    N     |         `info`         | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
 | API_VERSION                  |    N     | `package.json version` | API version                                                                          |
 | API_MAJOR_VERSION            |    N     |          `v1`          | API major version                                                                    |
-| DSCP_API_HOST                |    Y     |           -            | `dscp-api` host                                                                      |
-| DSCP_API_PORT                |    Y     |           -            | `dscp-api` port                                                                      |
+| SQNC_API_HOST                |    Y     |           -            | `sqnc-api` host                                                                      |
+| SQNC_API_PORT                |    Y     |           -            | `sqnc-api` port                                                                      |
 | DB_HOST                      |    Y     |           -            | PostgreSQL database hostname                                                         |
 | DB_PORT                      |    N     |         `5432`         | PostgreSQL database port                                                             |
 | DB_NAME                      |    N     |        `inteli`        | PostgreSQL database name                                                             |
 | DB_USERNAME                  |    Y     |           -            | PostgreSQL database username                                                         |
 | DB_PASSWORD                  |    Y     |           -            | PostgreSQL database password                                                         |
 | FILE_UPLOAD_SIZE_LIMIT_BYTES |    N     |  `1024 * 1024 * 100`   | Maximum file size in bytes for upload                                                |
-| IDENTITY_SERVICE_HOST        |    Y     |                        | Hostname of the `dscp-identity-service`                                              |
-| IDENTITY_SERVICE_PORT        |    Y     |                        | Port of the `dscp-identity-service`                                                  |
+| IDENTITY_SERVICE_HOST        |    Y     |                        | Hostname of the `sqnc-identity-service`                                              |
+| IDENTITY_SERVICE_PORT        |    Y     |                        | Port of the `sqnc-identity-service`                                                  |
 | AUTH_TYPE                    |    N     |         `NONE`         | Authentication type for routes on the service. Valid values: [`NONE`, `JWT`]         |
 
 The following environment variables are additionally used when `AUTH_TYPE : 'JWT'`
@@ -76,7 +76,7 @@ If `AUTH_TYPE` env is set to `JWT`, the endpoints on `inteli-api` require Bearer
 
 ## Testing
 
-Integration tests for `AUTH_TYPE: 'JWT'` use a preconfigured Auth0 test application and user to authenticate across multiple `dscp` services. Follow the tutorial [here](https://auth0.com/docs/get-started/authentication-and-authorization-flow/call-your-api-using-resource-owner-password-flow) to create your own.
+Integration tests for `AUTH_TYPE: 'JWT'` use a preconfigured Auth0 test application and user to authenticate across multiple `Sequence (SQNC)` services. Follow the tutorial [here](https://auth0.com/docs/get-started/authentication-and-authorization-flow/call-your-api-using-resource-owner-password-flow) to create your own.
 
 Once a test application and user is created, running integration tests locally requires a `/test/test.env` file containing the following environment variables:
 
@@ -101,7 +101,7 @@ npm run test:jwt
 
 ## API design
 
-`inteli-api` provides a RESTful OpenAPI-based interface for third parties and front-ends to interact with the `DSCP` system. The design prioritises:
+`inteli-api` provides a RESTful OpenAPI-based interface for third parties and front-ends to interact with the `Sequence (SQNC)` system. The design prioritises:
 
 1. RESTful design principles:
    - all endpoints describing discrete operations on path derived entities.
@@ -158,7 +158,7 @@ The last top level entity `attachment`, which accepts a `multipart/form-data` pa
 
 Demoing the routes in `inteli-api` requires two personas: `buyer` and `supplier`. Each persona runs their own instance of `inteli-api` and its dependencies.
 
-Before transacting, each persona sets aliases in `dscp-identity-service` for other parties' node addresses so they can refer to them by human-friendly names. The `self` alias should also be set for a persona's own node address.
+Before transacting, each persona sets aliases in `sqnc-identity-service` for other parties' node addresses so they can refer to them by human-friendly names. The `self` alias should also be set for a persona's own node address.
 
 1. `buyer` wants to create a `recipe`, which describes how a particular `supplier` will make a `part`. A `recipe` always includes an image `attachment`, so first `buyer` must upload an image to their local database with `POST /attachment`.
 2. They use the returned `imageattachmentId` in the request body to `POST /recipe`, as well as setting `supplier: 'supplier'` and providing an array of `requiredCerts` for the `recipe`. Later on, `supplier` will need to add a certificate file for each `requiredCert` for the `part` built from the `recipe`. At this point, the `recipe` only exists in the `buyer` database.

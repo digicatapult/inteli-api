@@ -23,8 +23,8 @@ jobs:
           fi
       - name: Check Dockerhub token
         run: |
-          if [ -z "${{ secrets.DSCP_DOCKERHUB_TOKEN }}"]; then
-            echo "Must provide a DSCP_DOCKERHUB_TOKEN secret in order to run release workflow"
+          if [ -z "${{ secrets.SQNC_DOCKERHUB_TOKEN }}"]; then
+            echo "Must provide a SQNC_DOCKERHUB_TOKEN secret in order to run release workflow"
             exit 1
           fi
       - name: Get repository identifiers
@@ -240,8 +240,8 @@ jobs:
       - name: Login to Dockerhub Registry
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DSCP_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DSCP_DOCKERHUB_TOKEN }}
+          username: ${{ secrets.SQNC_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.SQNC_DOCKERHUB_TOKEN }}
       - name: Publish multi-arch image
         uses: docker/build-push-action@v2
         with:

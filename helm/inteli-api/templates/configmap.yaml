@@ -12,8 +12,8 @@ data:
   {{- if .Values.config.externalPathPrefix }}
   externalPathPrefix: {{ .Values.config.externalPathPrefix }}
   {{- end }}
-  dscpApiHost: {{ .Values.config.dscpApiHost }}
-  dscpApiPort: {{ .Values.config.dscpApiPort | quote }}
+  sqncApiHost: {{ .Values.config.sqncApiHost }}
+  sqncApiPort: {{ .Values.config.sqncApiPort | quote }}
   logLevel: {{ .Values.config.logLevel }}
   dbHost: {{ include "inteli-api.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}

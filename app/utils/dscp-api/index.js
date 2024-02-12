@@ -1,11 +1,11 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
 
-const { DSCP_API_PORT, DSCP_API_HOST } = require('../../env')
+const { SQNC_API_PORT, SQNC_API_HOST } = require('../../env')
 
 module.exports = {
   async runProcess({ image, requiredCerts, ...payload }, authToken) {
-    const url = `http://${DSCP_API_HOST}:${DSCP_API_PORT}/v3/run-process`
+    const url = `http://${SQNC_API_HOST}:${SQNC_API_PORT}/v3/run-process`
     const formData = new FormData()
 
     formData.append('request', JSON.stringify(payload))
