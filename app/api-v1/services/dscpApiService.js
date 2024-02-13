@@ -1,10 +1,10 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
 
-const { DSCP_API_HOST, DSCP_API_PORT } = require('../../env')
+const { SQNC_API_HOST, SQNC_API_PORT } = require('../../env')
 const { InternalError } = require('../../utils/errors')
 
-const URL_PREFIX = `http://${DSCP_API_HOST}:${DSCP_API_PORT}/v3`
+const URL_PREFIX = `http://${SQNC_API_HOST}:${SQNC_API_PORT}/v3`
 
 const lastTokenId = async (authToken) => {
   const res = await fetch(`${URL_PREFIX}/last-token`, {

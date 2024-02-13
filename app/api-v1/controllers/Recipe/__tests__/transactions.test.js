@@ -6,9 +6,9 @@ const { BadRequestError, NotFoundError } = require('../../../../utils/errors')
 const db = require('../../../../db')
 const { transaction } = require('..')
 const { recipeExample, transactionsExample, listResponse, recipeId } = require('./transaction_fixtures')
-const { DSCP_API_HOST, DSCP_API_PORT } = require('../../../../env')
+const { SQNC_API_HOST, SQNC_API_PORT } = require('../../../../env')
 
-const dscpApiUrl = `http://${DSCP_API_HOST}:${DSCP_API_PORT}`
+const sqncApiUrl = `http://${SQNC_API_HOST}:${SQNC_API_PORT}`
 
 const postPayload = {
   params: {
@@ -55,7 +55,7 @@ describe('recipe transactions controller', () => {
   let runProcessBody
 
   before(async () => {
-    nock(dscpApiUrl).post('/v3/run-process').reply(200, [20])
+    nock(sqncApiUrl).post('/v3/run-process').reply(200, [20])
   })
 
   afterEach(() => {
@@ -160,7 +160,7 @@ describe('recipe transactions controller', () => {
 
     describe('happy path', () => {
       beforeEach(async () => {
-        nock(dscpApiUrl)
+        nock(sqncApiUrl)
           .post('/v3/run-process', function (body) {
             runProcessBody = body
             return true

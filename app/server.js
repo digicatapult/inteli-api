@@ -18,7 +18,7 @@ const {
 } = require('./env')
 const logger = require('./utils/Logger')
 const v1ApiDoc = require('./api-v1/api-doc')
-const v1DscpApiService = require('./api-v1/services/dscpApiService')
+const v1SqncApiService = require('./api-v1/services/sqncApiService')
 const v1IdentityService = require('./api-v1/services/identityService')
 const { handleErrors } = require('./utils/errors')
 const { verifyJwks } = require('./utils/auth')
@@ -65,7 +65,7 @@ async function createHttpServer() {
     },
     securityHandlers: securityHandlers,
     dependencies: {
-      dscpApiService: v1DscpApiService,
+      sqncApiService: v1SqncApiService,
       identityService: v1IdentityService,
     },
     paths: [path.resolve(__dirname, `api-${API_MAJOR_VERSION}/routes`)],

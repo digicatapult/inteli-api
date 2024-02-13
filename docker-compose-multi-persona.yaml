@@ -23,10 +23,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=dscp
+      - POSTGRES_DB=sqnc
 
-  dscp-identity-service-alice:
-    image: digicatapult/dscp-identity-service:latest
+  sqnc-identity-service-alice:
+    image: digicatapult/sqnc-identity-service:latest
     container_name: identity-service-alice
     command: /bin/sh -c "
       sleep 30 &&
@@ -35,22 +35,22 @@ services:
     ports:
       - 3002:3002
     depends_on:
-      - dscp-node-alice
+      - sqnc-node-alice
       - postgres-identity-service-alice
     environment:
       - PORT=3002
-      - API_HOST=dscp-node-alice
+      - API_HOST=sqnc-node-alice
       - DB_HOST=postgres-identity-service-alice
       - DB_PORT=5432
-      - DB_NAME=dscp
+      - DB_NAME=sqnc
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - SELF_ADDRESS=5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
       - EXTERNAL_ORIGIN=http://localhost:3002
 
-  dscp-node-alice:
-    image: digicatapult/dscp-node:latest
+  sqnc-node-alice:
+    image: digicatapult/sqnc-node:latest
     container_name: node-alice
     command:
       --base-path /data/
@@ -65,16 +65,16 @@ services:
       - 9933:9933
     restart: on-failure
 
-  dscp-api-alice:
-    image: digicatapult/dscp-api:latest
-    container_name: dscp-api-alice
+  sqnc-api-alice:
+    image: digicatapult/sqnc-api:latest
+    container_name: sqnc-api-alice
     ports:
       - 3001:3001
     depends_on:
-      - dscp-node-alice
+      - sqnc-node-alice
     environment:
       - PORT=3001
-      - API_HOST=dscp-node-alice
+      - API_HOST=sqnc-node-alice
       - API_PORT=9944
       - USER_URI=//Alice
       - IPFS_HOST=ipfs
@@ -106,10 +106,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=dscp
+      - POSTGRES_DB=sqnc
 
-  dscp-identity-service-bob:
-    image: digicatapult/dscp-identity-service:latest
+  sqnc-identity-service-bob:
+    image: digicatapult/sqnc-identity-service:latest
     container_name: identity-service-bob
     command: /bin/sh -c "
       sleep 30 &&
@@ -119,21 +119,21 @@ services:
       - 4002:3002
     depends_on:
       - postgres-identity-service-bob
-      - dscp-node-bob
+      - sqnc-node-bob
     environment:
       - PORT=3002
-      - API_HOST=dscp-node-bob
+      - API_HOST=sqnc-node-bob
       - DB_HOST=postgres-identity-service-bob
       - DB_PORT=5432
-      - DB_NAME=dscp
+      - DB_NAME=sqnc
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - SELF_ADDRESS=5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y
       - AUTH_TYPE=${AUTH_TYPE:-NONE}
       - EXTERNAL_ORIGIN=http://localhost:4002
 
-  dscp-node-bob:
-    image: digicatapult/dscp-node:latest
+  sqnc-node-bob:
+    image: digicatapult/sqnc-node:latest
     container_name: node-bob
     command:
       --base-path /data/
@@ -148,16 +148,16 @@ services:
       - 10033:9933
     restart: on-failure
 
-  dscp-api-bob:
-    image: digicatapult/dscp-api:latest
-    container_name: dscp-api-bob
+  sqnc-api-bob:
+    image: digicatapult/sqnc-api:latest
+    container_name: sqnc-api-bob
     ports:
       - 4001:3001
     depends_on:
-      - dscp-node-bob
+      - sqnc-node-bob
     environment:
       - PORT=3001
-      - API_HOST=dscp-node-bob
+      - API_HOST=sqnc-node-bob
       - API_PORT=9944
       - USER_URI=//Bob
       - IPFS_HOST=ipfs
@@ -167,8 +167,8 @@ services:
       - EXTERNAL_ORIGIN=http://localhost:4001
     restart: on-failure
 
-  dscp-node-charlie:
-    image: digicatapult/dscp-node:latest
+  sqnc-node-charlie:
+    image: digicatapult/sqnc-node:latest
     container_name: node-charlie
     command:
       --base-path /data/
