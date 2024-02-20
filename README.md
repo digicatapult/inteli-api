@@ -1,5 +1,7 @@
 # inteli-api
 
+# Deprecated 20/02/24
+
 Inteli OpenAPI service for interacting with the DSCP (Digital Supply-Chain Platform)
 
 ## Environment Variables
